@@ -1,0 +1,20 @@
+{
+  "name": "bubblebot",
+  "version": "1.0.0",
+  "description": "bubble bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "discord",
+    "bot"
+  ],
+  "author": "moozxdz",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "dotenv": "^10.0.0",
+    "axios": "^1.7.3"
+  }
+}
