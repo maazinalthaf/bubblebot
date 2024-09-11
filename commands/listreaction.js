@@ -8,8 +8,8 @@ module.exports = {
         // Check if the user has permission
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuildExpressions)) {
             const embed = new EmbedBuilder()
-                .setColor('#F92F60')
-                .setDescription('❌ You do not have permission to use this command.');
+                .setColor('#C83636')
+                .setDescription('<:cross:1283228336666968114> You do not have permission to use this command.');
             return message.channel.send({ embeds: [embed] });
         }
 

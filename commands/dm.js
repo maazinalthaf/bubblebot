@@ -4,9 +4,12 @@ const { execute } = require('./removereaction')
 module.exports = {
 name: 'dm' ,
 async execute (client,message,args) {
-    if (!message.member.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
-        return message.channel.send("❌ You do not have permission to use this command.");
-      }
+  if (!message.member.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
+    const embed = new EmbedBuilder()
+    .setColor('#C83636')
+    .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
+    return message.channel.send({ embeds: [embed] });
+  }
       
       // Get the user mentioned in the command
       const mentionedUser = message.mentions.users.first();
@@ -14,8 +17,8 @@ async execute (client,message,args) {
       // Check if no user is mentioned
       if (!mentionedUser) {
         const embed = new EmbedBuilder()
-          .setColor('#F6CF57')
-          .setDescription('⚠️ Please mention a user to reply to.');
+          .setColor('#FFCC32')
+          .setDescription('<:hazard:1283227908491710505> Please mention a user to reply to.');
         return message.channel.send({ embeds: [embed] });
       }
       
@@ -24,7 +27,7 @@ async execute (client,message,args) {
       
       // Check if no message is provided to reply with
       if (!text) {
-        return message.channel.send("⚠️ Please provide a message to reply with.");
+        return message.channel.send("<:hazard:1283227908491710505> Please provide a message to reply with.");
       }
       
       // Send the reply as a DM to the mentioned user
@@ -32,14 +35,17 @@ async execute (client,message,args) {
         .then(() => {
           // Create and send an embed indicating success
           const successEmbed = new EmbedBuilder()
-            .setColor('#57F68D')  // Green color for success
-            .setDescription(`✅ Successfully sent the reply to ${mentionedUser}.`);
+            .setColor('#46DC01')  // Green color for success
+            .setDescription(`<:tick:1283246758356451432> Successfully sent the reply to ${mentionedUser}.`);
       
           message.channel.send({ embeds: [successEmbed] });
         })
         .catch(error => {
           console.error('Error sending message:', error);
-          message.channel.send("❌ Failed to send the reply.");
+          const embed = new EmbedBuilder()
+    .setColor('#C83636')
+    .setDescription(`<:cross:1283228336666968114> Failed to send the reply.`);
+    return message.channel.send({ embeds: [embed] });
         });
       
 }

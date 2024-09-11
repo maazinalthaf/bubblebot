@@ -8,8 +8,8 @@ module.exports = {
     async execute(client, message, args) {
 if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuildExpressions)) {
     const embed = new EmbedBuilder()
-    .setColor('#F92F60')
-    .setDescription(`❌ You do not have permission to use this command.`);
+    .setColor('#C83636')
+    .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
     return message.channel.send({ embeds: [embed] });
   }
 
@@ -18,23 +18,23 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuildExpress
 
   if (!word) {
     const embed = new EmbedBuilder()
-    .setColor('#F6CF57')
-    .setDescription(`⚠️ Please provide a word to remove the reaction.`);
+    .setColor('#FFCC32')
+    .setDescription(`<:hazard:1283227908491710505> Please provide a word to remove the reaction.`);
     return message.channel.send({ embeds: [embed] });
   }
 
   if (!reactions[word]) {
     const embed = new EmbedBuilder()
-    .setColor('#F6CF57')
-    .setDescription(`⚠️ There is no reaction associated with the word **"${word}"**.`);
+    .setColor('#FFCC32')
+    .setDescription(`<:hazard:1283227908491710505> There is no reaction associated with the word **"${word}"**.`);
     return message.channel.send({ embeds: [embed] });
   }
 
   delete reactions[word];
   saveReactions();
   const embed = new EmbedBuilder()
-    .setColor('#77B255')
-    .setDescription(`✅ Reaction removed for word "${word}".`);
+    .setColor('#46DC01')
+    .setDescription(`<:tick:1283246758356451432> Reaction removed for word "${word}".`);
   message.channel.send({ embeds: [embed] });
     }
 }

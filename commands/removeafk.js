@@ -38,8 +38,8 @@ module.exports = {
         // Check if the user has Administrator permission
         if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
             const embed = new EmbedBuilder()
-                .setColor('#F92F60')
-                .setDescription(`❌ You do not have permission to use this command.`);
+                .setColor('#C83636')
+                .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
             return message.channel.send({ embeds: [embed] });
         }
 
@@ -47,8 +47,8 @@ module.exports = {
 
         if (!mention) {
             const embed = new EmbedBuilder()
-                .setColor('#F6CF57')
-                .setDescription(`⚠️ Please mention a user to remove their AFK status.`);
+                .setColor('#FFCC32')
+                .setDescription(`<:hazard:1283227908491710505> Please mention a user to remove their AFK status.`);
             return message.channel.send({ embeds: [embed] });
         }
 
@@ -59,12 +59,12 @@ module.exports = {
             saveAfkData(); // Save the updated AFK data
 
             const embed = new EmbedBuilder()
-                .setColor('#77B255')
-                .setDescription(`✅ AFK status removed for ${mention}.`);
+                .setColor('#46DC01')
+                .setDescription(`<:tick:1283246758356451432> AFK status removed for ${mention}.`);
             return message.channel.send({ embeds: [embed] });
         } else {
             const embed = new EmbedBuilder()
-                .setColor('#F92F60')
+                .setColor('#C83636')
                 .setDescription(`❌ ${mention} is not AFK.`);
             return message.channel.send({ embeds: [embed] });
         }
