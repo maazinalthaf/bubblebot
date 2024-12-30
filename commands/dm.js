@@ -35,8 +35,8 @@ async execute (client,message,args) {
         .then(() => {
           // Create and send an embed indicating success
           const successEmbed = new EmbedBuilder()
-            .setColor('#46DC01')  // Green color for success
-            .setDescription(`<:tick:1283246758356451432> Successfully sent the reply to ${mentionedUser}.`);
+            .setColor('#01b700')  // Green color for success
+            .setDescription(`<:tick:1321937653708492850> Successfully sent the reply to ${mentionedUser}.`);
       
           message.channel.send({ embeds: [successEmbed] });
         })

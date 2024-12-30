@@ -39,8 +39,8 @@ module.exports = {
  
      saveReactions();
      const embed = new EmbedBuilder()
-       .setColor('#46DC01')
-       .setDescription(`<:tick:1283246758356451432> Reaction(s) ${reactionsToAdd.join(', ')} added for word "${word}".`);
+       .setColor('#01b700')
+       .setDescription(`<:tick:1321937653708492850> Reaction(s) ${reactionsToAdd.join(', ')} added for word "${word}".`);
        message.channel.send({ embeds: [embed] });
    }
  }

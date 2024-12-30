@@ -33,8 +33,8 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuildExpress
   delete reactions[word];
   saveReactions();
   const embed = new EmbedBuilder()
-    .setColor('#46DC01')
-    .setDescription(`<:tick:1283246758356451432> Reaction removed for word "${word}".`);
+    .setColor('#01b700')
+    .setDescription(`<:tick:1321937653708492850> Reaction removed for word "${word}".`);
   message.channel.send({ embeds: [embed] });
     }
 }

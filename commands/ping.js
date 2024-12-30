@@ -5,7 +5,7 @@ module.exports = {
   description: 'Displays bot and API latency.',
   async execute(client, message) {
     const initialEmbed = new EmbedBuilder()
-      .setColor('#3498db')
+      .setColor('#89cff0')
       .setDescription('🏓 Pinging...');
 
     // Send the initial embed and wait for it to be sent
@@ -17,7 +17,7 @@ module.exports = {
 
     // Create the final embed with the calculated latencies
     const pingEmbed = new EmbedBuilder()
-      .setColor('#2ecc71')
+      .setColor('#89cff0')
       .setTitle('🏓 Pong!')
       .addFields(
         { name: 'Bot Latency', value: `${botLatency}ms`, inline: true },

@@ -59,13 +59,13 @@ module.exports = {
             saveAfkData(); // Save the updated AFK data
 
             const embed = new EmbedBuilder()
-                .setColor('#46DC01')
-                .setDescription(`<:tick:1283246758356451432> AFK status removed for ${mention}.`);
+                .setColor('#01b700')
+                .setDescription(`<:tick:1321937653708492850> AFK status removed for ${mention}.`);
             return message.channel.send({ embeds: [embed] });
         } else {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`❌ ${mention} is not AFK.`);
+                .setDescription(`<:cross:1283228336666968114> ${mention} is not AFK.`);
             return message.channel.send({ embeds: [embed] });
         }
     }

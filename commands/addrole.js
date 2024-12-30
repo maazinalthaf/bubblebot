@@ -1,54 +1,55 @@
-const {EmbedBuilder, PermissionsBitField} = require('discord.js');
+const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
     name: 'addrole',
-    aliases: ['arole','grole','giverole'],
+    aliases: ['arole', 'grole', 'giverole'],
     async execute(client, message, args) {
         if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
             const embed = new EmbedBuilder()
-            .setColor('#C83636')
-            .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
+                .setColor('#C83636')
+                .setDescription('<:cross:1283228336666968114> You do not have permission to use this command.');
             return message.channel.send({ embeds: [embed] });
-          }
-        
-          const targetUser = message.mentions.users.first();
-          const roleName = args.slice(1).join(' ');
-        
-          if (!targetUser || !roleName) {
+        }
+
+        const targetUserMention = message.mentions.users.first();
+        const targetUserId = targetUserMention ? targetUserMention.id : args[0];
+        const roleName = targetUserMention ? args.slice(1).join(' ') : args.slice(1).join(' ');
+
+        if (!targetUserId || !roleName) {
             const embed = new EmbedBuilder()
-            .setColor('#FFCC32')
-            .setDescription(`<:hazard:1283227908491710505> Please provide a user and a role name.`);
+                .setColor('#FFCC32')
+                .setDescription('<:hazard:1283227908491710505> Please provide a user mention or ID and a role name.');
             return message.channel.send({ embeds: [embed] });
-          }
-        
-          const targetMember = message.guild.members.cache.get(targetUser.id);
-          const role = findRoleByName(message.guild, roleName);
-        
-          if (!targetMember || !role) {
+        }
+
+        const targetMember = message.guild.members.cache.get(targetUserId);
+        const role = findRoleByName(message.guild, roleName);
+
+        if (!targetMember || !role) {
             const embed = new EmbedBuilder()
-            .setColor('#FFCC32')
-            .setDescription(`<:hazard:1283227908491710505> User or role not found.`);
+                .setColor('#FFCC32')
+                .setDescription('<:hazard:1283227908491710505> User or role not found.');
             return message.channel.send({ embeds: [embed] });
-          }
-        
-          try {
+        }
+
+        try {
             await targetMember.roles.add(role);
             const embed = new EmbedBuilder()
-            .setColor('#46DC01')
-            .setDescription(`<:tick:1283246758356451432>  ${role} has been added to ${targetUser}.`);
+                .setColor('#01b700')
+                .setDescription(`<:tick:1321937653708492850> ${role} has been added to ${targetMember.user.tag}.`);
             message.channel.send({ embeds: [embed] });
-          } catch (error) {
+        } catch (error) {
             console.error('Error adding role:', error);
             const embed = new EmbedBuilder()
-            .setColor('#FFCC32')
-            .setDescription(`<:hazard:1283227908491710505> An error occurred while adding the role.`);
+                .setColor('#FFCC32')
+                .setDescription('<:hazard:1283227908491710505> An error occurred while adding the role.');
             return message.channel.send({ embeds: [embed] });
-          }
+        }
     }
-}
+};
 
 // Dependent Function(s)
 function findRoleByName(guild, roleName) {
     const lowerCaseRoleName = roleName.toLowerCase();
     return guild.roles.cache.find(role => role.name.toLowerCase().includes(lowerCaseRoleName));
-  }
+}
