@@ -1,13 +1,23 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Collection } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Collection, Partials } = require('discord.js');
 const fs = require('fs');
 const botPingMessages = require('./botping.json');
 const { performance } = require('perf_hooks');
+const { snipes } = require('./commands/snipe.js'); // Import the snipes map
+const { editsnipes } = require('./commands/editsnipe.js'); // Import the editsnipes map
 let afkData = {};
 
 // Creates new client
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers]
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages],
+   
+    partials: [
+      Partials.Channel,
+      Partials.Message,
+      Partials.User,
+      Partials.GuildMember,
+      Partials.Reaction
+  ]
   });
 
 // Initialize commands collection
@@ -90,7 +100,7 @@ client.on('messageCreate', async (message) => {
       delete afkData[message.author.id];
   
       const embed = new EmbedBuilder()
-        .setColor('#F6CF57')
+        .setColor('#FFCC32')
         .setDescription(`👋 **${message.author}**: Welcome back, you were AFK for **${msToTime(timeSinceAfk)}**.`);
   
       message.channel.send({ embeds: [embed] });
@@ -148,6 +158,49 @@ try {
 } else {
 console.log(`Command '${commandName}' not found.`);
 }
+});
+
+client.on('messageDelete', (message) => {
+  if (!message.partial) {
+      const attachment = message.attachments.first()?.url || null;
+
+      // Store the deleted message in the snipes map
+      const channelSnipes = snipes.get(message.channel.id) || [];
+
+      channelSnipes.unshift({
+          content: message.content,
+          author: message.author,
+          createdAt: message.createdTimestamp,
+          attachment, // Save the attachment URL if present
+      });
+
+      // Keep only the last 20 sniped messages per channel
+      if (channelSnipes.length > 20) channelSnipes.pop();
+
+      snipes.set(message.channel.id, channelSnipes);
+  }
+});
+
+// Add a messageUpdate listener
+client.on('messageUpdate', (oldMessage, newMessage) => {
+  if (!oldMessage.partial && !newMessage.partial) {
+      // Ensure the message wasn't just a bot's edit or identical content
+      if (oldMessage.content === newMessage.content || oldMessage.author.bot) return;
+
+      const channelEditsnipes = editsnipes.get(oldMessage.channel.id) || [];
+
+      channelEditsnipes.unshift({
+          oldContent: oldMessage.content,
+          newContent: newMessage.content,
+          author: oldMessage.author,
+          editedAt: newMessage.editedTimestamp,
+      });
+
+      // Keep only the last 20 editsniped messages per channel
+      if (channelEditsnipes.length > 20) channelEditsnipes.pop();
+
+      editsnipes.set(oldMessage.channel.id, channelEditsnipes);
+  }
 });
 
 client.login(process.env.token);
