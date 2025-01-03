@@ -11,7 +11,7 @@
     "bot"
   ],
   "author": "moozxdz",
-  "license": "GPL3",
+  "license": "GPLv3",
   "dependencies": {
     "discord.js": "^14.15.3",
     "dotenv": "^10.0.0",
