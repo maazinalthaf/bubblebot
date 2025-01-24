@@ -13,7 +13,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
                 .setDescription('<:cross:1283228336666968114> You do not have permission to use this command.');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         // Get the number of editsnipes requested, default to 1
@@ -24,7 +24,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
                 .setDescription('<:hazard:1283227908491710505> There is no recently edited message to snipe at that index!');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         const editsnipedMessage = editsnipedMessages[editsnipeIndex];
@@ -46,6 +46,6 @@ module.exports = {
                 text: ` Editsnipe ${editsnipeIndex + 1}/${totalEditsnipes}`, 
             });
 
-        message.channel.send({ embeds: [embed] });
+        message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     },
 };

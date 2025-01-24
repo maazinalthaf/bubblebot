@@ -10,7 +10,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuildExpress
     const embed = new EmbedBuilder()
     .setColor('#C83636')
     .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
-    return message.channel.send({ embeds: [embed] });
+    return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
   // Process the removereaction command...
@@ -20,22 +20,22 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuildExpress
     const embed = new EmbedBuilder()
     .setColor('#FFCC32')
     .setDescription(`<:hazard:1283227908491710505> Please provide a word to remove the reaction.`);
-    return message.channel.send({ embeds: [embed] });
+    return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
   if (!reactions[word]) {
     const embed = new EmbedBuilder()
     .setColor('#FFCC32')
     .setDescription(`<:hazard:1283227908491710505> There is no reaction associated with the word **"${word}"**.`);
-    return message.channel.send({ embeds: [embed] });
+    return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
   delete reactions[word];
   saveReactions();
   const embed = new EmbedBuilder()
-    .setColor('#01b700')
-    .setDescription(`<:tick:1321937653708492850> Reaction removed for word "${word}".`);
-  message.channel.send({ embeds: [embed] });
+    .setColor('#77B255')
+    .setDescription(`<:tick:1326247406576210012> Reaction removed for word "${word}".`);
+  message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     }
 }
 

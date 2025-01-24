@@ -8,7 +8,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
                 .setDescription('<:cross:1283228336666968114> You do not have permission to use this command.');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         // Check if the correct arguments are provided
@@ -17,7 +17,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
                 .setDescription('<:hazard:1283227908491710505> Please provide a user mention or ID to untimeout.');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         try {
@@ -31,22 +31,22 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
                     .setDescription(`<:cross:1283228336666968114> ${user} is not timed out.`);
-                return message.channel.send({ embeds: [embed] });
+                return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
             // Remove the timeout
             await member.timeout(null);
 
             const embed = new EmbedBuilder()
-                .setColor('#01b700')
-                .setDescription(`<:tick:1321937653708492850> Successfully removed timeout for ${user}.`);
-            return message.channel.send({ embeds: [embed] });
+                .setColor('#77B255')
+                .setDescription(`<:tick:1326247406576210012> Successfully removed timeout for ${user}.`);
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } catch (error) {
             console.error(error);
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
                 .setDescription('<:hazard:1283227908491710505> An error occurred while trying to untimeout the user.');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     },
 };

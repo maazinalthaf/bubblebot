@@ -8,7 +8,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
                 .setDescription('<:cross:1283228336666968114> You do not have permission to use this command.');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         // Check if args are provided
@@ -19,7 +19,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
                 .setDescription('<:hazard:1283227908491710505> Please provide a user mention/ID and the new nickname.');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         try {
@@ -33,7 +33,7 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
                     .setDescription('<:cross:1283228336666968114> I cannot modify this user\'s nickname due to role hierarchy.');
-                return message.channel.send({ embeds: [embed] });
+                return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
             // Check if the command user can manage the target user's nickname
@@ -41,16 +41,16 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
                     .setDescription('<:cross:1283228336666968114> You cannot modify this user\'s nickname due to role hierarchy.');
-                return message.channel.send({ embeds: [embed] });
+                return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
             // If no new nickname is provided, reset it
             if (!newNickname) {
                 await member.setNickname(null);
                 const embed = new EmbedBuilder()
-                    .setColor('#01b700')
-                    .setDescription(`<:tick:1321937653708492850> Successfully reset nickname for ${user}.`);
-                return message.channel.send({ embeds: [embed] });
+                    .setColor('#77B255')
+                    .setDescription(`<:tick:1326247406576210012> Successfully reset nickname for ${user}.`);
+                return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
             // Check nickname length
@@ -58,23 +58,23 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setColor('#ffcc32')
                     .setDescription('<:hazard:1283227908491710505> Nickname cannot be longer than 32 characters.');
-                return message.channel.send({ embeds: [embed] });
+                return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
             // Set the new nickname
             await member.setNickname(newNickname);
             
             const embed = new EmbedBuilder()
-                .setColor('#01b700')
-                .setDescription(`<:tick:1321937653708492850> Successfully changed ${user}'s nickname to: ${newNickname}`);
-            return message.channel.send({ embeds: [embed] });
+                .setColor('#77B255')
+                .setDescription(`<:tick:1326247406576210012> Successfully changed ${user}'s nickname to: ${newNickname}`);
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 
         } catch (error) {
             console.error(error);
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
                 .setDescription('<:hazard:1283227908491710505> An error occurred while trying to change the nickname.');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     },
 };

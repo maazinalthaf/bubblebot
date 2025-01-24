@@ -8,7 +8,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
                 .setDescription('<:cross:1283228336666968114> You do not have permission to use this command.');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         // Check if the correct arguments are provided
@@ -20,7 +20,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
                 .setDescription('<:hazard:1283227908491710505> Please provide a user mention/ID and duration (e.g., 1h, 1d, 7d).');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         try {
@@ -35,7 +35,7 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setColor('#ffcc32')
                     .setDescription('<:hazard:1283227908491710505> Invalid duration format. Use format: 1m, 1h, 1d, etc.');
-                return message.channel.send({ embeds: [embed] });
+                return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
             // Check if duration is within Discord's limits (max 28 days)
@@ -43,7 +43,7 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setColor('#ffcc32')
                     .setDescription('<:hazard:1283227908491710505> Timeout duration cannot exceed 28 days.');
-                return message.channel.send({ embeds: [embed] });
+                return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
             // Apply the timeout
@@ -70,15 +70,15 @@ module.exports = {
 
             // Send confirmation in the channel
             const embed = new EmbedBuilder()
-                .setColor('#01b700')
-                .setDescription(`<:tick:1321937653708492850> Successfully timed out ${user} for ${duration}\nReason: **${reason}**`);
-            return message.channel.send({ embeds: [embed] });
+                .setColor('#77B255')
+                .setDescription(`<:tick:1326247406576210012> Successfully timed out ${user} for ${duration}\nReason: **${reason}**`);
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } catch (error) {
             console.error(error);
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
                 .setDescription('<:hazard:1283227908491710505> An error occurred while trying to timeout the user.');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     },
 };

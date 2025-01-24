@@ -8,7 +8,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
     const embed = new EmbedBuilder()
     .setColor('#C83636')
     .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
-    return message.channel.send({ embeds: [embed] });
+    return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
   // Get the text to be said
@@ -19,7 +19,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
     const embed = new EmbedBuilder()
     .setColor('#FFCC32')
     .setDescription(`<:hazard:1283227908491710505> Please provide a message.`);
-    return message.channel.send({ embeds: [embed] });
+    return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
   // Delete the message that triggered the command

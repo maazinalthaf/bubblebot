@@ -10,7 +10,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
                 .setDescription('<:cross:1283228336666968114> You do not have permission to use this command.');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         // Check if there are any snipes to clear
@@ -18,7 +18,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
                 .setDescription('<:hazard:1283227908491710505> There are no sniped messages to clear!');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         // Clear snipes for the current channel
@@ -26,9 +26,9 @@ module.exports = {
 
         // Send success message
         const embed = new EmbedBuilder()
-            .setColor('#01b700')
-            .setDescription('<:tick:1321937653708492850> Successfully cleared all sniped messages in this channel.')
+            .setColor('#77B255')
+            .setDescription('<:tick:1326247406576210012> Successfully cleared all sniped messages in this channel.')
 
-        message.channel.send({ embeds: [embed] });
+        message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     }
 };

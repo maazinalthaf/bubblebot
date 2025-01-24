@@ -16,6 +16,6 @@ module.exports = {
             .setFooter({ text: 'Developed by @moozxdz' })
             .setTimestamp();
 
-        return message.channel.send({ embeds: [embed] });
+        return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     }
 };

@@ -10,7 +10,7 @@ module.exports = {
             const embed = new EmbedBuilder()
             .setColor('#C83636')
             .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
-        return message.channel.send({ embeds: [embed] });
+        return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
         // Function to create the embed for a specific page

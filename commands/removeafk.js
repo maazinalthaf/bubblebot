@@ -40,7 +40,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
                 .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         const mention = message.mentions.users.first();
@@ -49,7 +49,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
                 .setDescription(`<:hazard:1283227908491710505> Please mention a user to remove their AFK status.`);
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         const userId = mention.id;
@@ -59,14 +59,14 @@ module.exports = {
             saveAfkData(); // Save the updated AFK data
 
             const embed = new EmbedBuilder()
-                .setColor('#01b700')
-                .setDescription(`<:tick:1321937653708492850> AFK status removed for ${mention}.`);
-            return message.channel.send({ embeds: [embed] });
+                .setColor('#77B255')
+                .setDescription(`<:tick:1326247406576210012> AFK status removed for ${mention}.`);
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } else {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
                 .setDescription(`<:cross:1283228336666968114> ${mention} is not AFK.`);
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     }
 };

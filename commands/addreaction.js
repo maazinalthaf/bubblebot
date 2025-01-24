@@ -10,7 +10,7 @@ module.exports = {
         const embed = new EmbedBuilder()
        .setColor('#C83636')
        .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
-       return message.channel.send({ embeds: [embed] });
+       return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
  
      }
    
@@ -22,7 +22,7 @@ module.exports = {
        const embed = new EmbedBuilder()
        .setColor('#FFCC32')
        .setDescription(`<:hazard:1283227908491710505> Please provide a word and at least one reaction.`);
-       return message.channel.send({ embeds: [embed] });
+       return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
      }
    
      // Check if a similar word already exists
@@ -30,7 +30,7 @@ module.exports = {
        const embed = new EmbedBuilder()
            .setColor('#FFCC32')
            .setDescription(`<:hazard:1283227908491710505> The word "${word}" already has a reaction associated with it.`);
-       return message.channel.send({ embeds: [embed] });
+       return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
      }
  
    
@@ -39,9 +39,9 @@ module.exports = {
  
      saveReactions();
      const embed = new EmbedBuilder()
-       .setColor('#01b700')
-       .setDescription(`<:tick:1321937653708492850> Reaction(s) ${reactionsToAdd.join(', ')} added for word "${word}".`);
-       message.channel.send({ embeds: [embed] });
+       .setColor('#77B255')
+       .setDescription(`<:tick:1326247406576210012> Reaction(s) ${reactionsToAdd.join(', ')} added for word "${word}".`);
+       message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
    }
  }
      

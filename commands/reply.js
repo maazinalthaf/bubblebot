@@ -8,7 +8,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
   const embed = new EmbedBuilder()
   .setColor('#C83636')
   .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
-  return message.channel.send({ embeds: [embed] });
+  return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 }
 
   // Get the message ID from the command arguments
@@ -19,7 +19,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
     const embed = new EmbedBuilder()
       .setColor('#FFCC32')
       .setDescription(`<:hazard:1283227908491710505> Please provide a message ID to reply to.`);
-    return message.channel.send({ embeds: [embed] });
+    return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
   // Get the text to be replied with
@@ -30,7 +30,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
     const embed = new EmbedBuilder()
       .setColor('#FFCC32')
       .setDescription(`<:hazard:1283227908491710505> Please provide a message to reply to.`);
-    return message.channel.send({ embeds: [embed] });
+    return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
   // Fetch the message using the provided message ID
@@ -46,7 +46,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
           const embed = new EmbedBuilder()
             .setColor('#C83636')
             .setDescription(`<:cross:1283228336666968114> Failed to reply to the message.`);
-          return message.channel.send({ embeds: [embed] });
+          return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         });
     })
     .catch(error => {
@@ -54,7 +54,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
       const embed = new EmbedBuilder()
         .setColor('#C83636')
         .setDescription(`<:cross:1283228336666968114> Failed to fetch the message with the provided ID.`);
-      return message.channel.send({ embeds: [embed] });
+      return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     });
   }
 }

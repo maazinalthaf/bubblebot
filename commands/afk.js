@@ -44,10 +44,10 @@ module.exports = {
             };
 
             const embed = new EmbedBuilder()
-            .setColor('#01b700')
-            .setDescription(`<:tick:1321937653708492850> **${message.author}** You're now AFK with the status: **${afkMessage}**`);
+            .setColor('#77B255')
+            .setDescription(`<:tick:1326247406576210012> **${message.author}** You're now AFK with the status: **${afkMessage}**`);
 
-            message.channel.send({ embeds: [embed] });
+            message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 
         } else {
             afkData[message.author.id] = {
@@ -55,10 +55,10 @@ module.exports = {
             };
 
             const embed = new EmbedBuilder()
-            .setColor('#01b700')
-            .setDescription(`<:tick:1321937653708492850> **${message.author}** You're now AFK with the status: **AFK**`);
+            .setColor('#77B255')
+            .setDescription(`<:tick:1326247406576210012> **${message.author}** You're now AFK with the status: **AFK**`);
 
-            message.channel.send({ embeds: [embed] });
+            message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         // Save the updated AFK data

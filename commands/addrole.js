@@ -8,7 +8,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
                 .setDescription('<:cross:1283228336666968114> You do not have permission to use this command.');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         const targetUserMention = message.mentions.users.first();
@@ -19,7 +19,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
                 .setDescription('<:hazard:1283227908491710505> Please provide a user mention or ID and a role name.');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         const targetMember = message.guild.members.cache.get(targetUserId);
@@ -29,21 +29,21 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
                 .setDescription('<:hazard:1283227908491710505> User or role not found.');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         try {
             await targetMember.roles.add(role);
             const embed = new EmbedBuilder()
-                .setColor('#01b700')
-                .setDescription(`<:tick:1321937653708492850> ${role} has been added to ${targetMember.user.tag}.`);
-            message.channel.send({ embeds: [embed] });
+                .setColor('#77B255')
+                .setDescription(`<:tick:1326247406576210012> ${role} has been added to ${targetMember.user.tag}.`);
+            message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } catch (error) {
             console.error('Error adding role:', error);
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
                 .setDescription('<:hazard:1283227908491710505> An error occurred while adding the role.');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     }
 };

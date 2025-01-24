@@ -17,13 +17,13 @@ module.exports = {
                 .setFooter({ text: 'Powered by kanye.rest' })
                 .setTimestamp();
 
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } catch (error) {
             console.error('Error fetching Kanye quote:', error);
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
                 .setDescription('😔 Sorry, I couldn’t fetch a Kanye quote right now. Try again later!');
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     }
 };

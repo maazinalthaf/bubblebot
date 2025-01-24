@@ -8,7 +8,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
                 .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         let target;
@@ -28,7 +28,7 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
                     .setDescription(`<:cross:1283228336666968114> Could not find a user with ID: ${args[0]}`);
-                return message.channel.send({ embeds: [embed] });
+                return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
             // Get user's roles (excluding @everyone role)
@@ -52,14 +52,14 @@ module.exports = {
                 .setTimestamp();
 
             // Send the embed
-            message.channel.send({ embeds: [embed] });
+            message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 
         } catch (error) {
             console.error(error);
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
                 .setDescription(`<:cross:1283228336666968114> An error occurred while fetching the user information.`);
-            return message.channel.send({ embeds: [embed] });
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     }
 }
