@@ -103,7 +103,7 @@ client.on('messageCreate', async (message) => {
         .setColor('#FFCC32')
         .setDescription(`👋 **${message.author}**: Welcome back, you were AFK for **${msToTime(timeSinceAfk)}**.`);
   
-      message.channel.send({ embeds: [embed] });
+      message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   
       // Save the updated AFK data without the deleted entry
       saveAfkData();
@@ -120,7 +120,7 @@ client.on('messageCreate', async (message) => {
         .setColor('#4289C1')
         .setDescription(`💤 ${mentionedUser} is AFK: ${afkMessage || ''} - **${msToTime(timeSinceAfk)} ago**.`);
   
-      message.channel.send({ embeds: [embed] });
+      message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     }
   
     const content = message.content.toLowerCase();
