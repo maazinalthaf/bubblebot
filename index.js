@@ -46,7 +46,7 @@ for (const file of commandFiles) {
   }
 }
 
-const PREFIX = '.';
+const PREFIX = '?';
 let startTime;
 
 // Trigger Load
