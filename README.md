@@ -11,4 +11,4 @@
 5. Run the following commands in order `npm install` `npm start`
 
 ## How to use?
-> After initializing the bot run `?help` for a list of commands.
+> After initializing the bot run `.help` for a list of commands.
