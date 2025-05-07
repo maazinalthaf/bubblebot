@@ -1,4 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const {embed_color, emojis, prefix } = require('../constants');
 
 module.exports = {
     name: 'timeout',
@@ -7,7 +8,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription('<:cross:1332418251849732206> You do not have permission to use this command.');
+                .setDescription('${emoji.cross} You do not have permission to use this command.');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -19,7 +20,7 @@ module.exports = {
         if (!userInput || !duration) {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription('<:error:1332418281675558963> Please provide a user mention/ID and duration (e.g., 1h, 1d, 7d).');
+                .setDescription('${emojis.error} Please provide a user mention/ID and duration (e.g., 1h, 1d, 7d).');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -34,7 +35,7 @@ module.exports = {
             if (!durationInMs) {
                 const embed = new EmbedBuilder()
                     .setColor('#ffcc32')
-                    .setDescription('<:error:1332418281675558963> Invalid duration format. Use format: 1m, 1h, 1d, etc.');
+                    .setDescription('${emojis.error} Invalid duration format. Use format: 1m, 1h, 1d, etc.');
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -42,7 +43,7 @@ module.exports = {
             if (durationInMs > 28 * 24 * 60 * 60 * 1000) {
                 const embed = new EmbedBuilder()
                     .setColor('#ffcc32')
-                    .setDescription('<:error:1332418281675558963> Timeout duration cannot exceed 28 days.');
+                    .setDescription('${emojis.error} Timeout duration cannot exceed 28 days.');
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -71,13 +72,13 @@ module.exports = {
             // Send confirmation in the channel
             const embed = new EmbedBuilder()
                 .setColor('#77B255')
-                .setDescription(`<:tick:1332418339372273684> Successfully timed out ${user} for ${duration}\nReason: **${reason}**`);
+                .setDescription(`${emoji.tick} Successfully timed out ${user} for ${duration}\nReason: **${reason}**`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } catch (error) {
             console.error(error);
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription('<:error:1332418281675558963> An error occurred while trying to timeout the user.');
+                .setDescription('${emojis.error} An error occurred while trying to timeout the user.');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     },

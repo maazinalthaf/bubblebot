@@ -3,6 +3,7 @@ const fs = require('fs');
 const { aliases, execute } = require('./removereaction');
 const afkDataFile = './afkData.json';
 let afkData = {};
+const {embed_color, emojis, prefix } = require('../constants');
 
 // Load AFK data from file if it exists
 function loadAfkData() {
@@ -39,7 +40,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`<:cross:1332418251849732206> You do not have permission to use this command.`);
+                .setDescription(`${emoji.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -48,7 +49,7 @@ module.exports = {
         if (!mention) {
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
-                .setDescription(`<:error:1332418281675558963> Please mention a user to remove their AFK status.`);
+                .setDescription(`${emojis.error} Please mention a user to remove their AFK status.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -60,12 +61,12 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setColor('#77B255')
-                .setDescription(`<:tick:1332418339372273684> AFK status removed for ${mention}.`);
+                .setDescription(`${emoji.tick} AFK status removed for ${mention}.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } else {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`<:cross:1332418251849732206> ${mention} is not AFK.`);
+                .setDescription(`${emoji.cross} ${mention} is not AFK.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     }

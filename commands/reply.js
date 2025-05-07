@@ -1,4 +1,5 @@
 const {EmbedBuilder, PermissionsBitField} = require('discord.js');
+const {embed_color, emojis, prefix } = require('../constants');
 
 module.exports = {
     name: 'reply',
@@ -7,7 +8,7 @@ module.exports = {
 if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
   const embed = new EmbedBuilder()
   .setColor('#C83636')
-  .setDescription(`<:cross:1332418251849732206> You do not have permission to use this command.`);
+  .setDescription(`${emoji.cross} You do not have permission to use this command.`);
   return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 }
 
@@ -18,7 +19,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
   if (!messageId) {
     const embed = new EmbedBuilder()
       .setColor('#FFCC32')
-      .setDescription(`<:error:1332418281675558963> Please provide a message ID to reply to.`);
+      .setDescription(`${emojis.error} Please provide a message ID to reply to.`);
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
@@ -29,7 +30,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
   if (!text) {
     const embed = new EmbedBuilder()
       .setColor('#FFCC32')
-      .setDescription(`<:error:1332418281675558963> Please provide a message to reply to.`);
+      .setDescription(`${emojis.error} Please provide a message to reply to.`);
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
@@ -45,7 +46,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
           console.error('Error replying to message:', error);
           const embed = new EmbedBuilder()
             .setColor('#C83636')
-            .setDescription(`<:cross:1332418251849732206> Failed to reply to the message.`);
+            .setDescription(`${emoji.cross} Failed to reply to the message.`);
           return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         });
     })
@@ -53,7 +54,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
       console.error('Error fetching message:', error);
       const embed = new EmbedBuilder()
         .setColor('#C83636')
-        .setDescription(`<:cross:1332418251849732206> Failed to fetch the message with the provided ID.`);
+        .setDescription(`${emoji.cross} Failed to fetch the message with the provided ID.`);
       return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     });
   }

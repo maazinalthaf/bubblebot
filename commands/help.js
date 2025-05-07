@@ -1,4 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
+const {embed_color, emojis, prefix } = require('../constants');
 
 module.exports = {
     name: 'help',
@@ -302,7 +303,7 @@ module.exports = {
 
                 const errorEmbed = new EmbedBuilder()
                     .setColor('#c83636')
-                    .setDescription(`<:cross:1332418251849732206> Command \`${commandName}\` not found. Use \`.help\` to see all commands.`);
+                    .setDescription(`${emoji.cross} Command \`${commandName}\` not found. Use \`.help\` to see all commands.`);
                 return message.channel.send({ embeds: [errorEmbed] });
             }
         }

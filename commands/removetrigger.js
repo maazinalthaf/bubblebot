@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const triggersPath = path.join(__dirname, '../triggers.json');
+const {embed_color, emojis, prefix } = require('../constants');
 
 module.exports = {
     name: 'removetrigger',
@@ -16,7 +17,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#ffcc32')
-                        .setDescription('<:error:1332418281675558963> You need the **Manage Messages** permission to use this command.')
+                        .setDescription('${emojis.error} You need the **Manage Messages** permission to use this command.')
                 ]
             });
         }
@@ -26,7 +27,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#ffcc32')
-                        .setDescription('<:error:1332418281675558963> Usage: `.removetrigger "<word or phrase>"`\nExample: `.removetrigger "hello there"`')
+                        .setDescription('${emojis.error} Usage: `.removetrigger "<word or phrase>"`\nExample: `.removetrigger "hello there"`')
                 ]
             });
         }
@@ -40,7 +41,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#c83636')
-                        .setDescription('<:cross:1332418251849732206> Failed to load triggers.')
+                        .setDescription('${emoji.cross} Failed to load triggers.')
                 ]
             });
         }
@@ -56,7 +57,7 @@ module.exports = {
                     embeds: [
                         new EmbedBuilder()
                             .setColor('#ffcc32')
-                            .setDescription('<:error:1332418281675558963> Invalid format. Make sure to close your quotes.\nUsage: `.removetrigger "<word or phrase>"`')
+                            .setDescription('${emojis.error} Invalid format. Make sure to close your quotes.\nUsage: `.removetrigger "<word or phrase>"`')
                     ]
                 });
             }
@@ -71,7 +72,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#ffcc32')
-                        .setDescription(`<:error:1332418281675558963> No trigger found for \`${triggerPhrase}\``)
+                        .setDescription(`${emojis.error} No trigger found for \`${triggerPhrase}\``)
                 ]
             });
         }
@@ -90,14 +91,14 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#C83636')
-                        .setDescription('<:cross:1332418251849732206> Failed to remove the trigger.')
+                        .setDescription('${emoji.cross} Failed to remove the trigger.')
                 ]
             });
         }
 
         const embed = new EmbedBuilder()
             .setColor('#77b255')
-            .setDescription(`<:tick:1332418339372273684> **Trigger Removed**\nThe bot will no longer respond to \`${triggerPhrase}\``)
+            .setDescription(`${emoji.tick} **Trigger Removed**\nThe bot will no longer respond to \`${triggerPhrase}\``)
             .setTimestamp();
 
         return message.reply({ embeds: [embed] });

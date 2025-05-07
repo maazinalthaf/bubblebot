@@ -1,7 +1,7 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-
+const {embed_color, emojis, prefix } = require('../constants');
 const triggersPath = path.join(__dirname, '../triggers.json');
 const TRIGGERS_PER_PAGE = 5;
 
@@ -17,7 +17,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#FFCC32')
-                        .setDescription('<:error:1332418281675558963> You need the **Manage Messages** permission to use this command.')
+                        .setDescription('${emojis.error} You need the **Manage Messages** permission to use this command.')
                 ]
             });
         }
@@ -31,7 +31,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#C83636')
-                        .setDescription('<:cross:1332418251849732206> Failed to load triggers.')
+                        .setDescription('${emoji.cross} Failed to load triggers.')
                 ]
             });
         }
@@ -41,7 +41,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#C83636')
-                        .setDescription('<:cross:1332418251849732206> No triggers have been set up yet.')
+                        .setDescription('${emoji.cross} No triggers have been set up yet.')
                 ]
             });
         }

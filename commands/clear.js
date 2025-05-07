@@ -1,4 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const {embed_color, emojis, prefix } = require('../constants');
 
 module.exports = {
     name: 'purge',
@@ -7,7 +8,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription('<:cross:1332418251849732206> You do not have permission to use this command.');
+                .setDescription('${emoji.cross} You do not have permission to use this command.');
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
@@ -19,14 +20,14 @@ module.exports = {
         if (isNaN(amount)) {
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
-                .setDescription('<:error:1332418281675558963> Please provide a valid number.');
+                .setDescription('${emojis.error} Please provide a valid number.');
             return message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 5000));
         }
 
         if (amount <= 0 || amount > 100) {
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
-                .setDescription('<:error:1332418281675558963> Please provide a number between 1 and 100.');
+                .setDescription('${emojis.error} Please provide a number between 1 and 100.');
             return message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 5000));
         }
 
@@ -39,7 +40,7 @@ module.exports = {
             
             const embed = new EmbedBuilder()
                 .setColor('#77B255')
-                .setDescription(`<:tick:1332418339372273684> Successfully deleted ${deletedMessages.size - 1} messages.`);
+                .setDescription(`${emoji.tick} Successfully deleted ${deletedMessages.size - 1} messages.`);
                 
             const reply = await message.channel.send({ embeds: [embed] });
             setTimeout(() => reply.delete().catch(() => {}), 2000);
@@ -47,7 +48,7 @@ module.exports = {
             console.error('Error deleting messages:', error);
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
-                .setDescription('<:error:1332418281675558963> An error occurred while deleting messages. Make sure the messages are not older than 14 days.');
+                .setDescription('${emojis.error} An error occurred while deleting messages. Make sure the messages are not older than 14 days.');
             message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 5000));
         }
     }

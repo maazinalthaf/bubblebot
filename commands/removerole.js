@@ -1,4 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const {embed_color, emojis, prefix } = require('../constants');
 
 module.exports = {
     name: 'removerole',
@@ -7,7 +8,7 @@ module.exports = {
       if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
         const embed = new EmbedBuilder()
         .setColor('#C83636')
-        .setDescription('<:cross:1332418251849732206> You do not have permission to use this command.');
+        .setDescription('${emoji.cross} You do not have permission to use this command.');
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
     
@@ -18,7 +19,7 @@ module.exports = {
       if (!targetUserId || !roleName) {
         const embed = new EmbedBuilder()
         .setColor('#FFCC32')
-        .setDescription('<:error:1332418281675558963> Please provide a user mention or ID and a role name.');
+        .setDescription('${emojis.error} Please provide a user mention or ID and a role name.');
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
     
@@ -28,7 +29,7 @@ module.exports = {
       if (!targetMember || !role) {
         const embed = new EmbedBuilder()
         .setColor('#FFCC32')
-        .setDescription('<:error:1332418281675558963> User or role not found.');
+        .setDescription('${emojis.error} User or role not found.');
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
     
@@ -36,13 +37,13 @@ module.exports = {
         await targetMember.roles.remove(role);
         const embed = new EmbedBuilder()
         .setColor('#77B255')
-        .setDescription(`<:tick:1332418339372273684> ${role} has been removed from ${targetMember.user.tag}.`);
+        .setDescription(`${emoji.tick} ${role} has been removed from ${targetMember.user.tag}.`);
         message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       } catch (error) {
         console.error('Error removing role:', error);
         const embed = new EmbedBuilder()
         .setColor('#FFCC32')
-        .setDescription('<:error:1332418281675558963> An error occurred while removing the role.');
+        .setDescription('${emojis.error} An error occurred while removing the role.');
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
     }

@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const axios = require('axios');
+const {embed_color, emojis, prefix } = require('../constants');
 
 module.exports = {
     name: 'kanye',

@@ -2,6 +2,7 @@ const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const { aliases } = require('./snipe');
+const {embed_color, emojis, prefix } = require('../constants');
 
 module.exports = {
     name: 'togglecommand',
@@ -37,14 +38,14 @@ async function execute(client, message, args) {
   if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
     const embed = new EmbedBuilder()
       .setColor('#c83636')
-      .setDescription('<:cross:1332418251849732206> You need **Manage Server** permissions to use this command.');
+      .setDescription('${emoji.cross} You need **Manage Server** permissions to use this command.');
     return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
   }
 
   if (!args.length) {
     const embed = new EmbedBuilder()
       .setColor('#FFcc32')
-      .setDescription('<:error:1332418281675558963> Please specify a command to toggle (enable/disable).\n\n**Example:** `.togglecommand ping`');
+      .setDescription('${emojis.error} Please specify a command to toggle (enable/disable).\n\n**Example:** `.togglecommand ping`');
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
@@ -55,14 +56,14 @@ async function execute(client, message, args) {
   if (!command) {
     const embed = new EmbedBuilder()
       .setColor('#FFcc32')
-      .setDescription(`<:error:1332418281675558963> Command "${commandName}" not found.`);
+      .setDescription(`${emojis.error} Command "${commandName}" not found.`);
     return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
   }
 
   if (command.name === 'togglecommand') {
     const embed = new EmbedBuilder()
       .setColor('#FFcc32')
-      .setDescription('<:error:1332418281675558963> You cannot disable the togglecommand itself!');
+      .setDescription('${emojis.error} You cannot disable the togglecommand itself!');
     return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
   }
 
@@ -80,12 +81,12 @@ async function execute(client, message, args) {
     disabledCommands[guildId] = disabledCommands[guildId].filter(cmd => cmd !== command.name);
     embed
       .setColor('#77b255')
-      .setDescription(`<:tick:1332418339372273684> Command **${command.name}** has been **enabled** for this server.`);
+      .setDescription(`${emoji.tick} Command **${command.name}** has been **enabled** for this server.`);
   } else {
     disabledCommands[guildId].push(command.name);
     embed
       .setColor('#77b255')
-      .setDescription(`<:tick:1332418339372273684> Command **${command.name}** has been **disabled** for this server.`);
+      .setDescription(`${emoji.tick} Command **${command.name}** has been **disabled** for this server.`);
   }
 
   try {
@@ -95,7 +96,7 @@ async function execute(client, message, args) {
     console.error('Error saving disabled commands:', error);
     const errorEmbed = new EmbedBuilder()
       .setColor('#c83636')
-      .setDescription('<:cross:1332418251849732206> There was an error saving the command toggle state.');
+      .setDescription('${emoji.cross} There was an error saving the command toggle state.');
     return message.reply({ embeds: [errorEmbed], allowedMentions: { repliedUser: false } });
   }
 }

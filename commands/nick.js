@@ -1,4 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const {embed_color, emojis, prefix } = require('../constants');
 
 module.exports = {
     name: 'nick',
@@ -7,7 +8,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageNicknames)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription('<:cross:1332418251849732206> You do not have permission to use this command.');
+                .setDescription('${emoji.cross} You do not have permission to use this command.');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -18,7 +19,7 @@ module.exports = {
         if (!userInput) {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription('<:error:1332418281675558963> Please provide a user mention/ID and the new nickname.');
+                .setDescription('${emojis.error} Please provide a user mention/ID and the new nickname.');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -32,7 +33,7 @@ module.exports = {
             if (member.roles.highest.position >= message.guild.members.me.roles.highest.position) {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
-                    .setDescription('<:cross:1332418251849732206> I cannot modify this user\'s nickname due to role hierarchy.');
+                    .setDescription('${emoji.cross} I cannot modify this user\'s nickname due to role hierarchy.');
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -40,7 +41,7 @@ module.exports = {
             if (member.roles.highest.position >= message.member.roles.highest.position && message.member.id !== message.guild.ownerId) {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
-                    .setDescription('<:cross:1332418251849732206> You cannot modify this user\'s nickname due to role hierarchy.');
+                    .setDescription('${emoji.cross} You cannot modify this user\'s nickname due to role hierarchy.');
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -49,7 +50,7 @@ module.exports = {
                 await member.setNickname(null);
                 const embed = new EmbedBuilder()
                     .setColor('#77B255')
-                    .setDescription(`<:tick:1332418339372273684> Successfully reset nickname for ${user}.`);
+                    .setDescription(`${emoji.tick} Successfully reset nickname for ${user}.`);
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -57,7 +58,7 @@ module.exports = {
             if (newNickname.length > 32) {
                 const embed = new EmbedBuilder()
                     .setColor('#ffcc32')
-                    .setDescription('<:error:1332418281675558963> Nickname cannot be longer than 32 characters.');
+                    .setDescription('${emojis.error} Nickname cannot be longer than 32 characters.');
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -66,14 +67,14 @@ module.exports = {
             
             const embed = new EmbedBuilder()
                 .setColor('#77B255')
-                .setDescription(`<:tick:1332418339372273684> Successfully changed ${user}'s nickname to: ${newNickname}`);
+                .setDescription(`${emoji.tick} Successfully changed ${user}'s nickname to: ${newNickname}`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 
         } catch (error) {
             console.error(error);
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription('<:error:1332418281675558963> An error occurred while trying to change the nickname.');
+                .setDescription('${emojis.error} An error occurred while trying to change the nickname.');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     },

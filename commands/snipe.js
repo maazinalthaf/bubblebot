@@ -1,4 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const {embed_color, emojis, prefix } = require('../constants');
 
 // Object to store deleted messages for each channel
 const snipes = new Map();
@@ -12,7 +13,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription('<:cross:1332418251849732206> You do not have permission to use this command.');
+                .setDescription('${emoji.cross} You do not have permission to use this command.');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -23,7 +24,7 @@ module.exports = {
         if (!snipedMessages || !snipedMessages[snipeIndex]) {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription('<:error:1332418281675558963> There is no recently deleted message to snipe at that index!');
+                .setDescription('${emojis.error} There is no recently deleted message to snipe at that index!');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 

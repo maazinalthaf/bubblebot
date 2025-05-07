@@ -2,6 +2,7 @@ const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const botPingPath = path.join(__dirname, '../botping.json');
+const {embed_color, emojis, prefix } = require('../constants');
 
 module.exports = {
     name: 'removeping',
@@ -19,7 +20,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`<:cross:1332418251849732206> You do not have permission to use this command.`);
+                .setDescription(`${emoji.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
@@ -29,7 +30,7 @@ module.exports = {
         if (!fullMessage) {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription(`<:error:1332418281675558963> Usage: \`.removeping <message>\`\nPlease provide the message to remove.`);
+                .setDescription(`${emojis.error} Usage: \`.removeping <message>\`\nPlease provide the message to remove.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
@@ -40,7 +41,7 @@ module.exports = {
             console.log('Failed to load botping.json.');
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`<:cross:1332418251849732206> Failed to load triggers list.`);
+                .setDescription(`${emoji.cross} Failed to load triggers list.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
@@ -52,7 +53,7 @@ module.exports = {
         if (index === -1) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`<:cross:1332418251849732206> Trigger "${fullMessage}" not found.`);
+                .setDescription(`${emoji.cross} Trigger "${fullMessage}" not found.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
@@ -62,7 +63,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setColor('#77b255')
-            .setDescription(`<:tick:1332418339372273684> Trigger "${fullMessage}" removed.`);
+            .setDescription(`${emoji.tick} Trigger "${fullMessage}" removed.`);
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 };

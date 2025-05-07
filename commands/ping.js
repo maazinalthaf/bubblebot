@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const {embed_color, emojis, prefix } = require('../constants');
 
 module.exports = {
   name: 'ping',

@@ -1,4 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const {embed_color, emojis, prefix } = require('../constants');
 
 module.exports = {
     name: 'roles',
@@ -6,7 +7,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`<:cross:1332418251849732206> You do not have permission to use this command.`);
+                .setDescription(`${emoji.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -25,7 +26,7 @@ module.exports = {
             if (!target) {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
-                    .setDescription(`<:cross:1332418251849732206> Could not find a user with ID: ${args[0]}`);
+                    .setDescription(`${emoji.cross} Could not find a user with ID: ${args[0]}`);
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -56,7 +57,7 @@ module.exports = {
             console.error(error);
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`<:cross:1332418251849732206> An error occurred while fetching the user information.`);
+                .setDescription(`${emoji.cross} An error occurred while fetching the user information.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     }

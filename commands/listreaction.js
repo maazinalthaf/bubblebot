@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, PermissionsBitField, InteractionType } = require('discord.js');
 const reactions = require('../reactions.json');
+const {embed_color, emojis, prefix } = require('../constants');
 
 module.exports = {
     name: 'listreaction',
@@ -9,7 +10,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuildExpressions)) {
             const embed = new EmbedBuilder()
             .setColor('#C83636')
-            .setDescription(`<:cross:1332418251849732206> You do not have permission to use this command.`);
+            .setDescription(`${emoji.cross} You do not have permission to use this command.`);
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 

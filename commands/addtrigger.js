@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-
+const {embed_color, emojis, prefix } = require('../constants');
 const triggersPath = path.join(__dirname, '../triggers.json');
 
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#FFcc32')
-                        .setDescription('<:error:1332418281675558963> You need the **Manage Messages** permission to use this command.')
+                        .setDescription('${emojis.error} You need the **Manage Messages** permission to use this command.')
                 ]
             });
         }
@@ -26,7 +26,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#FFcc32')
-                        .setDescription('<:error:1332418281675558963> Usage: `.addtrigger "<word or phrase>" <response>`\nExample: `.addtrigger "hello there" Hi! How can I help?`')
+                        .setDescription('${emojis.error} Usage: `.addtrigger "<word or phrase>" <response>`\nExample: `.addtrigger "hello there" Hi! How can I help?`')
                 ]
             });
         }
@@ -51,7 +51,7 @@ module.exports = {
                     embeds: [
                         new EmbedBuilder()
                             .setColor('#c83636')
-                            .setDescription('<:cross:1332418251849732206> Invalid format. Make sure to close your quotes.\nUsage: `.addtrigger "<word or phrase>" <response>`')
+                            .setDescription('${emoji.cross} Invalid format. Make sure to close your quotes.\nUsage: `.addtrigger "<word or phrase>" <response>`')
                     ]
                 });
             }
@@ -77,14 +77,14 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#C83636')
-                        .setDescription('<:cross:1332418251849732206> Failed to save the trigger.')
+                        .setDescription('${emoji.cross} Failed to save the trigger.')
                 ]
             });
         }
 
         const embed = new EmbedBuilder()
             .setColor('#77b255')
-            .setDescription(`<:tick:1332418339372273684> **Trigger Added**\nThe bot will now respond to \`${triggerPhrase}\` with:\n\n${response}`)
+            .setDescription(`${emoji.tick} **Trigger Added**\nThe bot will now respond to \`${triggerPhrase}\` with:\n\n${response}`)
             .setTimestamp();
 
         return message.reply({ embeds: [embed] });

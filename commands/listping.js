@@ -2,6 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionsB
 const fs = require('fs');
 const path = require('path');
 const botPingPath = path.join(__dirname, '../botping.json');
+const {embed_color, emojis, prefix } = require('../constants');
 
 module.exports = {
     name: 'listping',
@@ -11,7 +12,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription(`<:error:1332418281675558963> You need the \`Manage Messages\` permission to use this command.`);
+                .setDescription(`${emojis.error} You need the \`Manage Messages\` permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
@@ -19,13 +20,13 @@ module.exports = {
         try {
             botPingMessages = JSON.parse(fs.readFileSync(botPingPath, 'utf8'));
         } catch (error) {
-            console.log('<:cross:1332418251849732206> Failed to load triggers from botping.json.');
+            console.log('${emoji.cross} Failed to load triggers from botping.json.');
         }
 
         if (!botPingMessages || !botPingMessages.length) {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription(`<:error:1332418281675558963> There are currently no triggers configured.`);
+                .setDescription(`${emojis.error} There are currently no triggers configured.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
