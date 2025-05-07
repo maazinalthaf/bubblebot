@@ -8,6 +8,8 @@ const { snipes } = require('./commands/snipe.js');
 const { editsnipes } = require('./commands/editsnipe.js');
 const triggersPath = './triggers.json';
 const afkDataFile = './afkData.json';
+const disabledCommandsPath = './disabledCommands.json';
+const { checkCommandDisabled } = require('./commands/togglecommand');
 let afkData = {};
 
 // Initialize triggers - create empty object if file doesn't exist
@@ -276,11 +278,14 @@ if (!message.content.startsWith(PREFIX)) {
   || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
   if (command) {
+    // Check if command is disabled in this server
+    if (message.guild && checkCommandDisabled(message.guild.id, command.name)) {
+     return;
+    }
     try {
       await command.execute(client, message, args);
     } catch (error) {
       console.error(`Error executing ${commandName}:`, error);
-      message.reply('There was an error executing that command.');
     }
   } else {
     console.log(`Command '${commandName}' not found.`);
