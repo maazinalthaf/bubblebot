@@ -1,5 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
-const { snipes } = require('./snipe.js'); // Import the snipes map from snipe.js
+const { snipes } = require('./snipe.js'); 
 
 module.exports = {
     name: 'clearsnipe',
