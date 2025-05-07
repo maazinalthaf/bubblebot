@@ -3,7 +3,7 @@ const {EmbedBuilder, PermissionsBitField} = require('discord.js');
 module.exports = {
     name: 'reply',
     async execute(client, message, args) {
-// Check if the user has permission to use the reply command
+
 if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
   const embed = new EmbedBuilder()
   .setColor('#C83636')
@@ -11,7 +11,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
   return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 }
 
-  // Get the message ID from the command arguments
+  
   const messageId = args[0]; // Assuming the message ID is provided as the first argument
 
   // Check if a message ID is provided
@@ -22,7 +22,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
-  // Get the text to be replied with
+  
   const text = args.slice(1).join(' ');
 
   // Check if no message is provided to reply with
