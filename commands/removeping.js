@@ -7,9 +7,13 @@ module.exports = {
     name: 'removeping',
     aliases: ['rp'],
     async execute(client, message, args) {
-        // Check if the message starts with the command (after prefix)
-        if (!message.content.toLowerCase().startsWith('.removeping')) {
-            return; // Ignore if not the full command
+        // Get the prefix and command/alias used
+        const prefix = '.'; // Assuming your prefix is '.'
+        const commandUsed = message.content.toLowerCase().split(' ')[0].slice(prefix.length);
+        
+        // Check if the command used is either 'removeping' or 'rp'
+        if (!['removeping', 'rp'].includes(commandUsed)) {
+            return;
         }
 
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
@@ -19,8 +23,8 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
-        // Remove the command part and get just the arguments
-        const fullMessage = message.content.slice('.removeping'.length).trim();
+        // Remove the command part (using the actual command used) and get just the arguments
+        const fullMessage = message.content.slice(prefix.length + commandUsed.length).trim();
         
         if (!fullMessage) {
             const embed = new EmbedBuilder()

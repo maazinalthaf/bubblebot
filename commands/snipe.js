@@ -12,7 +12,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription('<:cross:1283228336666968114> You do not have permission to use this command.');
+                .setDescription('<:cross:1332418251849732206> You do not have permission to use this command.');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -23,7 +23,7 @@ module.exports = {
         if (!snipedMessages || !snipedMessages[snipeIndex]) {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription('<:hazard:1283227908491710505> There is no recently deleted message to snipe at that index!');
+                .setDescription('<:error:1332418281675558963> There is no recently deleted message to snipe at that index!');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 

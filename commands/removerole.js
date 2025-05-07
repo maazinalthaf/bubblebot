@@ -4,10 +4,10 @@ module.exports = {
     name: 'removerole',
     aliases: ['rrole'],
     async execute(client, message, args) {    
-      if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+      if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
         const embed = new EmbedBuilder()
         .setColor('#C83636')
-        .setDescription('<:cross:1283228336666968114> You do not have permission to use this command.');
+        .setDescription('<:cross:1332418251849732206> You do not have permission to use this command.');
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
     
@@ -18,7 +18,7 @@ module.exports = {
       if (!targetUserId || !roleName) {
         const embed = new EmbedBuilder()
         .setColor('#FFCC32')
-        .setDescription('<:hazard:1283227908491710505> Please provide a user mention or ID and a role name.');
+        .setDescription('<:error:1332418281675558963> Please provide a user mention or ID and a role name.');
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
     
@@ -28,7 +28,7 @@ module.exports = {
       if (!targetMember || !role) {
         const embed = new EmbedBuilder()
         .setColor('#FFCC32')
-        .setDescription('<:hazard:1283227908491710505> User or role not found.');
+        .setDescription('<:error:1332418281675558963> User or role not found.');
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
     
@@ -36,13 +36,13 @@ module.exports = {
         await targetMember.roles.remove(role);
         const embed = new EmbedBuilder()
         .setColor('#77B255')
-        .setDescription(`<:tick:1326247406576210012> ${role} has been removed from ${targetMember.user.tag}.`);
+        .setDescription(`<:tick:1332418339372273684> ${role} has been removed from ${targetMember.user.tag}.`);
         message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       } catch (error) {
         console.error('Error removing role:', error);
         const embed = new EmbedBuilder()
         .setColor('#FFCC32')
-        .setDescription('<:hazard:1283227908491710505> An error occurred while removing the role.');
+        .setDescription('<:error:1332418281675558963> An error occurred while removing the role.');
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
     }

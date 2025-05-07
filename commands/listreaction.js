@@ -9,7 +9,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuildExpressions)) {
             const embed = new EmbedBuilder()
             .setColor('#C83636')
-            .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
+            .setDescription(`<:cross:1332418251849732206> You do not have permission to use this command.`);
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
@@ -25,7 +25,7 @@ module.exports = {
                 .join('\n');
 
             return new EmbedBuilder()
-                .setTitle('<:reaction:1321974219973722216> Reaction List')
+                .setTitle('<:roles:1332417540810342532> Reaction List')
                 .setDescription(slicedReactions || 'No reactions to display.')
                 .setColor('#89CFF0')
                 .addFields(
@@ -96,7 +96,7 @@ module.exports = {
                 currentPage--;
             } else if (interaction.customId === 'next' && currentPage < totalPages) {
                 currentPage++;
-            } else if (interaction.customId === 'last' && currentPage < totalPages) {
+            }  if (interaction.customId === 'last' && currentPage < totalPages) {
                 currentPage = totalPages;
             }
 

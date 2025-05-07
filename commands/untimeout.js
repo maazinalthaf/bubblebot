@@ -7,7 +7,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription('<:cross:1283228336666968114> You do not have permission to use this command.');
+                .setDescription('<:cross:1332418251849732206> You do not have permission to use this command.');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -16,7 +16,7 @@ module.exports = {
         if (!userInput) {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription('<:hazard:1283227908491710505> Please provide a user mention or ID to untimeout.');
+                .setDescription('<:error:1332418281675558963> Please provide a user mention or ID to untimeout.');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -30,7 +30,7 @@ module.exports = {
             if (!member.isCommunicationDisabled()) {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
-                    .setDescription(`<:cross:1283228336666968114> ${user} is not timed out.`);
+                    .setDescription(`<:cross:1332418251849732206> ${user} is not timed out.`);
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -39,13 +39,13 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setColor('#77B255')
-                .setDescription(`<:tick:1326247406576210012> Successfully removed timeout for ${user}.`);
+                .setDescription(`<:tick:1332418339372273684> Successfully removed timeout for ${user}.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } catch (error) {
             console.error(error);
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription('<:hazard:1283227908491710505> An error occurred while trying to untimeout the user.');
+                .setDescription('<:error:1332418281675558963> An error occurred while trying to untimeout the user.');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     },

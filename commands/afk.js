@@ -45,7 +45,7 @@ module.exports = {
 
             const embed = new EmbedBuilder()
             .setColor('#77B255')
-            .setDescription(`<:tick:1326247406576210012> **${message.author}** You're now AFK with the status: **${afkMessage}**`);
+            .setDescription(`<:tick:1332418339372273684> **${message.author}** You're now AFK with the status: **${afkMessage}**`);
 
             message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 
@@ -56,7 +56,7 @@ module.exports = {
 
             const embed = new EmbedBuilder()
             .setColor('#77B255')
-            .setDescription(`<:tick:1326247406576210012> **${message.author}** You're now AFK with the status: **AFK**`);
+            .setDescription(`<:tick:1332418339372273684> **${message.author}** You're now AFK with the status: **AFK**`);
 
             message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }

@@ -3,11 +3,11 @@ const {EmbedBuilder, PermissionsBitField} = require('discord.js');
 module.exports = {
     name: 'reply',
     async execute(client, message, args) {
-// Check if the user has permission to use the ?reply command
+// Check if the user has permission to use the reply command
 if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
   const embed = new EmbedBuilder()
   .setColor('#C83636')
-  .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
+  .setDescription(`<:cross:1332418251849732206> You do not have permission to use this command.`);
   return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 }
 
@@ -18,7 +18,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
   if (!messageId) {
     const embed = new EmbedBuilder()
       .setColor('#FFCC32')
-      .setDescription(`<:hazard:1283227908491710505> Please provide a message ID to reply to.`);
+      .setDescription(`<:error:1332418281675558963> Please provide a message ID to reply to.`);
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
@@ -29,7 +29,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
   if (!text) {
     const embed = new EmbedBuilder()
       .setColor('#FFCC32')
-      .setDescription(`<:hazard:1283227908491710505> Please provide a message to reply to.`);
+      .setDescription(`<:error:1332418281675558963> Please provide a message to reply to.`);
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
@@ -45,7 +45,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
           console.error('Error replying to message:', error);
           const embed = new EmbedBuilder()
             .setColor('#C83636')
-            .setDescription(`<:cross:1283228336666968114> Failed to reply to the message.`);
+            .setDescription(`<:cross:1332418251849732206> Failed to reply to the message.`);
           return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         });
     })
@@ -53,7 +53,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
       console.error('Error fetching message:', error);
       const embed = new EmbedBuilder()
         .setColor('#C83636')
-        .setDescription(`<:cross:1283228336666968114> Failed to fetch the message with the provided ID.`);
+        .setDescription(`<:cross:1332418251849732206> Failed to fetch the message with the provided ID.`);
       return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     });
   }

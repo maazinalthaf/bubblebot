@@ -7,7 +7,7 @@ async execute (client,message,args) {
   if (!message.member.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
     const embed = new EmbedBuilder()
     .setColor('#C83636')
-    .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
+    .setDescription(`<:cross:1332418251849732206> You do not have permission to use this command.`);
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
       
@@ -18,7 +18,7 @@ async execute (client,message,args) {
       if (!mentionedUser) {
         const embed = new EmbedBuilder()
           .setColor('#FFCC32')
-          .setDescription('<:hazard:1283227908491710505> Please mention a user to reply to.');
+          .setDescription('<:error:1332418281675558963> Please mention a user to reply to.');
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
       
@@ -27,7 +27,7 @@ async execute (client,message,args) {
       
       // Check if no message is provided to reply with
       if (!text) {
-        return message.channel.send("<:hazard:1283227908491710505> Please provide a message to reply with.");
+        return message.channel.send("<:error:1332418281675558963> Please provide a message to reply with.");
       }
       
       // Send the reply as a DM to the mentioned user
@@ -36,7 +36,7 @@ async execute (client,message,args) {
           // Create and send an embed indicating success
           const successEmbed = new EmbedBuilder()
             .setColor('#77B255')  // Green color for success
-            .setDescription(`<:tick:1326247406576210012> Successfully sent the reply to ${mentionedUser}.`);
+            .setDescription(`<:tick:1332418339372273684> Successfully sent the reply to ${mentionedUser}.`);
       
           message.channel.send({ embeds: [successEmbed] });
         })
@@ -44,7 +44,7 @@ async execute (client,message,args) {
           console.error('Error sending message:', error);
           const embed = new EmbedBuilder()
     .setColor('#C83636')
-    .setDescription(`<:cross:1283228336666968114> Failed to send the reply.`);
+    .setDescription(`<:cross:1332418251849732206> Failed to send the reply.`);
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         });
       

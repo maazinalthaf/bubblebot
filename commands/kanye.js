@@ -10,7 +10,7 @@ module.exports = {
             const quote = response.data.quote;
 
             const embed = new EmbedBuilder()
-                .setColor('#F5C518')
+                .setColor('#f2a600')
                 .setTitle('Kanye Wisdom')
                 .setThumbnail('https://i.imgflip.com/41j06n.png?a475416')
                 .setDescription(`"${quote}."`)

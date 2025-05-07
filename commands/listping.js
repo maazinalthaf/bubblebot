@@ -11,13 +11,13 @@ module.exports = {
         try {
             botPingMessages = JSON.parse(fs.readFileSync(botPingPath, 'utf8'));
         } catch (error) {
-            console.log('<:cross:1283228336666968114> Failed to load triggers from botping.json.');
+            console.log('<:cross:1332418251849732206> Failed to load triggers from botping.json.');
         }
 
         if (!botPingMessages.length) {
             const embed = new EmbedBuilder()
        .setColor('#ffcc32')
-       .setDescription(`<:hazard:1283227908491710505> There are currently no triggers configured.`);
+       .setDescription(`<:error:1332418281675558963> There are currently no triggers configured.`);
        return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 

@@ -39,7 +39,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
+                .setDescription(`<:cross:1332418251849732206> You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -48,7 +48,7 @@ module.exports = {
         if (!mention) {
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
-                .setDescription(`<:hazard:1283227908491710505> Please mention a user to remove their AFK status.`);
+                .setDescription(`<:error:1332418281675558963> Please mention a user to remove their AFK status.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -60,12 +60,12 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setColor('#77B255')
-                .setDescription(`<:tick:1326247406576210012> AFK status removed for ${mention}.`);
+                .setDescription(`<:tick:1332418339372273684> AFK status removed for ${mention}.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } else {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`<:cross:1283228336666968114> ${mention} is not AFK.`);
+                .setDescription(`<:cross:1332418251849732206> ${mention} is not AFK.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     }

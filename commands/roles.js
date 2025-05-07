@@ -7,7 +7,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`<:cross:1283228336666968114> You do not have permission to use this command.`);
+                .setDescription(`<:cross:1332418251849732206> You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -27,7 +27,7 @@ module.exports = {
             if (!target) {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
-                    .setDescription(`<:cross:1283228336666968114> Could not find a user with ID: ${args[0]}`);
+                    .setDescription(`<:cross:1332418251849732206> Could not find a user with ID: ${args[0]}`);
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -58,7 +58,7 @@ module.exports = {
             console.error(error);
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`<:cross:1283228336666968114> An error occurred while fetching the user information.`);
+                .setDescription(`<:cross:1332418251849732206> An error occurred while fetching the user information.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     }
