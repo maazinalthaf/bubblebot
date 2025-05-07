@@ -4,7 +4,11 @@ const fs = require('fs');
 const botPingMessages = require('./botping.json');
 const reactions = require('./reactions.json');
 const { performance } = require('perf_hooks');
+const { snipes } = require('./commands/snipe.js');
+const { editsnipes } = require('./commands/editsnipe.js');
 const triggersPath = './triggers.json';
+const afkDataFile = './afkData.json';
+let afkData = {};
 
 // Initialize triggers - create empty object if file doesn't exist
 let triggers = {};
@@ -46,7 +50,19 @@ for (const file of commandFiles) {
   }
 }
 
-const PREFIX = '?';
+const PREFIX = '.';
+// Load stored AFK data from file if it exists
+
+if (fs.existsSync(afkDataFile)) {
+
+  const data = fs.readFileSync(afkDataFile, 'utf8');
+
+  afkData = JSON.parse(data);
+
+}
+
+
+
 let startTime;
 
 // Trigger Load
@@ -72,6 +88,36 @@ client.on('ready', () => {
 
 // Checks for new messages sent
 client.on('messageCreate', async (message) => {
+    // Reload AFK data from file before processing each message
+
+    if (fs.existsSync(afkDataFile)) {
+
+      const data = fs.readFileSync(afkDataFile, 'utf8');
+  
+      afkData = JSON.parse(data);
+  
+  }  
+  
+    
+  
+  const botPingPath = './botping.json';
+  
+  let botPingMessages;
+  
+  
+  
+  try {
+  
+      botPingMessages = JSON.parse(fs.readFileSync(botPingPath, 'utf8'));
+  
+  } catch (error) {
+  
+      console.error('❌ Error reading botping.json:', error);
+  
+      return;
+  
+  }
+
   // Skip if message is from a bot
   if (message.author.bot) return;
 
@@ -109,6 +155,59 @@ client.on('messageCreate', async (message) => {
       }
     }
   }
+
+
+
+// When afk user comes back from afk status
+
+if (afkData[message.author.id]) {
+
+  const { timestamp } = afkData[message.author.id];
+
+  const timeSinceAfk = Date.now() - timestamp;
+
+  delete afkData[message.author.id];
+
+
+
+  const embed = new EmbedBuilder()
+
+    .setColor('#FFCC32')
+
+    .setDescription(`👋 **${message.author}**: Welcome back, you were AFK for **${msToTime(timeSinceAfk)}**.`);
+
+
+
+  message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
+
+
+
+  // Save the updated AFK data without the deleted entry
+
+  saveAfkData();
+
+}
+
+
+
+const mentionedUser = message.mentions.users.first();
+
+
+
+// Displays afk user status
+if (mentionedUser && afkData[mentionedUser.id]) {
+
+  const { afkMessage, timestamp } = afkData[mentionedUser.id];
+
+  const timeSinceAfk = Date.now() - timestamp;
+
+  const embed = new EmbedBuilder()
+
+    .setColor('#4289C1')
+    .setDescription(`💤 ${mentionedUser} is AFK: ${afkMessage || ''} - **${msToTime(timeSinceAfk)} ago**.`);
+  message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
+
+}
 
   const content = message.content.toLowerCase();
   const words = content.split(' ');
@@ -188,7 +287,57 @@ if (!message.content.startsWith(PREFIX)) {
   }
 });
 
+
+
+// Message Delete Listner
+client.on('messageDelete', (message) => {
+
+  if (!message.partial) {
+
+      const attachment = message.attachments.first()?.url || null;
+      // Store the deleted message in the snipes map
+
+      const channelSnipes = snipes.get(message.channel.id) || [];
+      channelSnipes.unshift({
+          content: message.content,
+          author: message.author,
+          createdAt: message.createdTimestamp,
+          attachment,
+      });
+
+      if (channelSnipes.length > 20) channelSnipes.pop();
+      snipes.set(message.channel.id, channelSnipes);
+  }
+
+});
+
+
+
+// Message Update Listner
+client.on('messageUpdate', (oldMessage, newMessage) => {
+
+  if (!oldMessage.partial && !newMessage.partial) {
+      if (oldMessage.content === newMessage.content || oldMessage.author.bot) return;
+      const channelEditsnipes = editsnipes.get(oldMessage.channel.id) || [];
+      channelEditsnipes.unshift({
+
+          oldContent: oldMessage.content,
+          newContent: newMessage.content,
+          author: oldMessage.author,
+          editedAt: newMessage.editedTimestamp,
+
+      });
+
+      // Keep only the last 20 editsniped messages per channel
+      if (channelEditsnipes.length > 20) channelEditsnipes.pop();
+      editsnipes.set(oldMessage.channel.id, channelEditsnipes);
+    }
+  });
+  
+
 client.login(process.env.token);
+
+
 
 // Functions //
 
@@ -227,6 +376,7 @@ function msToTime(duration) {
   return formattedTime;
 }
 
+// Trigger Reload 
 function reloadTriggers() {
   try {
     if (fs.existsSync(triggersPath)) {
@@ -236,4 +386,9 @@ function reloadTriggers() {
   } catch (error) {
     console.error('Error reloading triggers:', error);
   }
+}
+
+// Save AFK data function
+function saveAfkData() {
+  fs.writeFileSync(afkDataFile, JSON.stringify(afkData, null, 2), 'utf8');
 }
