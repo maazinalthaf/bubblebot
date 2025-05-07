@@ -46,12 +46,12 @@ module.exports = {
             });
         }
 
-        // Convert triggers to array of entries
+        
         const triggerEntries = Object.entries(triggers);
         const totalPages = Math.ceil(triggerEntries.length / TRIGGERS_PER_PAGE);
         let currentPage = 1;
 
-        // Function to create embed for current page
+        
         const createEmbed = (page) => {
             const startIdx = (page - 1) * TRIGGERS_PER_PAGE;
             const endIdx = Math.min(startIdx + TRIGGERS_PER_PAGE, triggerEntries.length);
@@ -71,7 +71,7 @@ module.exports = {
                 .setTimestamp();
         };
 
-        // Create buttons
+    
         const createButtons = (page) => {
             const row = new ActionRowBuilder()
                 .addComponents(
@@ -99,7 +99,7 @@ module.exports = {
             return row;
         };
 
-        // Send initial message
+        
         const embed = createEmbed(currentPage);
         const buttons = createButtons(currentPage);
         const response = await message.reply({ 
@@ -107,7 +107,7 @@ module.exports = {
             components: [buttons] 
         });
 
-        // Create collector for button interactions
+        
         const collector = response.createMessageComponentCollector({ 
             time: 300000 // 5 minutes
         });
