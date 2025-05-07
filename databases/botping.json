@@ -2,5 +2,5 @@
   { "message": "hi", "weight": 0.20 },
   { "message": "yo", "weight": 0.30 },
   { "message": "hello", "weight": 0.20 },
-  { "message": "hey", "weight": 0.20 },
+  { "message": "hey", "weight": 0.20 }
 ]
