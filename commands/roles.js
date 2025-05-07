@@ -3,7 +3,6 @@ const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 module.exports = {
     name: 'roles',
     async execute(client, message, args) {
-        // Check if the user has permission
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
@@ -14,7 +13,6 @@ module.exports = {
         let target;
         
         try {
-            // Try to get the target user
             if (message.mentions.members.first()) {
                 target = message.mentions.members.first();
             } else if (args[0]) {
@@ -23,7 +21,7 @@ module.exports = {
                 target = message.member;
             }
 
-            // Check if user was found
+            
             if (!target) {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
@@ -31,13 +29,13 @@ module.exports = {
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
-            // Get user's roles (excluding @everyone role)
+            
             const roles = target.roles.cache
                 .filter(role => role.id !== message.guild.id)
                 .sort((a, b) => b.position - a.position) // Sort by position (highest to lowest)
                 .map(role => `<@&${role.id}>`);
 
-            // Create the embed
+            
             const embed = new EmbedBuilder()
                 .setColor(target.displayHexColor)
                 .setTitle(`Roles for ${target.user.tag}`)
@@ -51,7 +49,7 @@ module.exports = {
                 .setFooter({ text: `User ID: ${target.id}` })
                 .setTimestamp();
 
-            // Send the embed
+            
             message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 
         } catch (error) {
