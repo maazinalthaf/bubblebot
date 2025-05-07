@@ -1,3 +1,4 @@
+const {embed_color, emojis, prefix } = require('../commands');
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
