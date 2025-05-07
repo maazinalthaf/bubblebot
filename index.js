@@ -1,15 +1,15 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Collection, Partials } = require('discord.js');
 const fs = require('fs');
-const botPingMessages = require('./botping.json');
-const reactions = require('./reactions.json');
+const botPingMessages = require('./databases/botping.json');
+const reactions = require('./databases/reactions.json');
 const { performance } = require('perf_hooks');
-const { snipes } = require('./commands/snipe.js');
-const { editsnipes } = require('./commands/editsnipe.js');
-const triggersPath = './triggers.json';
-const afkDataFile = './afkData.json';
-const disabledCommandsPath = './disabledCommands.json';
-const { checkCommandDisabled } = require('./commands/togglecommand');
+const { snipes } = require('./commands/admin/snipe.js');
+const { editsnipes } = require('./commands/admin/editsnipe.js');
+const triggersPath = './databases/triggers.json';
+const afkDataFile = './databases/afkData.json';
+const disabledCommandsPath = './databases/disabledCommands.json';
+const { checkCommandDisabled } = require('./commands/admin/togglecommand');
 let afkData = {};
 
 // Initialize triggers - create empty object if file doesn't exist
@@ -39,14 +39,25 @@ const client = new Client({
 // Initialize commands collection
 client.commands = new Collection(); 
 
-// Load command files
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
+// Recursively load command files from all subfolders
+function getAllCommandFiles(dir, fileList = []) {
+  const files = fs.readdirSync(dir);
+  files.forEach(file => {
+    const filePath = `${dir}/${file}`;
+    if (fs.statSync(filePath).isDirectory()) {
+      getAllCommandFiles(filePath, fileList);
+    } else if (file.endsWith('.js')) {
+      fileList.push(filePath);
+    }
+  });
+  return fileList;
+}
 
-  // Ensure each command has a name and execute function
-  if (command.name && typeof command.execute === 'function'){
-    client.commands.set(command.name, command); 
+const commandFiles = getAllCommandFiles('./commands');
+for (const file of commandFiles) {
+  const command = require(file);
+  if (command.name && typeof command.execute === 'function') {
+    client.commands.set(command.name, command);
   } else {
     console.error(`Command file ${file} is missing a name or execute function.`);
   }
@@ -102,7 +113,7 @@ client.on('messageCreate', async (message) => {
   
     
   
-  const botPingPath = './botping.json';
+  const botPingPath = './databases/botping.json';
   
   let botPingMessages;
   
