@@ -12,7 +12,7 @@ module.exports = {
     checkCommandDisabled
   };
 
-// Path to store disabled commands per server
+
 const disabledCommandsPath = './disabledCommands.json';
 
 // Load or initialize disabled commands
