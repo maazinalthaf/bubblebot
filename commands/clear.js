@@ -11,7 +11,7 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
-        // Delete the command message first
+        
         await message.delete().catch(() => {});
 
         const amount = parseInt(args[0]);
