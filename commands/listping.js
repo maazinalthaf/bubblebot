@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionsBitField } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const botPingPath = path.join(__dirname, '../botping.json');
@@ -7,6 +7,14 @@ module.exports = {
     name: 'listping',
     aliases: ['lp'],
     async execute(client, message) {
+        // Check if user has Manage Messages permission
+        if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
+            const embed = new EmbedBuilder()
+                .setColor('#ffcc32')
+                .setDescription(`<:error:1332418281675558963> You need the \`Manage Messages\` permission to use this command.`);
+            return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
+        }
+
         let botPingMessages;
         try {
             botPingMessages = JSON.parse(fs.readFileSync(botPingPath, 'utf8'));
@@ -14,12 +22,12 @@ module.exports = {
             console.log('<:cross:1332418251849732206> Failed to load triggers from botping.json.');
         }
 
-        if (!botPingMessages.length) {
+        if (!botPingMessages || !botPingMessages.length) {
             const embed = new EmbedBuilder()
-       .setColor('#ffcc32')
-       .setDescription(`<:error:1332418281675558963> There are currently no triggers configured.`);
-       return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
-            }
+                .setColor('#ffcc32')
+                .setDescription(`<:error:1332418281675558963> There are currently no triggers configured.`);
+            return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
+        }
 
         const pageSize = 5; // Number of triggers per page
         let currentPage = 0;

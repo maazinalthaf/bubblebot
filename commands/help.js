@@ -11,7 +11,7 @@ module.exports = {
                 desc: 'Timeout a user',
                 usage: '.timeout @user <duration> <reason>',
                 example: '.timeout @user 1h Spamming',
-                perms: 'ModerateMembers',
+                perms: 'Moderate Members',
                 aliases: []
             },
             untimeout: {
@@ -19,7 +19,7 @@ module.exports = {
                 desc: 'Remove timeout from a user',
                 usage: '.untimeout @user',
                 example: '.untimeout @user',
-                perms: 'ModerateMembers',
+                perms: 'Moderate Members',
                 aliases: []
             },
             dm: {
@@ -27,7 +27,7 @@ module.exports = {
                 desc: 'Send a DM to a user',
                 usage: '.dm @user <message>',
                 example: '.dm @user Hello!',
-                perms: 'ModerateMembers',
+                perms: 'Moderate Members',
                 aliases: []
             },
             say: {
@@ -35,7 +35,7 @@ module.exports = {
                 desc: 'Make the bot say something',
                 usage: '.say <message>',
                 example: '.say Hello everyone!',
-                perms: 'ManageMessages',
+                perms: 'Manage Messages',
                 aliases: []
             },
             reply: {
@@ -43,7 +43,7 @@ module.exports = {
                 desc: 'Reply to a message using the bot',
                 usage: '.reply <message_id> <message>',
                 example: '.reply 123456789 This is a reply',
-                perms: 'ManageMessages',
+                perms: 'Manage Messages',
                 aliases: []
             },
             snipe: {
@@ -51,7 +51,7 @@ module.exports = {
                 desc: 'See recently deleted messages',
                 usage: '.snipe [number]',
                 example: '.snipe 1',
-                perms: 'ManageMessages',
+                perms: 'Manage Messages',
                 aliases: ['s']
             },
             editsnipe: {
@@ -59,7 +59,7 @@ module.exports = {
                 desc: 'See recently edited messages',
                 usage: '.editsnipe [number]',
                 example: '.editsnipe 1',
-                perms: 'ManageMessages',
+                perms: 'Manage Messages',
                 aliases: ['es']
             },
             clearsnipe: {
@@ -67,7 +67,7 @@ module.exports = {
                 desc: 'Clear snipe index',
                 usage: '.clearsnipe',
                 example: '.clearsnipe',
-                perms: 'ManageMessages',
+                perms: 'Manage Messages',
                 aliases: ['cs']
             },
             nick: {
@@ -75,7 +75,7 @@ module.exports = {
                 desc: 'Modify nickname of the user',
                 usage: '.nick @user <nickname>',
                 example: '.nick @user spongebob',
-                perms: 'ManageNicknames',
+                perms: 'Manage Nicknames',
                 aliases: []
             },
             clear: {
@@ -83,7 +83,7 @@ module.exports = {
                 desc: 'Purge messages from a channel',
                 usage: '.clear <number>',
                 example: '.clear 20',
-                perms: 'ManageMessages',
+                perms: 'Manage Messages',
                 aliases: ['c']
             },
             addrole: {
@@ -91,7 +91,7 @@ module.exports = {
                 desc: 'Add a role to a user',
                 usage: '.addrole @user <role_name>',
                 example: '.addrole @user Member',
-                perms: 'ManageGuild',
+                perms: 'Manage Server',
                 aliases: ['arole', 'grole', 'giverole']
             },
             removerole: {
@@ -99,7 +99,7 @@ module.exports = {
                 desc: 'Remove a role from a user',
                 usage: '.removerole @user <role_name>',
                 example: '.removerole @user Member',
-                perms: 'ManageGuild',
+                perms: 'Manage Server',
                 aliases: ['rrole']
             },
             roles: {
@@ -107,7 +107,7 @@ module.exports = {
                 desc: 'List all roles of a user',
                 usage: '.roles @user',
                 example: '.roles @user',
-                perms: 'ManageRoles',
+                perms: 'Manage Roles',
                 aliases: []
             },
             addreaction: {
@@ -115,7 +115,7 @@ module.exports = {
                 desc: 'Add an auto reaction word',
                 usage: '.addreaction <word> <emoji1> [emoji2] [emoji3]...',
                 example: '.addreaction hello 👋 ❤️',
-                perms: 'ManageGuildExpressions',
+                perms: 'Manage Guild Expressions',
                 aliases: ['areaction']
             },
             removereaction: {
@@ -123,7 +123,7 @@ module.exports = {
                 desc: 'Remove an auto reaction word',
                 usage: '.removereaction <word>',
                 example: '.removereaction hello',
-                perms: 'ManageGuildExpressions',
+                perms: 'Manage Guild Expressions',
                 aliases: ['rreaction']
             },
             listreaction: {
@@ -131,7 +131,7 @@ module.exports = {
                 desc: 'List all reaction words',
                 usage: '.listreaction',
                 example: '.listreaction',
-                perms: 'ManageGuildExpressions',
+                perms: 'Manage Guild Expressions',
                 aliases: ['lr']
             },
             afk: {
@@ -175,11 +175,11 @@ module.exports = {
                 aliases: ['ye']
             },
             listping: {
-                category: 'Bot Ping Trigger System',
+                category: 'Trigger System',
                 desc: 'List all bot triggers',
                 usage: '.listping',
                 example: '.listping',
-                perms: 'None',
+                perms: 'Manage Messages',
                 aliases: ['lp']
             },
             addping: {
@@ -187,7 +187,7 @@ module.exports = {
                 desc: 'Add bot ping triggers',
                 usage: '.botping add <message> <weight>',
                 example: '.botping add hello 1.5',
-                perms: 'ManageMessages',
+                perms: 'Manage Messages',
                 aliases: ['ap']
             },
             removeping: {
@@ -195,7 +195,7 @@ module.exports = {
                 desc: 'Remove bot ping triggers',
                 usage: '.botping remove <message>',
                 example: '.botping remove hello',
-                perms: 'ManageMessages',
+                perms: 'Manage Messages',
                 aliases: ['rp']      
             },
             addtrigger: {
@@ -203,7 +203,7 @@ module.exports = {
                 desc: 'Add an auto-response trigger (supports multi-word phrases)',
                 usage: '.addtrigger "<word/phrase>" <response>',
                 example: '.addtrigger "good morning" Good morning! Have a great day!',
-                perms: 'ManageMessages',
+                perms: 'Manage Messages',
                 aliases: ['at']
             },
             removetrigger: {
@@ -211,7 +211,7 @@ module.exports = {
                 desc: 'Remove an auto-response trigger',
                 usage: '.removetrigger "<word/phrase>"',
                 example: '.removetrigger "good morning"',
-                perms: 'ManageMessages',
+                perms: 'Manage Messages',
                 aliases: ['rt']
             },
             listtrigger: {
@@ -219,8 +219,24 @@ module.exports = {
                 desc: 'Lists all preset auto-response triggers',
                 usage: '.listtrigger',
                 example: '.listtrigger',
-                perms: 'ManageMessages',
+                perms: 'Manage Messages',
                 aliases: ['lt']
+            },
+            togglecommand: {
+                category: 'Server Configuration',
+                desc: 'Enable or disable a command in a server',
+                usage: '.togglecommand <command_name>',
+                example: '.togglecommand afk',
+                perms: 'Manage Server',
+                aliases: ['tc']
+            },
+            listcommand: {
+                category: 'Server Configuration',
+                desc: 'List all enabled and disabled commands in the server',
+                usage: '.listcommand',
+                example: '.listcommand',
+                perms: 'None',
+                aliases: ['lc']
             }
         };
 
@@ -232,7 +248,7 @@ module.exports = {
             if (command) {
                 const commandEmbed = new EmbedBuilder()
                     .setTitle(`Command: .${commandName}`)
-                    .setColor('#89CFF0')
+                    .setColor('#5865F2')
                     .setDescription(command.desc)
                     .addFields(
                         { name: '📁 Category', value: command.category, inline: true },
@@ -266,7 +282,7 @@ module.exports = {
                     const [mainCommand, commandData] = commandEntry;
                     const aliasEmbed = new EmbedBuilder()
                         .setTitle(`Command: .${mainCommand}`)
-                        .setColor('#89CFF0')
+                        .setColor('#5865F2')
                         .setDescription(commandData.desc)
                         .addFields(
                             { name: '📁 Category', value: commandData.category, inline: true },
@@ -285,8 +301,8 @@ module.exports = {
                 }
 
                 const errorEmbed = new EmbedBuilder()
-                    .setColor('#FF6B6B')
-                    .setDescription(`❌ Command \`${commandName}\` not found. Use \`.help\` to see all commands.`);
+                    .setColor('#c83636')
+                    .setDescription(`<:cross:1332418251849732206> Command \`${commandName}\` not found. Use \`.help\` to see all commands.`);
                 return message.channel.send({ embeds: [errorEmbed] });
             }
         }
@@ -294,31 +310,37 @@ module.exports = {
         // Categories for the main help menu
         const categories = {
             'Moderation': {
-                color: '#5c8cbe',
+                color: '#5865F2',
                 commands: Object.entries(commandDetails)
                     .filter(([_, cmd]) => cmd.category === 'Moderation')
                     .map(([name, cmd]) => ({name, desc: cmd.desc, perms: cmd.perms }))
             },
             'Role Management': {
-                color: '#5c8cbe',
+                color: '#5865F2',
                 commands: Object.entries(commandDetails)
                     .filter(([_, cmd]) => cmd.category === 'Role Management')
                     .map(([name, cmd]) => ({ name, desc: cmd.desc, perms: cmd.perms }))
             },
             'Reaction System': {
-                color: '#5c8cbe',
+                color: '#5865F2',
                 commands: Object.entries(commandDetails)
                     .filter(([_, cmd]) => cmd.category === 'Reaction System')
                     .map(([name, cmd]) => ({name, desc: cmd.desc, perms: cmd.perms }))
             },
             'Trigger System': {
-                color: '#5c8cbe',
+                color: '#5865F2',
                 commands: Object.entries(commandDetails)
                     .filter(([_, cmd]) => cmd.category === 'Trigger System')
                     .map(([name, cmd]) => ({ name, desc: cmd.desc, perms: cmd.perms }))
             },
+            'Server Configuration': {
+                color: '#5865F2',
+                commands: Object.entries(commandDetails)
+                    .filter(([_, cmd]) => cmd.category === 'Server Configuration')
+                    .map(([name, cmd]) => ({ name, desc: cmd.desc, perms: cmd.perms }))
+            },
             'Miscellaneous': {
-                color: '#5c8cbe',
+                color: '#5865F2',
                 commands: Object.entries(commandDetails)
                     .filter(([_, cmd]) => cmd.category === 'Miscellaneous')
                     .map(([name, cmd]) => ({ name, desc: cmd.desc, perms: cmd.perms }))
@@ -359,7 +381,6 @@ module.exports = {
                     Object.keys(categories).map(category => ({
                         label: category,
                         value: category,
-                        description: `${categories[category].commands.length} commands`
                     }))
                 )
         );

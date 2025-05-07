@@ -8,30 +8,47 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
                 .setDescription('<:cross:1332418251849732206> You do not have permission to use this command.');
-            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
+            return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
+
+        // Delete the command message first
+        await message.delete().catch(() => {});
 
         const amount = parseInt(args[0]);
 
-        if (isNaN(amount) || amount <= 0 || amount > 100) {
+        if (isNaN(amount)) {
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
-                .setDescription('<:error:1332418281675558963> Please provide a number between 1 and 100 for the amount of messages to delete.');
-            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
+                .setDescription('<:error:1332418281675558963> Please provide a valid number.');
+            return message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 5000));
+        }
+
+        if (amount <= 0 || amount > 100) {
+            const embed = new EmbedBuilder()
+                .setColor('#FFCC32')
+                .setDescription('<:error:1332418281675558963> Please provide a number between 1 and 100.');
+            return message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 5000));
         }
 
         try {
-            const deletedMessages = await message.channel.bulkDelete(amount, true);
+            // Fetch messages (including the command message)
+            const messages = await message.channel.messages.fetch({ limit: amount + 1 });
+            
+            // Delete all fetched messages
+            const deletedMessages = await message.channel.bulkDelete(messages, true);
+            
             const embed = new EmbedBuilder()
                 .setColor('#77B255')
-                .setDescription(`<:tick:1332418339372273684> Successfully deleted ${deletedMessages.size} messages.`);
-            message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 2000));
+                .setDescription(`<:tick:1332418339372273684> Successfully deleted ${deletedMessages.size - 1} messages.`);
+                
+            const reply = await message.channel.send({ embeds: [embed] });
+            setTimeout(() => reply.delete().catch(() => {}), 2000);
         } catch (error) {
             console.error('Error deleting messages:', error);
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
                 .setDescription('<:error:1332418281675558963> An error occurred while deleting messages. Make sure the messages are not older than 14 days.');
-            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
+            message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 5000));
         }
     }
 };

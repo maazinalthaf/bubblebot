@@ -17,7 +17,7 @@ module.exports = {
 
     // Create the final embed with the calculated latencies
     const pingEmbed = new EmbedBuilder()
-      .setColor('#89cff0')
+      .setColor('#5865F2')
       .setTitle('🏓 Pong!')
       .addFields(
         { name: 'Bot Latency', value: `${botLatency}ms`, inline: true },

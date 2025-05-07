@@ -27,7 +27,7 @@ module.exports = {
             return new EmbedBuilder()
                 .setTitle('<:roles:1332417540810342532> Reaction List')
                 .setDescription(slicedReactions || 'No reactions to display.')
-                .setColor('#89CFF0')
+                .setColor('#5865F2')
                 .addFields(
                     { name: 'Page Info', value: `📄 Page **${page}** of **${totalPages}**`, inline: true },
                     { name: 'Total Reactions', value: `🗂️ **${reactionEntries.length}**`, inline: true }

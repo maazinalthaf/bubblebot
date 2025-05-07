@@ -2,14 +2,15 @@ const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: 'botinfo',
+    aliases: ['info', 'botinfo'],
     async execute(client, message) {
         const embed = new EmbedBuilder()
-            .setColor('#f2a600')
+            .setColor('#5865F2')
             .setTitle('🤖 About This Bot')
             .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
             .setDescription('Just a simple bot.')
             .addFields(
-                { name: '📋 Features', value: '• Role Management • Utility Tools', inline: false },
+                { name: '📋 Features', value: '• Moderation • Role Management • Utility Tools • AFK management', inline: false },
                 { name: '🚀 Uptime', value: `${Math.floor(client.uptime / 1000 / 60)} minutes online!`, inline: false }
             )
             .setFooter({ text: 'Developed by @moozxdz' })
