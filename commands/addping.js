@@ -1,4 +1,4 @@
-const {embed_color, emojis, prefix } = require('../commands');
+const {embed_color, emojis, prefix } = require('../constants');
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
@@ -11,7 +11,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`<:cross:1332418251849732206> You do not have permission to use this command.`);
+                .setDescription(`${emojis.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
@@ -21,7 +21,7 @@ module.exports = {
         if (!triggerMessage || isNaN(weight) || weight <= 0) {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription(`<:error:1332418281675558963> Usage: \`.addping <message> <weight>\`\nPlease provide a valid message and a positive weight for the trigger.`);
+                .setDescription(`${emojis.error} Please provide a valid message and a positive weight for the trigger.\n Usage: \`.addping <message> <weight>\` `);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
@@ -39,7 +39,7 @@ module.exports = {
         
         const embed = new EmbedBuilder()
             .setColor('#77b255')
-            .setDescription(`<:tick:1332418339372273684> Trigger "${triggerMessage}" with weight ${weight} added.`);
+            .setDescription(`$(emoji.tick) Trigger "${triggerMessage}" with weight ${weight} added.`);
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 };
