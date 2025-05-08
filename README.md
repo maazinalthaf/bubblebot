@@ -8,7 +8,7 @@
 2. Rename `example.env` to `.env` and insert your bot token.
 3. Prefix can be changed from `index.js`.
 4. Open the terminal and cd into the bot directory.
-5. upload emojis from '/assets' in developer portal and change emoji ids in 'constants.js'. 
+5. Upload emojis from `/assets` in developer portal and change emoji ids in `constants.js`. 
 6. Run the following commands in order `npm install` `npm start`
 
 ## How to use?
