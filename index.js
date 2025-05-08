@@ -4,12 +4,12 @@ const fs = require('fs');
 const botPingMessages = require('./botping.json');
 const reactions = require('./reactions.json');
 const { performance } = require('perf_hooks');
-const { snipes } = require('./commands/snipe.js');
-const { editsnipes } = require('./commands/editsnipe.js');
+const { snipes } = require('./commands/Moderation/snipe.js');
+const { editsnipes } = require('./commands/Moderation/editsnipe.js');
 const triggersPath = './triggers.json';
 const afkDataFile = './afkData.json';
 const disabledCommandsPath = './disabledCommands.json';
-const { checkCommandDisabled } = require('./commands/togglecommand');
+const { checkCommandDisabled } = require('./commands/Server Configuration/togglecommand');
 let afkData = {};
 
 // Initialize triggers - create empty object if file doesn't exist
@@ -39,11 +39,25 @@ const client = new Client({
 // Initialize commands collection
 client.commands = new Collection(); 
 
-// Load command files
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
+// Helper function to recursively get all .js files in a directory
+function getAllCommandFiles(dir) {
+  let results = [];
+  const list = fs.readdirSync(dir, { withFileTypes: true });
+  for (const file of list) {
+    const filePath = `${dir}/${file.name}`;
+    if (file.isDirectory()) {
+      results = results.concat(getAllCommandFiles(filePath));
+    } else if (file.isFile() && file.name.endsWith('.js')) {
+      results.push(filePath);
+    }
+  }
+  return results;
+}
 
+// Load command files from /commands and all subfolders
+const commandFiles = getAllCommandFiles('./commands');
+for (const file of commandFiles) {
+  const command = require(file);
   // Ensure each command has a name and execute function
   if (command.name && typeof command.execute === 'function'){
     client.commands.set(command.name, command); 

@@ -1,10 +1,13 @@
 const prefix = '.';
-const embed_color = '#5865F2';
+const embed_color = '#78807a';
 const emojis = {
   tick: '<:success:1284139732158251078>',
-  error: '${emojis.error}',
-  cross: '${emoji.cross}',
+  error: '<:error:1284139732158251078>',
+  cross: '<:cross:1284139732158251078>',
   reaction: '<:roles:1332417540810342532>',
+  bell: '🔔',
+  info: 'ℹ️',
+  trash: '🗑️'
 };
 
 module.exports = {
