@@ -40,7 +40,7 @@ module.exports = {
             
             const embed = new EmbedBuilder()
                 .setColor('#77B255')
-                .setDescription(`${emoji.tick} Successfully deleted ${deletedMessages.size - 1} messages.`);
+                .setDescription(`${emojis.tick} Successfully deleted ${deletedMessages.size - 1} messages.`);
                 
             const reply = await message.channel.send({ embeds: [embed] });
             setTimeout(() => reply.delete().catch(() => {}), 2000);
