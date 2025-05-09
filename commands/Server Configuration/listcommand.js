@@ -17,7 +17,7 @@ module.exports = {
 
     // Load disabled commands
     let disabledCommands = {};
-    const disabledCommandsPath = path.join(__dirname, '../disabledCommands.json');
+    const disabledCommandsPath = path.join(__dirname, '../../disabledCommands.json');
     
     try {
       if (fs.existsSync(disabledCommandsPath)) {
