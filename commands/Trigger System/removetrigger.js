@@ -41,7 +41,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#c83636')
-                        .setDescription('${emoji.cross} Failed to load triggers.')
+                        .setDescription('${emojis.cross} Failed to load triggers.')
                 ]
             });
         }
@@ -91,14 +91,14 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#C83636')
-                        .setDescription('${emoji.cross} Failed to remove the trigger.')
+                        .setDescription('${emojis.cross} Failed to remove the trigger.')
                 ]
             });
         }
 
         const embed = new EmbedBuilder()
             .setColor('#77b255')
-            .setDescription(`${emoji.tick} **Trigger Removed**\nThe bot will no longer respond to \`${triggerPhrase}\``)
+            .setDescription(`${emojis.tick} **Trigger Removed**\nThe bot will no longer respond to \`${triggerPhrase}\``)
             .setTimestamp();
 
         return message.reply({ embeds: [embed] });
