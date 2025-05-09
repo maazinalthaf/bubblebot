@@ -15,6 +15,7 @@
     {
       "name": "Nuu-maan"
     }
+  ],
   "license": "GPL-3.0",
   "dependencies": {
     "axios": "^1.7.3",
