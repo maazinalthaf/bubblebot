@@ -28,7 +28,7 @@ module.exports = {
         // Send success message
         const embed = new EmbedBuilder()
             .setColor('#77B255')
-            .setDescription('${emoji.tick} Successfully cleared all sniped messages in this channel.')
+            .setDescription('${emojis.tick} Successfully cleared all sniped messages in this channel.')
 
         message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     }
