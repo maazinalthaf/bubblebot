@@ -3,7 +3,7 @@ const fs = require('fs');
 const { execute } = require('../Reaction System/removereaction');
 const afkDataFile = './afkData.json';
 let afkData = {};
-const { embed_color, emojis: emoji } = require('../../constants');
+const { embed_color, emojis } = require('../../constants');
 
 // Load AFK data from file if it exists
 function loadAfkData() {
@@ -40,7 +40,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`${emoji.cross} You do not have permission to use this command.`);
+                .setDescription(`${emojis.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -49,7 +49,7 @@ module.exports = {
         if (!mention) {
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
-                .setDescription(`${emoji.error} Please mention a user to remove their AFK status.`);
+                .setDescription(`${emojis.error} Please mention a user to remove their AFK status.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -61,12 +61,12 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setColor('#77B255')
-                .setDescription(`${emoji.tick} AFK status removed for ${mention}.`);
+                .setDescription(`${emojis.tick} AFK status removed for ${mention}.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } else {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`${emoji.cross} ${mention} is not AFK.`);
+                .setDescription(`${emojis.cross} ${mention} is not AFK.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     }
