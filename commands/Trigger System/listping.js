@@ -20,7 +20,7 @@ module.exports = {
         try {
             botPingMessages = JSON.parse(fs.readFileSync(botPingPath, 'utf8'));
         } catch (error) {
-            console.log('${emoji.cross} Failed to load triggers from botping.json.');
+            console.log('${emojis.cross} Failed to load triggers from botping.json.');
         }
 
         if (!botPingMessages || !botPingMessages.length) {
@@ -89,7 +89,7 @@ module.exports = {
         collector.on('collect', async (interaction) => {
             if (interaction.user.id !== message.author.id) {
                 return interaction.reply({
-                    content: '❌ You are not authorized to interact with these buttons.',
+                    content: '${emojis.cross} You are not authorized to interact with these buttons.',
                     ephemeral: true,
                 });
             }
