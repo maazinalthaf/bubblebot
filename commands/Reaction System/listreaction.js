@@ -10,7 +10,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuildExpressions)) {
             const embed = new EmbedBuilder()
             .setColor('#C83636')
-            .setDescription(`${emoji.cross} You do not have permission to use this command.`);
+            .setDescription(`${emojis.cross} You do not have permission to use this command.`);
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
@@ -121,7 +121,7 @@ module.exports = {
                     await interaction.editReply({ embeds: [updatedEmbed], components: updatedRows });
                 } else {
                     await interaction.reply({
-                        content: `❌ Invalid page number. Enter a number between 1 and ${totalPages}.`,
+                        content: `${emojis.cross} Invalid page number. Enter a number between 1 and ${totalPages}.`,
                         ephemeral: true,
                     });
                 }
