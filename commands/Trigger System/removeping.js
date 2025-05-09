@@ -20,7 +20,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`${emoji.cross} You do not have permission to use this command.`);
+                .setDescription(`${emojis.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
@@ -41,7 +41,7 @@ module.exports = {
             console.log('Failed to load botping.json.');
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`${emoji.cross} Failed to load triggers list.`);
+                .setDescription(`${emojis.cross} Failed to load triggers list.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
@@ -53,7 +53,7 @@ module.exports = {
         if (index === -1) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription(`${emoji.cross} Trigger "${fullMessage}" not found.`);
+                .setDescription(`${emojis.cross} Trigger "${fullMessage}" not found.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
@@ -63,7 +63,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setColor('#77b255')
-            .setDescription(`${emoji.tick} Trigger "${fullMessage}" removed.`);
+            .setDescription(`${emojis.tick} Trigger "${fullMessage}" removed.`);
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 };
