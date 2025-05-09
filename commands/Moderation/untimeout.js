@@ -8,7 +8,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription('${emoji.cross} You do not have permission to use this command.');
+                .setDescription('${emojis.cross} You do not have permission to use this command.');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -31,7 +31,7 @@ module.exports = {
             if (!member.isCommunicationDisabled()) {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
-                    .setDescription(`${emoji.cross} ${user} is not timed out.`);
+                    .setDescription(`${emojis.cross} ${user} is not timed out.`);
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -40,7 +40,7 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setColor('#77B255')
-                .setDescription(`${emoji.tick} Successfully removed timeout for ${user}.`);
+                .setDescription(`${emojis.tick} Successfully removed timeout for ${user}.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } catch (error) {
             console.error(error);
