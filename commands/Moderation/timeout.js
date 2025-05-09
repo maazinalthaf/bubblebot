@@ -8,7 +8,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription('${emoji.cross} You do not have permission to use this command.');
+                .setDescription('${emojis.cross} You do not have permission to use this command.');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -72,7 +72,7 @@ module.exports = {
             // Send confirmation in the channel
             const embed = new EmbedBuilder()
                 .setColor('#77B255')
-                .setDescription(`${emoji.tick} Successfully timed out ${user} for ${duration}\nReason: **${reason}**`);
+                .setDescription(`${emojis.tick} Successfully timed out ${user} for ${duration}\nReason: **${reason}**`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } catch (error) {
             console.error(error);
