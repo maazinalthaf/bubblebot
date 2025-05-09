@@ -39,7 +39,7 @@ module.exports = {
         
         const embed = new EmbedBuilder()
             .setColor('#77b255')
-            .setDescription(`${emoji.tick} Trigger "${triggerMessage}" with weight ${weight} added.`);
+            .setDescription(`${emojis.tick} Trigger "${triggerMessage}" with weight ${weight} added.`);
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 };
