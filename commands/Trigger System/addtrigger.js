@@ -51,7 +51,7 @@ module.exports = {
                     embeds: [
                         new EmbedBuilder()
                             .setColor('#c83636')
-                            .setDescription('${emoji.cross} Invalid format. Make sure to close your quotes.\nUsage: `.addtrigger "<word or phrase>" <response>`')
+                            .setDescription('${emojis.cross} Invalid format. Make sure to close your quotes.\nUsage: `.addtrigger "<word or phrase>" <response>`')
                     ]
                 });
             }
@@ -77,14 +77,14 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#C83636')
-                        .setDescription('${emoji.cross} Failed to save the trigger.')
+                        .setDescription('${emojis.cross} Failed to save the trigger.')
                 ]
             });
         }
 
         const embed = new EmbedBuilder()
             .setColor('#77b255')
-            .setDescription(`${emoji.tick} **Trigger Added**\nThe bot will now respond to \`${triggerPhrase}\` with:\n\n${response}`)
+            .setDescription(`${emojis.tick} **Trigger Added**\nThe bot will now respond to \`${triggerPhrase}\` with:\n\n${response}`)
             .setTimestamp();
 
         return message.reply({ embeds: [embed] });
