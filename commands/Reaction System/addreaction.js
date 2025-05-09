@@ -10,7 +10,7 @@ module.exports = {
       if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuildExpressions)) {
         const embed = new EmbedBuilder()
        .setColor('#C83636')
-       .setDescription(`${emoji.cross} You do not have permission to use this command.`);
+       .setDescription(`${emojis.cross} You do not have permission to use this command.`);
        return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
  
      }
@@ -41,7 +41,7 @@ module.exports = {
      saveReactions();
      const embed = new EmbedBuilder()
        .setColor('#77B255')
-       .setDescription(`${emoji.tick} Reaction(s) ${reactionsToAdd.join(', ')} added for word "${word}".`);
+       .setDescription(`${emojis.tick} Reaction(s) ${reactionsToAdd.join(', ')} added for word "${word}".`);
        message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
    }
  }
