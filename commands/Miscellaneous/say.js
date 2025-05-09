@@ -1,5 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
-const { embed_color, emojis: emoji } = require('../../constants');
+const { embed_color, emojis } = require('../../constants');
 
 module.exports = {
     name: 'say',
@@ -8,7 +8,7 @@ module.exports = {
 if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
     const embed = new EmbedBuilder()
     .setColor('#C83636')
-    .setDescription(`${emoji.cross} You do not have permission to use this command.`);
+    .setDescription(`${emojis.cross} You do not have permission to use this command.`);
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
@@ -19,7 +19,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
   if (!text) {
     const embed = new EmbedBuilder()
     .setColor('#FFCC32')
-    .setDescription(`${emoji.error} Please provide a message.`);
+    .setDescription(`${emojis.error} Please provide a message.`);
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
