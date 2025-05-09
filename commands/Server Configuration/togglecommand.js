@@ -38,7 +38,7 @@ async function execute(client, message, args) {
   if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
     const embed = new EmbedBuilder()
       .setColor('#c83636')
-      .setDescription('${emoji.cross} You need **Manage Server** permissions to use this command.');
+      .setDescription('${emojis.cross} You need **Manage Server** permissions to use this command.');
     return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
   }
 
@@ -81,7 +81,7 @@ async function execute(client, message, args) {
     disabledCommands[guildId] = disabledCommands[guildId].filter(cmd => cmd !== command.name);
     embed
       .setColor('#77b255')
-      .setDescription(`${emoji.tick} Command **${command.name}** has been **enabled** for this server.`);
+      .setDescription(`${emojis.tick} Command **${command.name}** has been **enabled** for this server.`);
   } else {
     disabledCommands[guildId].push(command.name);
     embed
@@ -96,7 +96,7 @@ async function execute(client, message, args) {
     console.error('Error saving disabled commands:', error);
     const errorEmbed = new EmbedBuilder()
       .setColor('#c83636')
-      .setDescription('${emoji.cross} There was an error saving the command toggle state.');
+      .setDescription('${emojis.cross} There was an error saving the command toggle state.');
     return message.reply({ embeds: [errorEmbed], allowedMentions: { repliedUser: false } });
   }
 }
