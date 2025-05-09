@@ -9,7 +9,7 @@ module.exports = {
     aliases: ['s'],
     snipes, // Export the snipes map
     async execute(client, message, args) {
-        // Check if the user has permission to use the ?snipe command
+        // Check if the user has permission to use the snipe command
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
