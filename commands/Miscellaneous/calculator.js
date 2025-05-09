@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { embed_color: EMBED_COLOR } = require('../../constants');
+const { embed_color , emojis } = require('../../constants');
 
 // Funny responses for invalid expressions
 const HUMOR_RESPONSES = [
@@ -23,7 +23,7 @@ module.exports = {
         if (!args.length) {
             const embed = new EmbedBuilder()
                 .setColor('#FF6B6B')
-                .setDescription('❌ What am I supposed to calculate? Try `.calc 2 + 2`');
+                .setDescription(' What am I supposed to calculate? Try `.calc 2 + 2`');
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
@@ -37,7 +37,7 @@ module.exports = {
             if (!/^[0-9+\-*/(). ]+$/.test(cleanExpression)) {
                 const embed = new EmbedBuilder()
                     .setColor('#FF6B6B')
-                    .setDescription('❌ Nice try! But I only understand basic math. Keep it simple with numbers and +-*/()');
+                    .setDescription('${emojis.cross} Nice try! But I only understand basic math. Keep it simple with numbers and +-*/()');
                 return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
             }
 
@@ -47,7 +47,7 @@ module.exports = {
             if (typeof result !== 'number' || !isFinite(result)) {
                 const embed = new EmbedBuilder()
                     .setColor('#FF6B6B')
-                    .setDescription('❌ That\'s beyond my math skills! Try something that gives a normal number.');
+                    .setDescription('${emojis.cross} That\'s beyond my math skills! Try something that gives a normal number.');
                 return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
             }
 
@@ -59,7 +59,7 @@ module.exports = {
         } catch (error) {
             const embed = new EmbedBuilder()
                 .setColor('#FF6B6B')
-                .setDescription('❌ Oops! That math doesn\'t add up. Check your expression and try again.');
+                .setDescription('${emojis.cross} Oops! That math doesn\'t add up. Check your expression and try again.');
             message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
     },
