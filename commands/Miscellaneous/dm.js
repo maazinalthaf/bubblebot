@@ -1,6 +1,6 @@
 const { EmbedBuilder, PermissionsBitField, DMChannel } = require('discord.js')
 const { execute } = require('../Reaction System/removereaction')
-const { embed_color, emojis: emoji, prefix } = require('../../constants');
+const { embed_color, emojis , prefix } = require('../../constants');
 
 module.exports = {
   name: 'dm',
@@ -37,7 +37,7 @@ module.exports = {
         // Create and send an embed indicating success
         const successEmbed = new EmbedBuilder()
           .setColor('#77B255')  // Green color for success
-          .setDescription(`${emoji.tick} Successfully sent the reply to ${mentionedUser}.`);
+          .setDescription(`${emojis.tick} Successfully sent the reply to ${mentionedUser}.`);
 
         message.channel.send({ embeds: [successEmbed] });
       })
@@ -45,7 +45,7 @@ module.exports = {
         console.error('Error sending message:', error);
         const embed = new EmbedBuilder()
           .setColor('#C83636')
-          .setDescription(`${emoji.cross} Failed to send the reply.`);
+          .setDescription(`${emojis.cross} Failed to send the reply.`);
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
       });
   }
