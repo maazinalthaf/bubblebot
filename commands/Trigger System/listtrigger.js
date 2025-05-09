@@ -31,7 +31,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#C83636')
-                        .setDescription('${emoji.cross} Failed to load triggers.')
+                        .setDescription('${emojis.cross} Failed to load triggers.')
                 ]
             });
         }
@@ -41,7 +41,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#C83636')
-                        .setDescription('${emoji.cross} No triggers have been set up yet.')
+                        .setDescription('${emojis.cross} No triggers have been set up yet.')
                 ]
             });
         }
