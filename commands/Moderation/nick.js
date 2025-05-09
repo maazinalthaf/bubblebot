@@ -8,7 +8,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageNicknames)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription('${emoji.cross} You do not have permission to use this command.');
+                .setDescription('${emojis.cross} You do not have permission to use this command.');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -33,7 +33,7 @@ module.exports = {
             if (member.roles.highest.position >= message.guild.members.me.roles.highest.position) {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
-                    .setDescription('${emoji.cross} I cannot modify this user\'s nickname due to role hierarchy.');
+                    .setDescription('${emojis.cross} I cannot modify this user\'s nickname due to role hierarchy.');
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -41,7 +41,7 @@ module.exports = {
             if (member.roles.highest.position >= message.member.roles.highest.position && message.member.id !== message.guild.ownerId) {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
-                    .setDescription('${emoji.cross} You cannot modify this user\'s nickname due to role hierarchy.');
+                    .setDescription('${emojis.cross} You cannot modify this user\'s nickname due to role hierarchy.');
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -50,7 +50,7 @@ module.exports = {
                 await member.setNickname(null);
                 const embed = new EmbedBuilder()
                     .setColor('#77B255')
-                    .setDescription(`${emoji.tick} Successfully reset nickname for ${user}.`);
+                    .setDescription(`${emojis.tick} Successfully reset nickname for ${user}.`);
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -67,7 +67,7 @@ module.exports = {
             
             const embed = new EmbedBuilder()
                 .setColor('#77B255')
-                .setDescription(`${emoji.tick} Successfully changed ${user}'s nickname to: ${newNickname}`);
+                .setDescription(`${emojis.tick} Successfully changed ${user}'s nickname to: ${newNickname}`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 
         } catch (error) {
