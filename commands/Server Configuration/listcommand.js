@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const { checkCommandDisabled } = require('./togglecommand');
-const { embed_color, emojis: emoji, prefix } = require('../../constants');
+const { embed_color, emojis , prefix } = require('../../constants');
 const { execute } = require('./togglecommand');
 
 module.exports = {
@@ -43,7 +43,7 @@ module.exports = {
 
     // Build embed
     const embed = new EmbedBuilder()
-      .setColor('#5865F2')
+      .setColor(embed_color)
       .setTitle('🔧 Command Status')
       .setDescription(`**Command availability in ${message.guild ? 'this server' : 'DMs'}**`)
       .addFields(
