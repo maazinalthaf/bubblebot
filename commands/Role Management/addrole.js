@@ -8,7 +8,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription('${emoji.cross} You do not have permission to use this command.');
+                .setDescription('${emojis.cross} You do not have permission to use this command.');
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -37,7 +37,7 @@ module.exports = {
             await targetMember.roles.add(role);
             const embed = new EmbedBuilder()
                 .setColor('#77B255')
-                .setDescription(`${emoji.tick} ${role} has been added to ${targetMember.user.tag}.`);
+                .setDescription(`${emojis.tick} ${role} has been added to ${targetMember.user.tag}.`);
             message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } catch (error) {
             console.error('Error adding role:', error);
