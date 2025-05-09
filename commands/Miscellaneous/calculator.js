@@ -1,19 +1,29 @@
 const { EmbedBuilder } = require('discord.js');
-const { embed_color , emojis } = require('../../constants');
+const { embed_color } = require('../../constants');
 
-// Funny responses for invalid expressions
-const HUMOR_RESPONSES = [
-    "I'm good at math, but not *that* good! 🤔",
-    "Even Einstein would scratch his head at this one! 🧐",
-    "My calculator just ran away screaming! 😱",
-    "Did you just try to divide by zero? You monster! 😅",
-    "I think we need a bigger calculator for this... 📱",
-    "Error 404: Math logic not found! 🤖",
-    "That's beyond my pay grade! 💸",
-    "I skipped that lesson in calculator school! 🎓",
-    "Is this some kind of advanced math joke? 🃏",
-    "My brain.exe has stopped working... 🔧"
-];
+const ERROR_RESPONSES = {
+    divisionByZero: [
+        "Dividing by zero? The universe just called, it wants its paradox back! 🌌",
+        "Even Chuck Norris can't divide by zero... and he can count to infinity twice! 💪",
+        "Error 42: Universe.exe has stopped working due to division by zero 🌍💥",
+        "My calculator just had an existential crisis. Thanks for that! 🤯",
+        "Congratulations! You just created a black hole in my math processor! 🕳️"
+    ],
+    invalidExpression: [
+        "I speak fluent math, but that's like... ancient Klingon to me! 👽",
+        "My math translator is broken, can you try speaking in numbers? 🔢",
+        "Is this some sort of mathematical interpretive dance? 💃",
+        "Even Einstein would need a coffee break before tackling this one! ☕",
+        "404: Math Logic Not Found! Have you tried turning it off and on again? 🔄"
+    ],
+    tooComplex: [
+        "I'm just a humble calculator, not a quantum computer! 🤖",
+        "Brain.exe has stopped working... Need more RAM to process this! 💾",
+        "That's some big brain math you got there! Too big for my small circuits... 🧠",
+        "I failed this level in Calculator School! Maybe try something simpler? 📚",
+        "Error: Math too powerful! Please nerf! 🎮"
+    ]
+};
 
 module.exports = {
     name: 'calculator',
@@ -22,44 +32,51 @@ module.exports = {
     async execute(client, message, args) {
         if (!args.length) {
             const embed = new EmbedBuilder()
-                .setColor('#FF6B6B')
-                .setDescription(' What am I supposed to calculate? Try `.calc 2 + 2`');
+                .setColor(embed_color)
+                .setDescription('What am I supposed to calculate? Try `.calc 2 + 2`\nI promise I won\'t get it wrong... probably 😅');
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
         const expression = args.join(' ');
-        
-        // Remove any backticks or code blocks if present
         const cleanExpression = expression.replace(/`/g, '').replace(/```/g, '');
         
+        if (cleanExpression.includes('/0')) {
+            const response = ERROR_RESPONSES.divisionByZero[Math.floor(Math.random() * ERROR_RESPONSES.divisionByZero.length)];
+            const embed = new EmbedBuilder()
+                .setColor(embed_color)
+                .setDescription(response);
+            return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
+        }
+
         try {
-            // Validate expression contains only safe characters
             if (!/^[0-9+\-*/(). ]+$/.test(cleanExpression)) {
+                const response = ERROR_RESPONSES.invalidExpression[Math.floor(Math.random() * ERROR_RESPONSES.invalidExpression.length)];
                 const embed = new EmbedBuilder()
-                    .setColor('#FF6B6B')
-                    .setDescription('${emojis.cross} Nice try! But I only understand basic math. Keep it simple with numbers and +-*/()');
+                    .setColor(embed_color)
+                    .setDescription(`${response}\n\nTip: I only understand basic math (numbers and +-*/()). Let's keep it simple! 🎯`);
                 return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
             }
 
-            // Evaluate the expression safely
             const result = eval('(function() { return ' + cleanExpression + '; })()');
 
             if (typeof result !== 'number' || !isFinite(result)) {
+                const response = ERROR_RESPONSES.tooComplex[Math.floor(Math.random() * ERROR_RESPONSES.tooComplex.length)];
                 const embed = new EmbedBuilder()
                     .setColor('#FF6B6B')
-                    .setDescription('${emojis.cross} That\'s beyond my math skills! Try something that gives a normal number.');
+                    .setDescription(response);
                 return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
             }
 
             const embed = new EmbedBuilder()
-                .setColor(EMBED_COLOR)
+                .setColor(embed_color)
                 .setDescription(`\`${cleanExpression}\` = **${result}**`);
             
             message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         } catch (error) {
+            const response = ERROR_RESPONSES.invalidExpression[Math.floor(Math.random() * ERROR_RESPONSES.invalidExpression.length)];
             const embed = new EmbedBuilder()
-                .setColor('#FF6B6B')
-                .setDescription('${emojis.cross} Oops! That math doesn\'t add up. Check your expression and try again.');
+                .setColor(embed_color)
+                .setDescription(`${response}`);
             message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
     },
