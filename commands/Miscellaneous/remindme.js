@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { embed_color: EMBED_COLOR, emojis: EMOJIS, prefix: PREFIX } = require('../../constants');
+const { embed_color, emojis, prefix } = require('../../constants');
 const ms = require('ms');
 
 // Store active reminders
@@ -12,8 +12,8 @@ module.exports = {
     async execute(client, message, args) {
         if (!args.length) {
             const helpEmbed = new EmbedBuilder()
-                .setColor(EMBED_COLOR)
-                .setTitle(`${EMOJIS.info} Reminder Help`)
+                .setColor(embed_color)
+                .setTitle(`${emojis.info} Reminder Help`)
                 .setDescription('Set a reminder for yourself with a specific duration and reason.')
                 .addFields(
                     { name: 'Usage', value: `${PREFIX}remindme <time> <reason>` },
@@ -44,19 +44,19 @@ module.exports = {
 
         if (userReminderList.length >= 5) {
             return message.reply({
-                content: `${EMOJIS.error} You can only have up to 5 active reminders at a time.`,
+                content: `${emojis.error} You can only have up to 5 active reminders at a time.`,
                 allowedMentions: { repliedUser: false }
             });
         }
 
         // Create the reminder embed
         const reminderEmbed = new EmbedBuilder()
-            .setColor(EMBED_COLOR)
+            .setColor(embed_color)
             .setAuthor({ 
                 name: 'Reminder Set',
                 iconURL: message.author.displayAvatarURL({ dynamic: true })
             })
-            .setDescription(`${EMOJIS.bell} I will remind you in **${time}**`)
+            .setDescription(`${emojis.bell} I will remind you in **${time}**`)
             .addFields({ 
                 name: 'Reason',
                 value: `\`\`\`${reason}\`\`\``
@@ -90,8 +90,8 @@ module.exports = {
         // Setup the reminder timeout
         reminder.timeout = setTimeout(async () => {
             const dmEmbed = new EmbedBuilder()
-                .setColor(EMBED_COLOR)
-                .setTitle(`${EMOJIS.bell} Reminder`)
+                .setColor(embed_color)
+                .setTitle(`${emojis.bell} Reminder`)
                 .setDescription('It\'s time!')
                 .addFields({ 
                     name: 'Reason',
@@ -102,13 +102,13 @@ module.exports = {
             try {
                 await message.author.send({ embeds: [dmEmbed] });
                 reminderMessage.edit({
-                    content: `${EMOJIS.tick} Reminder complete! You have been notified via DM.`,
+                    content: `${emojis.tick} Reminder complete! You have been notified via DM.`,
                     components: [],
                 });
             } catch (err) {
                 console.error(`Failed to send reminder to ${message.author.tag}: ${err.message}`);
                 reminderMessage.edit({
-                    content: `${EMOJIS.error} I was unable to send you a DM. Please check your privacy settings.`,
+                    content: `${emojis.error} I was unable to send you a DM. Please check your privacy settings.`,
                     components: [],
                 });
             }
@@ -127,7 +127,7 @@ module.exports = {
         collector.on('collect', async interaction => {
             clearTimeout(reminder.timeout);
             await interaction.update({
-                content: `${EMOJIS.trash} Reminder has been canceled.`,
+                content: `${emojis.trash} Reminder has been canceled.`,
                 components: [],
             });
             const reminderIndex = userReminderList.findIndex(r => r.message.id === reminderMessage.id);
@@ -137,7 +137,7 @@ module.exports = {
         collector.on('end', (collected, reason) => {
             if (reason === 'time') {
                 reminderMessage.edit({
-                    content: `${EMOJIS.bell} Reminder is now inactive.`,
+                    content: `${emojis.bell} Reminder is now inactive.`,
                     components: [],
                 });
             }
