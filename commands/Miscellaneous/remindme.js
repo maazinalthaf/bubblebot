@@ -16,9 +16,9 @@ module.exports = {
                 .setTitle(`${emojis.info} Reminder Help`)
                 .setDescription('Set a reminder for yourself with a specific duration and reason.')
                 .addFields(
-                    { name: 'Usage', value: `${PREFIX}remindme <time> <reason>` },
+                    { name: 'Usage', value: `${prefix}remindme <time> <reason>` },
                     { name: 'Time Format', value: '`10s` (seconds)\n`10m` (minutes)\n`1h` (hours)\n`1d` (days)' },
-                    { name: 'Example', value: `${PREFIX}remindme 1h Check discord` }
+                    { name: 'Example', value: `${prefix}remindme 1h Check discord` }
                 )
                 .setFooter({ text: 'Minimum: 10 seconds • Maximum: 7 days' });
             return message.reply({ embeds: [helpEmbed], allowedMentions: { repliedUser: false } });
