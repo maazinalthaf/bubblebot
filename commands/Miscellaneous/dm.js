@@ -19,7 +19,7 @@ module.exports = {
     if (!mentionedUser) {
       const embed = new EmbedBuilder()
         .setColor('#FFCC32')
-        .setDescription('${emojis.error} Please mention a user to reply to.');
+        .setDescription(`${emojis.error} Please mention a user to reply to.`);
       return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 
@@ -28,9 +28,11 @@ module.exports = {
 
     // Check if no message is provided to reply with
     if (!text) {
-      return message.channel.send("${emojis.error} Please provide a message to reply with.");
+      const embed = new EmbedBuilder()
+        .setColor('#FFCC32')
+        .setDescription(`${emojis.error} Please provide a message to reply with.`);
+      return message.channel.send({ embeds: [embed] });
     }
-
     // Send the reply as a DM to the mentioned user
     mentionedUser.send(text)
       .then(() => {
