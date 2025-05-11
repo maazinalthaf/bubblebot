@@ -18,7 +18,8 @@ module.exports = {
                     new EmbedBuilder()
                         .setColor('#FFCC32')
                         .setDescription(`${emojis.error} You do not have permission to use this command.`)
-                ]
+                ],
+                allowedMentions: { repliedUser: false }
             });
         }
 
@@ -32,7 +33,8 @@ module.exports = {
                     new EmbedBuilder()
                         .setColor('#C83636')
                         .setDescription(`${emojis.cross} Failed to load triggers.`)
-                ]
+                ],
+                allowedMentions: { repliedUser: false }
             });
         }
 
@@ -42,16 +44,15 @@ module.exports = {
                     new EmbedBuilder()
                         .setColor('#C83636')
                         .setDescription(`${emojis.cross} No triggers have been set up yet.`)
-                ]
+                ],
+                allowedMentions: { repliedUser: false }
             });
         }
 
-        
         const triggerEntries = Object.entries(triggers);
         const totalPages = Math.ceil(triggerEntries.length / TRIGGERS_PER_PAGE);
         let currentPage = 1;
 
-        
         const createEmbed = (page) => {
             const startIdx = (page - 1) * TRIGGERS_PER_PAGE;
             const endIdx = Math.min(startIdx + TRIGGERS_PER_PAGE, triggerEntries.length);
@@ -71,7 +72,6 @@ module.exports = {
                 .setTimestamp();
         };
 
-    
         const createButtons = (page) => {
             const row = new ActionRowBuilder()
                 .addComponents(
@@ -99,15 +99,14 @@ module.exports = {
             return row;
         };
 
-        
         const embed = createEmbed(currentPage);
         const buttons = createButtons(currentPage);
         const response = await message.reply({ 
             embeds: [embed], 
-            components: [buttons] 
+            components: [buttons],
+            allowedMentions: { repliedUser: false }
         });
 
-        
         const collector = response.createMessageComponentCollector({ 
             time: 300000 // 5 minutes
         });
