@@ -87,6 +87,6 @@ module.exports = {
             .setDescription(`${emojis.tick} **Trigger Added**\nThe bot will now respond to \`${triggerPhrase}\` with:\n\n${response}`)
             .setTimestamp();
 
-        return message.reply({ embeds: [embed] });
+        return message.reply({ embeds: [embed] , allowedMentions: {repliedUser: false}});
     }
 };

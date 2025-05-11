@@ -101,6 +101,6 @@ module.exports = {
             .setDescription(`${emojis.tick} **Trigger Removed**\nThe bot will no longer respond to \`${triggerPhrase}\``)
             .setTimestamp();
 
-        return message.reply({ embeds: [embed] });
+        return message.reply({ embeds: [embed] , allowedMentions: {repliedUser: false} });
     }
 };
