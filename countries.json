@@ -1,0 +1,24 @@
+[
+    {
+        "name": "United States",
+        "code": "US",
+        "aliases": ["usa", "america"],
+        "continent": "North America",
+        "language": "English",
+        "latMin": 24.396308,
+        "latMax": 49.384358,
+        "lngMin": -125.000000,
+        "lngMax": -66.934570
+    },
+    {
+        "name": "France",
+        "code": "FR",
+        "aliases": ["french republic"],
+        "continent": "Europe",
+        "language": "French",
+        "latMin": 41.333,
+        "latMax": 51.124,
+        "lngMin": -5.559,
+        "lngMax": 9.662
+    }
+]
