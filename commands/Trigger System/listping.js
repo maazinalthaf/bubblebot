@@ -1,7 +1,7 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionsBitField } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const botPingPath = path.join(__dirname, '../botping.json');
+const botPingPath = path.join(__dirname, '../../botping.json');
 const {embed_color, emojis, prefix } = require('../../constants');
 
 module.exports = {
