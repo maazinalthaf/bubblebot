@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { embed_color: EMBED_COLOR } = require('../../constants');
+const { embed_color: EMBED_COLOR, embed_color } = require('../../constants');
 const axios = require('axios');
 
 module.exports = {
@@ -42,7 +42,7 @@ module.exports = {
             else weatherEmoji = '☁️'; // Cloudy
 
             const embed = new EmbedBuilder()
-                .setColor(EMBED_COLOR)
+                .setColor(embed_color)
                 .setTitle(`${weatherEmoji} Weather in ${name}, ${country}`)
                 .setDescription(`Current weather conditions`)
                 .addFields([

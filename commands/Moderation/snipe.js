@@ -33,7 +33,7 @@ module.exports = {
 
         // Create an embed for the sniped message
         const embed = new EmbedBuilder()
-            .setColor('#89CFF0')
+            .setColor(embed_color)
             .setAuthor({ 
                 name: snipedMessage.author.tag, 
                 iconURL: snipedMessage.author.displayAvatarURL({ dynamic: true }) 

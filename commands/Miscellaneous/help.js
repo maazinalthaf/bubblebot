@@ -1,4 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+const { embed_color, emojis } = require('../../constants');
 
 module.exports = {
     name: 'help',
@@ -10,8 +11,8 @@ module.exports = {
                 name: '| Command List',
                 iconURL: message.author.displayAvatarURL({ dynamic: true })
             })
-            .setDescription('Use .help [command] to get more information about a command')
-            .setColor('#2B2D31');
+            .setDescription('work in progress')
+            .setColor(embed_color);
 
         const githubButton = new ButtonBuilder()
             .setLabel('View Commands')

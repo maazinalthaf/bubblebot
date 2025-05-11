@@ -20,7 +20,7 @@ module.exports = {
         } catch (error) {
             console.error('Error fetching Kanye quote:', error);
             const embed = new EmbedBuilder()
-                .setColor(emojis.error)
+                .setColor(embed_color)
                 .setDescription('😔 Sorry, I couldn\'t fetch a Kanye quote right now. Try again later!')
                 .setAuthor({ name: 'Kanye West', iconURL: 'https://i.imgflip.com/41j06n.png?a475416' });
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });

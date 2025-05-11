@@ -37,7 +37,7 @@ module.exports = {
         // Function to generate the embed for a specific page
         const generateEmbed = (page) => {
             const embed = new EmbedBuilder()
-                .setColor('#89CFF0') // Choose a color for the embed
+                .setColor(embed_color) // Choose a color for the embed
                 .setTitle('📋 Bot Trigger List')
                 .setDescription('Here are the current bot triggers along with their weights:')
                 .setFooter({

@@ -58,7 +58,7 @@ module.exports = {
             const pageTriggers = triggerEntries.slice(startIdx, endIdx);
 
             return new EmbedBuilder()
-                .setColor('#5865F2')
+                .setColor(embed_color)
                 .setTitle('📎 Trigger List')
                 .setDescription(
                     pageTriggers.map(([word, response], idx) => 

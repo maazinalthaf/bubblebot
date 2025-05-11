@@ -29,12 +29,16 @@ module.exports = {
         const reminderDuration = ms(time);
 
         // Check for valid time
-        if (!reminderDuration || reminderDuration < 10000 || reminderDuration > 604800000) { // 10s to 7d
-            return message.reply({ 
-                content: `$emojis.error} Invalid time format! Please use a format like '10s', '10m', '1h', '1d'. Minimum duration is 10 seconds and maximum is 7 days.`,
-                allowedMentions: { repliedUser: false }
-            });
-        }
+       if (!reminderDuration || reminderDuration < 10000 || reminderDuration > 604800000) { // 10s to 7d
+    const embed = new EmbedBuilder()
+        .setColor('#ffcc32') 
+        .setDescription(`${emojis.error} **Invalid time format!**\nPlease use a format like \`10s\`, \`10m\`, \`1h\`, \`1d\`.\nMinimum duration is 10 seconds and maximum is 7 days.`);
+    
+    return message.reply({ 
+        embeds: [embed], 
+        allowedMentions: { repliedUser: false }
+    });
+}
 
         // Manage user reminders
         if (!userReminders.has(message.author.id)) {
