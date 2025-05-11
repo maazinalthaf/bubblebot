@@ -35,7 +35,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuildExpress
   saveReactions();
   const embed = new EmbedBuilder()
     .setColor('#77B255')
-    .setDescription(`${emoji.tick} Reaction removed for word "${word}".`);
+    .setDescription(`${emojis.tick} Reaction removed for word "${word}".`);
   message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     }
 }

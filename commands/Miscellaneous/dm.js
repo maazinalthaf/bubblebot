@@ -31,7 +31,7 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setColor('#FFCC32')
         .setDescription(`${emojis.error} Please provide a message to reply with.`);
-      return message.channel.send({ embeds: [embed] });
+      return message.channel.send({ embeds: [embed] , allowedMentions: {repliedUser: false} });
     }
     // Send the reply as a DM to the mentioned user
     mentionedUser.send(text)
@@ -41,7 +41,7 @@ module.exports = {
           .setColor('#77B255')  // Green color for success
           .setDescription(`${emojis.tick} Successfully sent the reply to ${mentionedUser}.`);
 
-        message.channel.send({ embeds: [successEmbed] });
+        message.channel.send({ embeds: [successEmbed] , allowedMentions: {repliedUser: false} });
       })
       .catch(error => {
         console.error('Error sending message:', error);
