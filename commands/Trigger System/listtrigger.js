@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const fs = require('fs');
 const path = require('path');
 const {embed_color, emojis, prefix } = require('../../constants');
-const triggersPath = path.join(__dirname, '../triggers.json');
+const triggersPath = path.join(__dirname, '../../triggers.json');
 const TRIGGERS_PER_PAGE = 5;
 
 module.exports = {
@@ -17,7 +17,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#FFCC32')
-                        .setDescription(`${emojis.error} You need the **Manage Messages** permission to use this command.`)
+                        .setDescription(`${emojis.error} You do not have permission to use this command.`)
                 ]
             });
         }
