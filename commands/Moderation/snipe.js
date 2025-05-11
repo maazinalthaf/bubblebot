@@ -13,7 +13,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription('${emojis.cross} You do not have permission to use this command.');
+                .setDescription(`${emojis.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -24,7 +24,7 @@ module.exports = {
         if (!snipedMessages || !snipedMessages[snipeIndex]) {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription('${emojis.error} There is no recently deleted message to snipe at that index!');
+                .setDescription(`${emojis.error} There is no recently deleted message to snipe at that index!`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 

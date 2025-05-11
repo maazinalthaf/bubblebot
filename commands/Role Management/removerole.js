@@ -19,7 +19,7 @@ module.exports = {
       if (!targetUserId || !roleName) {
         const embed = new EmbedBuilder()
         .setColor('#FFCC32')
-        .setDescription('${emojis.error} Please provide a user mention or ID and a role name.');
+        .setDescription(`${emojis.error} Please provide a user mention or ID and a role name.`);
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
     
@@ -29,7 +29,7 @@ module.exports = {
       if (!targetMember || !role) {
         const embed = new EmbedBuilder()
         .setColor('#FFCC32')
-        .setDescription('${emojis.error} User or role not found.');
+        .setDescription(`${emojis.error} User or role not found.`);
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
     
@@ -43,7 +43,7 @@ module.exports = {
         console.error('Error removing role:', error);
         const embed = new EmbedBuilder()
         .setColor('#FFCC32')
-        .setDescription('${emojis.error} An error occurred while removing the role.');
+        .setDescription(`${emojis.error} An error occurred while removing the role.`);
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
     }

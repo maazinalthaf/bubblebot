@@ -17,7 +17,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#FFCC32')
-                        .setDescription('${emojis.error} You need the **Manage Messages** permission to use this command.')
+                        .setDescription(`${emojis.error} You need the **Manage Messages** permission to use this command.`)
                 ]
             });
         }
@@ -31,7 +31,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#C83636')
-                        .setDescription('${emojis.cross} Failed to load triggers.')
+                        .setDescription(`${emojis.cross} Failed to load triggers.`)
                 ]
             });
         }
@@ -41,7 +41,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#C83636')
-                        .setDescription('${emojis.cross} No triggers have been set up yet.')
+                        .setDescription(`${emojis.cross} No triggers have been set up yet.`)
                 ]
             });
         }

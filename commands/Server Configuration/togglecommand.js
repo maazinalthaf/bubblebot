@@ -38,14 +38,14 @@ async function execute(client, message, args) {
   if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
     const embed = new EmbedBuilder()
       .setColor('#c83636')
-      .setDescription('${emojis.cross} You need **Manage Server** permissions to use this command.');
+      .setDescription(`${emojis.cross} You do not have permission to use this command.`);
     return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
   }
 
   if (!args.length) {
     const embed = new EmbedBuilder()
       .setColor('#FFcc32')
-      .setDescription('${emojis.error} Please specify a command to toggle (enable/disable).\n\n**Example:** `.togglecommand ping`');
+      .setDescription(`${emojis.error} Please specify a command to toggle (enable/disable).\n\n**Example:** \`.togglecommand ping\``)
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 
@@ -63,7 +63,7 @@ async function execute(client, message, args) {
   if (command.name === 'togglecommand') {
     const embed = new EmbedBuilder()
       .setColor('#FFcc32')
-      .setDescription('${emojis.error} You cannot disable the togglecommand itself!');
+      .setDescription(`${emojis.error} You cannot disable the togglecommand itself!`);
     return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
   }
 
@@ -96,7 +96,7 @@ async function execute(client, message, args) {
     console.error('Error saving disabled commands:', error);
     const errorEmbed = new EmbedBuilder()
       .setColor('#c83636')
-      .setDescription('${emojis.cross} There was an error saving the command toggle state.');
+      .setDescription(`${emojis.cross} There was an error saving the command toggle state.`);
     return message.reply({ embeds: [errorEmbed], allowedMentions: { repliedUser: false } });
   }
 }

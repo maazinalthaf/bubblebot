@@ -20,14 +20,14 @@ module.exports = {
         if (isNaN(amount)) {
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
-                .setDescription('${emojis.error} Please provide a valid number.');
+                .setDescription(`${emojis.error} Please provide a valid number.`);
             return message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 5000));
         }
 
         if (amount <= 0 || amount > 100) {
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
-                .setDescription('${emojis.error} Please provide a number between 1 and 100.');
+                .setDescription(`${emojis.error} Please provide a number between 1 and 100.`);
             return message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 5000));
         }
 
@@ -48,7 +48,7 @@ module.exports = {
             console.error('Error deleting messages:', error);
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
-                .setDescription('${emojis.error} An error occurred while deleting messages. Make sure the messages are not older than 14 days.');
+                .setDescription(`${emojis.error} An error occurred while deleting messages. Make sure the messages are not older than 14 days.`);
             message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 5000));
         }
     }

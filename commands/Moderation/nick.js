@@ -8,7 +8,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageNicknames)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')
-                .setDescription('${emojis.cross} You do not have permission to use this command.');
+                .setDescription(`${emojis.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -19,7 +19,7 @@ module.exports = {
         if (!userInput) {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription('${emojis.error} Please provide a user mention/ID and the new nickname.');
+                .setDescription(`${emojis.error} Please provide a user mention/ID and the new nickname.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -33,7 +33,7 @@ module.exports = {
             if (member.roles.highest.position >= message.guild.members.me.roles.highest.position) {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
-                    .setDescription('${emojis.cross} I cannot modify this user\'s nickname due to role hierarchy.');
+                    .setDescription(`${emojis.cross} I cannot modify this user\'s nickname due to role hierarchy.`);
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -41,7 +41,7 @@ module.exports = {
             if (member.roles.highest.position >= message.member.roles.highest.position && message.member.id !== message.guild.ownerId) {
                 const embed = new EmbedBuilder()
                     .setColor('#C83636')
-                    .setDescription('${emojis.cross} You cannot modify this user\'s nickname due to role hierarchy.');
+                    .setDescription(`${emojis.cross} You cannot modify this user\'s nickname due to role hierarchy.`);
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -58,7 +58,7 @@ module.exports = {
             if (newNickname.length > 32) {
                 const embed = new EmbedBuilder()
                     .setColor('#ffcc32')
-                    .setDescription('${emojis.error} Nickname cannot be longer than 32 characters.');
+                    .setDescription(`${emojis.error} Nickname cannot be longer than 32 characters.`);
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -74,7 +74,7 @@ module.exports = {
             console.error(error);
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
-                .setDescription('${emojis.error} An error occurred while trying to change the nickname.');
+                .setDescription(`${emojis.error} An error occurred while trying to change the nickname.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     },

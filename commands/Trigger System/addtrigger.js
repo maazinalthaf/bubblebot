@@ -16,7 +16,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#FFcc32')
-                        .setDescription('${emojis.error} You need the **Manage Messages** permission to use this command.')
+                        .setDescription(`${emojis.error} You need the **Manage Messages** permission to use this command.`)
                 ]
             });
         }
@@ -26,7 +26,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#FFcc32')
-                        .setDescription('${emojis.error} Usage: `.addtrigger "<word or phrase>" <response>`\nExample: `.addtrigger "hello there" Hi! How can I help?`')
+                        .setDescription(`${emojis.error} Usage: \`.addtrigger "<word or phrase>" <response>\`\nExample: \`.addtrigger "hello there" "Hi! How can I help?"\``)
                 ]
             });
         }
@@ -51,7 +51,7 @@ module.exports = {
                     embeds: [
                         new EmbedBuilder()
                             .setColor('#c83636')
-                            .setDescription('${emojis.cross} Invalid format. Make sure to close your quotes.\nUsage: `.addtrigger "<word or phrase>" <response>`')
+                            .setDescription(`${emojis.cross} Invalid format. Make sure to close your quotes.\nUsage: \`.addtrigger "<word or phrase>" <response> \``)
                     ]
                 });
             }
@@ -77,7 +77,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#C83636')
-                        .setDescription('${emojis.cross} Failed to save the trigger.')
+                        .setDescription(`${emojis.cross} Failed to save the trigger.`)
                 ]
             });
         }

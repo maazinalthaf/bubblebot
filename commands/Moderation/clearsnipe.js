@@ -18,7 +18,7 @@ module.exports = {
         if (!snipes.has(message.channel.id) || snipes.get(message.channel.id).length === 0) {
             const embed = new EmbedBuilder()
                 .setColor('#FFCC32')
-                .setDescription('${emojis.error} There are no sniped messages to clear!');
+                .setDescription(`${emojis.error} There are no sniped messages to clear!`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -28,7 +28,7 @@ module.exports = {
         // Send success message
         const embed = new EmbedBuilder()
             .setColor('#77B255')
-            .setDescription('${emojis.tick} Successfully cleared all sniped messages in this channel.')
+            .setDescription(`${emojis.tick} Successfully cleared all sniped messages in this channel.`)
 
         message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     }

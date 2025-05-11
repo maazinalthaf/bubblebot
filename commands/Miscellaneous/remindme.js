@@ -31,7 +31,7 @@ module.exports = {
         // Check for valid time
         if (!reminderDuration || reminderDuration < 10000 || reminderDuration > 604800000) { // 10s to 7d
             return message.reply({ 
-                content: `${EMOJIS.error} Invalid time format! Please use a format like '10s', '10m', '1h', '1d'. Minimum duration is 10 seconds and maximum is 7 days.`,
+                content: `$emojis.error} Invalid time format! Please use a format like '10s', '10m', '1h', '1d'. Minimum duration is 10 seconds and maximum is 7 days.`,
                 allowedMentions: { repliedUser: false }
             });
         }

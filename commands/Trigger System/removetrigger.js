@@ -17,7 +17,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#ffcc32')
-                        .setDescription('${emojis.error} You need the **Manage Messages** permission to use this command.')
+                        .setDescription(`${emojis.error} You need the **Manage Messages** permission to use this command.`)
                 ]
             });
         }
@@ -27,7 +27,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#ffcc32')
-                        .setDescription('${emojis.error} Usage: `.removetrigger "<word or phrase>"`\nExample: `.removetrigger "hello there"`')
+                        .setDescription(`${emojis.error} Usage: \`.removetrigger "<word or phrase>"\`\nExample: \`.removetrigger "hello there"\``)
                 ]
             });
         }
@@ -41,7 +41,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#c83636')
-                        .setDescription('${emojis.cross} Failed to load triggers.')
+                        .setDescription(`${emojis.cross} Failed to load triggers.`)
                 ]
             });
         }
@@ -57,7 +57,7 @@ module.exports = {
                     embeds: [
                         new EmbedBuilder()
                             .setColor('#ffcc32')
-                            .setDescription('${emojis.error} Invalid format. Make sure to close your quotes.\nUsage: `.removetrigger "<word or phrase>"`')
+                            .setDescription(`${emojis.error} Invalid format. Make sure to close your quotes.\nUsage: \`.removetrigger "<word or phrase>"\``)
                     ]
                 });
             }
@@ -91,7 +91,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#C83636')
-                        .setDescription('${emojis.cross} Failed to remove the trigger.')
+                        .setDescription(`${emojis.cross} Failed to remove the trigger.`)
                 ]
             });
         }
