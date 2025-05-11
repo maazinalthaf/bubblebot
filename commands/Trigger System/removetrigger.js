@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 
-const triggersPath = path.join(__dirname, '../triggers.json');
+const triggersPath = path.join(__dirname, '../../triggers.json');
 const {embed_color, emojis, prefix } = require('../../constants');
 
 module.exports = {
