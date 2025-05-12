@@ -1,11 +1,11 @@
 # BubbleBot
-*"Just a simple bot"*
 
 <img src="https://github.com/maazinalthaf/bubblebot/blob/main/assets/banner.png?raw=true"/>
-<br>
+*"Just a simple bot"*
+
 ## Prerequisites: 
 > You must have `nodejs18` and `npm` installed
-</br>
+
 ## Installation: 
 1. Clone this repository.
 2. Rename `example.env` to `.env` and insert your bot token.
