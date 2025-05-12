@@ -2,6 +2,7 @@
 *"Just a simple bot"*
 
 <img src="https://github.com/maazinalthaf/bubblebot/blob/main/assets/banner.png?raw=true"/>
+<br>
 ## Prerequisites: 
 > You must have `nodejs18` and `npm` installed
 
