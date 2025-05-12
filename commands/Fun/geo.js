@@ -31,7 +31,7 @@ module.exports = {
 
             const randomCountry = validCountries[Math.floor(Math.random() * validCountries.length)];
 
-            // Question types
+            // Question types (removed population questions)
             const questionTypes = [
                 {
                     question: `What is the capital of **${randomCountry.name.common}**?`,
@@ -44,12 +44,6 @@ module.exports = {
                     answer: randomCountry.region,
                     options: getRandomOptions(validCountries, 'region', randomCountry.region),
                     color: '#2ECC71'
-                },
-                {
-                    question: `What is the approximate population of **${randomCountry.name.common}**?`,
-                    answer: formatPopulation(randomCountry.population),
-                    options: getPopulationOptions(randomCountry.population),
-                    color: '#E74C3C'
                 },
                 {
                     question: `Which country does this flag belong to?`,
@@ -107,37 +101,38 @@ module.exports = {
 
                 // Disable all buttons after selection
                 row.components.forEach(btn => btn.setDisabled(true));
-                await i.update({ components: [row] });
-
-                const resultEmbed = new EmbedBuilder()
+                
+                // Update the existing embed with the result
+                embed
                     .setColor(isCorrect ? '#2ECC71' : '#E74C3C')
-                    .setTitle(isCorrect ? '✅ Correct!' : '❌ Incorrect')
-                    .setDescription(isCorrect 
-                        ? `You guessed correctly! The answer was:\n**${selectedQuestion.answer}**`
-                        : `Sorry, the correct answer was:\n**${selectedQuestion.answer}**`)
+                    .setDescription(`**${selectedQuestion.question}**\n\n${isCorrect ? '✅ Correct!' : '❌ Incorrect'}\nThe answer was: **${selectedQuestion.answer}**`)
                     .setFooter({ text: 'Run the command again to play more!' });
 
                 if (selectedQuestion.flag && !selectedQuestion.question.includes('flag')) {
-                    resultEmbed.setImage(randomCountry.flags.png);
+                    embed.setImage(randomCountry.flags.png);
                 }
 
-                await message.channel.send({ embeds: [resultEmbed] });
+                await i.update({ 
+                    embeds: [embed],
+                    components: [row] 
+                });
                 collector.stop();
             });
 
             collector.on('end', collected => {
                 if (collected.size === 0) {
                     row.components.forEach(btn => btn.setDisabled(true));
-                    triviaMessage.edit({ components: [row] }).catch(() => {});
                     
-                    message.channel.send({
-                        embeds: [
-                            new EmbedBuilder()
-                                .setColor('#F39C12')
-                                .setTitle('⏰ Time\'s Up!')
-                                .setDescription(`The correct answer was:\n**${selectedQuestion.answer}**`)
-                        ]
-                    });
+                    // Update the existing embed when time runs out
+                    embed
+                        .setColor('#F39C12')
+                        .setDescription(`**${selectedQuestion.question}**\n\n⏰ Time's Up!\nThe correct answer was: **${selectedQuestion.answer}**`)
+                        .setFooter({ text: 'Run the command again to play more!' });
+                    
+                    triviaMessage.edit({ 
+                        embeds: [embed],
+                        components: [row] 
+                    }).catch(() => {});
                 }
             });
 
@@ -166,20 +161,6 @@ function getRandomOptions(countries, property, correctAnswer) {
         if (option && option !== correctAnswer) options.add(option);
     }
     return Array.from(options);
-}
-
-function getPopulationOptions(correctPopulation) {
-    const correctFormatted = formatPopulation(correctPopulation);
-    const options = new Set([correctFormatted]);
-    while (options.size < 4) {
-        const variation = 0.5 + Math.random() * 1.5;
-        options.add(formatPopulation(Math.round(correctPopulation * variation)));
-    }
-    return Array.from(options);
-}
-
-function formatPopulation(num) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 function shuffleArray(array) {
