@@ -86,7 +86,7 @@ async function execute(client, message, args) {
     disabledCommands[guildId].push(command.name);
     embed
       .setColor('#77b255')
-      .setDescription(`${emoji.tick} Command **${command.name}** has been **disabled** for this server.`);
+      .setDescription(`${emojis.tick} Command **${command.name}** has been **disabled** for this server.`);
   }
 
   try {
