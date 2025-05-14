@@ -25,11 +25,13 @@ module.exports = {
             const { latitude, longitude, name, country, timezone } = locationData;
 
             // Get weather data using coordinates
-            const weatherResponse = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=${timezone}`);
+            const weatherResponse = await axios.get(
+                `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,pressure_msl,visibility&timezone=${timezone}`
+            );
+
             const current = weatherResponse.data.current;
 
             // Get weather emoji based on WMO weather codes
-            // https://www.nodc.noaa.gov/archive/arc0021/0002199/1.1/data/0-data/HTML/WMO-CODE/WMO4677.HTM
             let weatherEmoji = '🌡️'; // default
             const weatherCode = current.weather_code;
             
@@ -60,6 +62,16 @@ module.exports = {
                         name: '💧 Humidity', 
                         value: `${Math.round(current.relative_humidity_2m)}%`, 
                         inline: true 
+                    },
+                    { 
+                        name: '🌪️ Pressure', 
+                        value: `${Math.round(current.pressure_msl)} hPa`, 
+                        inline: true 
+                    },
+                    {
+                        name: '👁️ Visibility',
+                        value: `${Math.round(current.visibility / 1000)} km`,
+                        inline: true
                     }
                 ])
                 .setTimestamp()
