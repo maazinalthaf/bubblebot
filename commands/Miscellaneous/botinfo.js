@@ -45,8 +45,8 @@ module.exports = {
                     inline: true
                 },
                 {
-                    name: '`🤓` Github',
-                    value: `[Bubblebot](https://github.com/maazinalthaf/bubblebot)`,
+                    name: '`⌨️` Github',
+                    value: `[bubblebot](https://github.com/maazinalthaf/bubblebot)`,
                     inline: true
                 }
             )
