@@ -31,12 +31,13 @@ module.exports = {
                  return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
-            const embed = new EmbedBuilder()
+           const currentTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+const embed = new EmbedBuilder()
     .setTitle('🌟 Droppable Roles')
-    .setColor('#7289DA')
+    .setColor(embed_color)
     .setDescription('Use `.drop <role name>` to remove one of these roles:\n\n' + 
-        memberRoles.map(role => `${role}`).join('\n'))
-    .setFooter({ text: `${memberRoles.length} droppable role${memberRoles.length !== 1 ? 's' : ''} • ${new Date().toLocaleString()}` })
+        memberRoles.map(role => `• ${role}`).join('\n'))
+    .setFooter({ text: `${memberRoles.length} droppable role${memberRoles.length !== 1 ? 's' : ''} • Today at ${currentTime}` })
     .setThumbnail(message.guild.iconURL({ dynamic: true }));
 
              return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });

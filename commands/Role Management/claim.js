@@ -79,15 +79,16 @@ module.exports = {
                  return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
-           const embed = new EmbedBuilder()
+           const currentTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+const embed = new EmbedBuilder()
     .setTitle('🌟 Claimable Roles')
-    .setColor('#7289DA')
+    .setColor(embed_color)
     .setDescription('Use `.claim <role name>` to get one of these roles:\n\n' + 
         claimableRoles.map(roleId => {
             const role = message.guild.roles.cache.get(roleId);
-            return role ? `${role}` : `• Unknown Role (ID: ${roleId})`;
+            return role ? `• ${role}` : `• Unknown Role (ID: ${roleId})`;
         }).join('\n'))
-    .setFooter({ text: `${claimableRoles.length} claimable role${claimableRoles.length !== 1 ? 's' : ''} • ${new Date().toLocaleString()}` })
+    .setFooter({ text: `${claimableRoles.length} claimable role${claimableRoles.length !== 1 ? 's' : ''} • Today at ${currentTime}` })
     .setThumbnail(message.guild.iconURL({ dynamic: true }));
 
              return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
