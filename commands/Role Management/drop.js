@@ -36,7 +36,7 @@ const embed = new EmbedBuilder()
     .setTitle('🌟 Droppable Roles')
     .setColor(embed_color)
     .setDescription('Use `.drop <role name>` to remove one of these roles:\n\n' + 
-        memberRoles.map(role => `• ${role}`).join('\n'))
+        memberRoles.map(role => `${role}`).join('\n'))
     .setFooter({ text: `${memberRoles.length} droppable role${memberRoles.length !== 1 ? 's' : ''} • Today at ${currentTime}` })
     .setThumbnail(message.guild.iconURL({ dynamic: true }));
 

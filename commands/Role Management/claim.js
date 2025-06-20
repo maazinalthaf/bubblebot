@@ -95,7 +95,7 @@ const embed = new EmbedBuilder()
     .setDescription('Use `.claim <role name>` to get one of these roles:\n\n' + 
         claimableRoles.map(roleId => {
             const role = message.guild.roles.cache.get(roleId);
-            return role ? `• ${role}` : `• Unknown Role (ID: ${roleId})`;
+            return role ? `${role}` : `Unknown Role (ID: ${roleId})`;
         }).join('\n'))
     .setFooter({ text: `${claimableRoles.length} claimable role${claimableRoles.length !== 1 ? 's' : ''} • Today at ${currentTime}` })
     .setThumbnail(message.guild.iconURL({ dynamic: true }));
