@@ -1,5 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
-const { getClaimableRoles, addClaimableRole, removeClaimableRole } = require('./rolemanager');
+const { getClaimableRoles, addClaimableRole, removeClaimableRole, saveClaimableRoles } = require('./rolemanager'); // <--- Added saveClaimableRoles
 const { embed_color, emojis } = require('../../constants');
 
 module.exports = {
@@ -11,12 +11,21 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
                 .setDescription(`${emojis.error} This command only works in servers!`);
-             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
+            return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
         const guildId = message.guild.id;
-        const claimableRoles = getClaimableRoles(guildId);
         const member = message.member;
+        let claimableRoles = getClaimableRoles(guildId);
+
+        // 🧹 Auto-clean deleted roles
+        const existingRoleIds = message.guild.roles.cache.map(r => r.id);
+        const validClaimableRoles = claimableRoles.filter(roleId => existingRoleIds.includes(roleId));
+        if (validClaimableRoles.length !== claimableRoles.length) {
+            saveClaimableRoles(guildId, validClaimableRoles);
+            claimableRoles = validClaimableRoles; 
+        }
+
         const subCommand = args[0]?.toLowerCase();
 
         // Admin commands (add/remove roles from claimable list)
