@@ -22,7 +22,7 @@ module.exports = {
         if (args.length === 0) {
             const memberRoles = member.roles.cache
                 .filter(role => claimableRoles.includes(role.id))
-                .map(role => role);  // Keep the role object
+                .map(role => role);  
 
             if (memberRoles.length === 0) {
                 const embed = new EmbedBuilder()
@@ -32,15 +32,14 @@ module.exports = {
             }
 
            const currentTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-const embed = new EmbedBuilder()
-    .setTitle('🌟 Droppable Roles')
-    .setColor(embed_color)
-    .setDescription('Use `.drop <role name>` to remove one of these roles:\n\n' + 
-        memberRoles.map(role => `${role}`).join('\n'))
-    .setFooter({ text: `${memberRoles.length} droppable role${memberRoles.length !== 1 ? 's' : ''} • Today at ${currentTime}` })
-    .setThumbnail(message.guild.iconURL({ dynamic: true }));
+           const embed = new EmbedBuilder()
+           .setTitle('🌟 Droppable Roles')
+           .setColor(embed_color)
+           .setDescription('Use `.drop <role name>` to remove one of these roles:\n\n' +  memberRoles.map(role => `${role}`).join('\n'))
+           .setFooter({ text: `${memberRoles.length} droppable role${memberRoles.length !== 1 ? 's' : ''} • Today at ${currentTime}` })
+           .setThumbnail(message.guild.iconURL({ dynamic: true }));
 
-             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
+           return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
         // drop a role

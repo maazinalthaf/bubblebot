@@ -18,7 +18,6 @@ module.exports = {
         const member = message.member;
         let claimableRoles = getClaimableRoles(guildId);
 
-        // 🧹 Auto-clean deleted roles
         const existingRoleIds = message.guild.roles.cache.map(r => r.id);
         const validClaimableRoles = claimableRoles.filter(roleId => existingRoleIds.includes(roleId));
         if (validClaimableRoles.length !== claimableRoles.length) {
@@ -28,7 +27,6 @@ module.exports = {
 
         const subCommand = args[0]?.toLowerCase();
 
-        // Admin commands (add/remove roles from claimable list)
         if (member.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
             if (subCommand === 'add') {
                 const roleName = args.slice(1).join(' ');
@@ -79,7 +77,6 @@ module.exports = {
             }
         }
 
-        // List claimable roles if no arguments
         if (args.length === 0) {
             if (claimableRoles.length === 0) {
                 const embed = new EmbedBuilder()
@@ -89,21 +86,18 @@ module.exports = {
             }
 
            const currentTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-const embed = new EmbedBuilder()
-    .setTitle('🌟 Claimable Roles')
-    .setColor(embed_color)
-    .setDescription('Use `.claim <role name>` to get one of these roles:\n\n' + 
-        claimableRoles.map(roleId => {
-            const role = message.guild.roles.cache.get(roleId);
-            return role ? `${role}` : `Unknown Role (ID: ${roleId})`;
-        }).join('\n'))
-    .setFooter({ text: `${claimableRoles.length} claimable role${claimableRoles.length !== 1 ? 's' : ''} • Today at ${currentTime}` })
-    .setThumbnail(message.guild.iconURL({ dynamic: true }));
+           const embed = new EmbedBuilder()
+           .setTitle('🌟 Claimable Roles')
+            .setColor(embed_color)
+            .setDescription('Use `.claim <role name>` to get one of these roles:\n\n' + 
+                 claimableRoles.map(roleId => {const role = message.guild.roles.cache.get(roleId);
+            return role ? `${role}` : `Unknown Role (ID: ${roleId})`;}).join('\n'))
+             .setFooter({ text: `${claimableRoles.length} claimable role${claimableRoles.length !== 1 ? 's' : ''} • Today at ${currentTime}` })
+             .setThumbnail(message.guild.iconURL({ dynamic: true }));
 
              return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        // Claim a role
         const roleName = args.join(' ');
         const role = message.guild.roles.cache.find(r => r.name.toLowerCase() === roleName.toLowerCase());
         
