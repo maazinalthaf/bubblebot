@@ -1,4 +1,4 @@
-# BubbleBot
+# bubblebot
 
 <img src="https://github.com/maazinalthaf/bubblebot/blob/main/assets/banner.png?raw=true"/>
 
