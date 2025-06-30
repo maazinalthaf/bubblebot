@@ -38,6 +38,12 @@ module.exports = {
             console.error('Error reading triggers.json:', error);
         }
 
+        // Initialize server-specific triggers if they don't exist
+        const guildId = message.guild.id;
+        if (!triggers[guildId]) {
+            triggers[guildId] = {};
+        }
+
         // Check if the first argument is quoted (for multi-word triggers)
         let triggerPhrase;
         let response;
@@ -63,7 +69,7 @@ module.exports = {
             response = args.slice(1).join(' ');
         }
 
-        triggers[triggerPhrase] = response;
+        triggers[guildId][triggerPhrase] = response;
         
         try {
             fs.writeFileSync(triggersPath, JSON.stringify(triggers, null, 2));

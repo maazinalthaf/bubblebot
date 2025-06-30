@@ -46,6 +46,17 @@ module.exports = {
             });
         }
 
+        const guildId = message.guild.id;
+        if (!triggers[guildId]) {
+            return message.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor('#ffcc32')
+                        .setDescription(`${emojis.error} No triggers found for this server.`)
+                ]
+            });
+        }
+
         let triggerPhrase;
         if (args[0].startsWith('"') && args.join(' ').includes('"')) {
             const fullText = args.join(' ');
@@ -67,7 +78,7 @@ module.exports = {
             triggerPhrase = args[0].toLowerCase();
         }
 
-        if (!triggers[triggerPhrase]) {
+        if (!triggers[guildId][triggerPhrase]) {
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
@@ -77,7 +88,7 @@ module.exports = {
             });
         }
 
-        delete triggers[triggerPhrase];
+        delete triggers[guildId][triggerPhrase];
         
         try {
             fs.writeFileSync(triggersPath, JSON.stringify(triggers, null, 2));

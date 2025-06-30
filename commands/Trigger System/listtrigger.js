@@ -38,18 +38,21 @@ module.exports = {
             });
         }
 
-        if (Object.keys(triggers).length === 0) {
+        const guildId = message.guild.id;
+        const serverTriggers = triggers[guildId] || {};
+
+        if (Object.keys(serverTriggers).length === 0) {
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#C83636')
-                        .setDescription(`${emojis.cross} No triggers have been set up yet.`)
+                        .setDescription(`${emojis.cross} No triggers have been set up for this server yet.`)
                 ],
                 allowedMentions: { repliedUser: false }
             });
         }
 
-        const triggerEntries = Object.entries(triggers);
+        const triggerEntries = Object.entries(serverTriggers);
         const totalPages = Math.ceil(triggerEntries.length / TRIGGERS_PER_PAGE);
         let currentPage = 1;
 
