@@ -1,5 +1,7 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, PermissionsBitField, InteractionType } = require('discord.js');
-const reactions = require('../../reactions.json');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionsBitField } = require('discord.js');
+const fs = require('fs');
+const path = require('path');
+const reactionsPath = path.join(__dirname, '../../reactions.json');
 const {embed_color, emojis, prefix } = require('../../constants');
 
 module.exports = {
@@ -9,10 +11,25 @@ module.exports = {
         // Check if the user has permission
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuildExpressions)) {
             const embed = new EmbedBuilder()
-            .setColor('#C83636')
-            .setDescription(`${emojis.cross} You do not have permission to use this command.`);
-        return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
-  }
+                .setColor('#C83636')
+                .setDescription(`${emojis.cross} You do not have permission to use this command.`);
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
+        }
+
+        // Load reactions
+        let reactions = {};
+        try {
+            reactions = JSON.parse(fs.readFileSync(reactionsPath, 'utf8'));
+        } catch (error) {
+            console.error('Error reading reactions.json:', error);
+            const embed = new EmbedBuilder()
+                .setColor('#C83636')
+                .setDescription(`${emojis.cross} Failed to load reactions.`);
+            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
+        }
+
+        const guildId = message.guild.id;
+        const serverReactions = reactions[guildId] || {};
 
         // Function to create the embed for a specific page
         const createEmbed = (page, perPage, reactions) => {
@@ -33,27 +50,30 @@ module.exports = {
                     { name: 'Page Info', value: `📄 Page **${page}** of **${totalPages}**`, inline: true },
                     { name: 'Total Reactions', value: `🗂️ **${reactionEntries.length}**`, inline: true }
                 )
-                .setThumbnail(client.user.displayAvatarURL())
-                .setFooter({ text: 'Use the buttons below to navigate pages.', iconURL: message.author.displayAvatarURL() });
+                .setThumbnail(message.guild.iconURL({ dynamic: true }))
+                .setFooter({ 
+                    text: `Reactions for ${message.guild.name}`, 
+                    iconURL: client.user.displayAvatarURL()
+                });
         };
 
         // Pagination variables
         const perPage = 7;
         let currentPage = 1;
-        const reactionEntries = Object.entries(reactions);
+        const reactionEntries = Object.entries(serverReactions);
         const totalPages = Math.ceil(reactionEntries.length / perPage);
 
         // Handle the case where no reactions are defined
         if (reactionEntries.length === 0) {
             const noReactionsEmbed = new EmbedBuilder()
-                .setTitle('<:reaction:1321974219973722216> Reaction List')
-                .setDescription('🚫 There are currently no reactions configured.')
-                .setColor('#FF4C4C');
+                .setTitle('<:roles:1332417540810342532> Reaction List')
+                .setDescription('🚫 There are currently no reactions configured for this server.')
+                .setColor('#c83636');
             return message.channel.send({ embeds: [noReactionsEmbed] });
         }
 
         // Initial embed
-        const embed = createEmbed(currentPage, perPage, reactions);
+        const embed = createEmbed(currentPage, perPage, serverReactions);
 
         // Function to create action rows with buttons
         const createActionRow = (currentPage, totalPages, disable = false) => {
@@ -91,46 +111,31 @@ module.exports = {
         collector.on('collect', async (interaction) => {
             if (!interaction.isButton()) return;
 
+            if (interaction.user.id !== message.author.id) {
+                return interaction.reply({
+                    content: 'Only the command user can control this menu.',
+                    ephemeral: true
+                });
+            }
+
             if (interaction.customId === 'first' && currentPage > 1) {
                 currentPage = 1;
             } else if (interaction.customId === 'prev' && currentPage > 1) {
                 currentPage--;
             } else if (interaction.customId === 'next' && currentPage < totalPages) {
                 currentPage++;
-            }  if (interaction.customId === 'last' && currentPage < totalPages) {
+            } else if (interaction.customId === 'last' && currentPage < totalPages) {
                 currentPage = totalPages;
             }
 
-            if (interaction.customId !== 'jump') {
-                const updatedEmbed = createEmbed(currentPage, perPage, reactions);
-                const updatedRows = [createActionRow(currentPage, totalPages)];
-                await interaction.update({ embeds: [updatedEmbed], components: updatedRows });
-            }
-        });
-
-        client.on('interactionCreate', async (interaction) => {
-            if (interaction.type === InteractionType.ModalSubmit && interaction.customId === 'jumpModal') {
-                const selectedPage = parseInt(interaction.fields.getTextInputValue('pageNumberInput'), 10);
-
-                if (!isNaN(selectedPage) && selectedPage >= 1 && selectedPage <= totalPages) {
-                    currentPage = selectedPage;
-                    await interaction.deferUpdate();
-
-                    const updatedEmbed = createEmbed(currentPage, perPage, reactions);
-                    const updatedRows = [createActionRow(currentPage, totalPages)];
-                    await interaction.editReply({ embeds: [updatedEmbed], components: updatedRows });
-                } else {
-                    await interaction.reply({
-                        content: `${emojis.cross} Invalid page number. Enter a number between 1 and ${totalPages}.`,
-                        ephemeral: true,
-                    });
-                }
-            }
+            const updatedEmbed = createEmbed(currentPage, perPage, serverReactions);
+            const updatedRows = [createActionRow(currentPage, totalPages)];
+            await interaction.update({ embeds: [updatedEmbed], components: updatedRows });
         });
 
         collector.on('end', async () => {
             const disabledRows = [createActionRow(currentPage, totalPages, true)];
-            await messageInstance.edit({ components: disabledRows });
+            await messageInstance.edit({ components: disabledRows }).catch(console.error);
         });
     },
 };
