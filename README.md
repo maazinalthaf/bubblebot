@@ -8,7 +8,7 @@
 
 
 ## Disclaimer:
-> This bot is intended for a limited number of servers and is not recommended for widespread deployment. Widespread deployment can impact bot performance severely. 
+> This bot is intended for a limited number of servers and is **not recommended** for widespread deployment. Widespread deployment can impact bot performance severely. 
 
 ## Installation: 
 1. Clone this repository.
