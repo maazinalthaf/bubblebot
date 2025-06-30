@@ -1,8 +1,6 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Collection, Partials } = require('discord.js');
 const fs = require('fs');
-const botPingMessages = require('./botping.json');
-const reactions = require('./reactions.json');
 const { performance } = require('perf_hooks');
 const { snipes } = require('./commands/Moderation/snipe.js');
 const { editsnipes } = require('./commands/Moderation/editsnipe.js');
@@ -12,19 +10,26 @@ const disabledCommandsPath = './disabledCommands.json';
 const { checkCommandDisabled } = require('./commands/Server Configuration/togglecommand');
 let afkData = {};
 
-// Initialize triggers - create empty object if file doesn't exist
 let triggers = {};
+let reactions = {};
+
 try {
   if (fs.existsSync(triggersPath)) {
     triggers = JSON.parse(fs.readFileSync(triggersPath, 'utf8'));
   } else {
     fs.writeFileSync(triggersPath, JSON.stringify({}, null, 2));
   }
+  
+  if (fs.existsSync('./reactions.json')) {
+    reactions = JSON.parse(fs.readFileSync('./reactions.json', 'utf8'));
+  } else {
+    fs.writeFileSync('./reactions.json', JSON.stringify({}, null, 2));
+  }
 } catch (error) {
-  console.error('Error loading triggers:', error);
+  console.error('Error loading triggers/reactions:', error);
 }
 
-// Creates new client
+// Create new client
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages],
     partials: [
@@ -67,12 +72,10 @@ for (const file of commandFiles) {
 }
 
 const PREFIX = '.';
+
 // Load stored AFK data from file if it exists
-
 if (fs.existsSync(afkDataFile)) {
-
   const data = fs.readFileSync(afkDataFile, 'utf8');
-
   afkData = JSON.parse(data);
 
 }
@@ -81,11 +84,15 @@ if (fs.existsSync(afkDataFile)) {
 
 let startTime;
 
-// Trigger Load
+// Reload Manager
 client.triggerManager = {
   reloadTriggers: (newTriggers) => {
-      triggers = newTriggers;
-      console.log('Triggers hot-reloaded');
+    triggers = newTriggers;
+    console.log('Triggers hot-reloaded');
+  },
+  reloadReactions: (newReactions) => {
+    reactions = newReactions;
+    console.log('Reactions hot-reloaded');
   }
 };
 
@@ -107,133 +114,53 @@ client.on('messageCreate', async (message) => {
     // Reload AFK data from file before processing each message
 
     if (fs.existsSync(afkDataFile)) {
-
       const data = fs.readFileSync(afkDataFile, 'utf8');
-  
       afkData = JSON.parse(data);
-  
   }  
-  
-    
-  
-  const botPingPath = './botping.json';
-  
-  let botPingMessages;
-  
-  
-  
-  try {
-  
-      botPingMessages = JSON.parse(fs.readFileSync(botPingPath, 'utf8'));
-  
-  } catch (error) {
-  
-      console.error('❌ Error reading botping.json:', error);
-  
-      return;
-  
-  }
+   
+ // Skip if message is from a bot or not in a guild
+  if (message.author.bot || !message.guild) return;
 
-  // Skip if message is from a bot
-  if (message.author.bot) return;
-
-  // Handle bot mentions (botping responses)
-  if (message.mentions.has(client.user)) {
-    const totalWeight = botPingMessages.reduce((sum, msg) => sum + msg.weight, 0);
-
-    if (totalWeight === 0) {
-      console.error('❌ No valid triggers available.');
-    }
-
-    let randomWeight = Math.random() * totalWeight;
-    let selectedMessage = null;
-
-    for (const msg of botPingMessages) {
-      randomWeight -= msg.weight;
-      if (randomWeight <= 0) {
-        selectedMessage = msg.message;
-        break;
-      }
-    }
-
-    // Fallback if no message was selected
-    if (!selectedMessage || selectedMessage.trim() === '') {
-      selectedMessage = 'Sorry, I could not find a valid message.';
-    }
-
-    try {
-      await message.reply(selectedMessage);
-    } catch (error) {
-      if (error.code === 50013) {
-        console.log('Missing Permissions: Cannot send message in this channel.');
-      } else {
-        console.error('Error replying to message:', error);
-      }
-    }
-  }
-
-
-
+  
 // When afk user comes back from afk status
 
 if (afkData[message.author.id]) {
-
   const { timestamp } = afkData[message.author.id];
-
   const timeSinceAfk = Date.now() - timestamp;
-
   delete afkData[message.author.id];
-
-
-
   const embed = new EmbedBuilder()
-
     .setColor('#FFCC32')
-
     .setDescription(`👋 **${message.author}**: Welcome back, you were AFK for **${msToTime(timeSinceAfk)}**.`);
-
-
-
   message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 
-
-
-  // Save the updated AFK data without the deleted entry
-
+ // Save the updated AFK data without the deleted entry
   saveAfkData();
-
 }
-
-
 
 const mentionedUser = message.mentions.users.first();
 
-
-
 // Displays afk user status
 if (mentionedUser && afkData[mentionedUser.id]) {
-
   const { afkMessage, timestamp } = afkData[mentionedUser.id];
-
   const timeSinceAfk = Date.now() - timestamp;
-
   const embed = new EmbedBuilder()
-
     .setColor('#4289C1')
     .setDescription(`💤 ${mentionedUser} is AFK: ${afkMessage || ''} - **${msToTime(timeSinceAfk)} ago**.`);
   message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 
 }
 
+  const guildId = message.guild.id;
   const content = message.content.toLowerCase();
   const words = content.split(' ');
 
   // Auto reactor mechanism
+  const serverReactions = reactions[guildId] || {};
   for (const word of words) {
-    if (reactions[word]) {
+    if (serverReactions[word]) {
       try {
-        for (const emoji of reactions[word]) {
-          await message.react(emoji);
+        for (const emoji of serverReactions[word]) {
+          await message.react(emoji).catch(console.error);
         }
       } catch (error) {
         console.error('Error adding reaction:', error);
@@ -241,46 +168,47 @@ if (mentionedUser && afkData[mentionedUser.id]) {
     }
   }
 
-// Trigger response mechanism (only if message doesn't start with prefix)
-if (!message.content.startsWith(PREFIX)) {
-  const content = message.content.toLowerCase().trim();
-  
-  // 1. Check for exact match first
-  if (triggers[content]) {
+// Trigger response mechanism 
+ if (!message.content.startsWith(PREFIX)) {
+    const serverTriggers = triggers[guildId] || {};
+    const content = message.content.toLowerCase().trim();
+    
+    // Check for exact match first
+    if (serverTriggers[content]) {
       try {
-          await message.reply(triggers[content]);
-          return;
+        await message.reply(serverTriggers[content]);
+        return;
       } catch (error) {
-          console.error('Failed to reply:', error);
+        console.error('Failed to reply:', error);
       }
-  }
+    }
 
-  // 2. Check for multi-word triggers
-  const multiWordTriggers = Object.keys(triggers).filter(t => t.includes(' '));
-  for (const trigger of multiWordTriggers) {
+    // Check for multi-word triggers
+    const multiWordTriggers = Object.keys(serverTriggers).filter(t => t.includes(' '));
+    for (const trigger of multiWordTriggers) {
       if (content.includes(trigger.toLowerCase())) {
-          try {
-              await message.reply(triggers[trigger]);
-              return;
-          } catch (error) {
-              console.error('Failed to reply:', error);
-          }
+        try {
+          await message.reply(serverTriggers[trigger]);
+          return;
+        } catch (error) {
+          console.error('Failed to reply:', error);
+        }
       }
-  }
+    }
 
-  // 3. Check for single word triggers
-  const words = content.split(/\s+/);
-  for (const word of words) {
-      if (triggers[word]) {
-          try {
-              await message.reply(triggers[word]);
-              return;
-          } catch (error) {
-              console.error('Failed to reply:', error);
-          }
+    // Check for single word triggers
+    const words = content.split(/\s+/);
+    for (const word of words) {
+      if (serverTriggers[word]) {
+        try {
+          await message.reply(serverTriggers[word]);
+          return;
+        } catch (error) {
+          console.error('Failed to reply:', error);
+        }
       }
+    }
   }
-}
 
   // Command handler
   if (!message.content.startsWith(PREFIX)) return;
