@@ -4,7 +4,7 @@
 
 
 ## Prerequisites: 
-> You must have `nodejs18` and `npm` installed
+> You must have `nodejs24` and `npm` installed
 
 
 ## Disclaimer:
