@@ -8,8 +8,10 @@ const triggersPath = './triggers.json';
 const afkDataFile = './afkData.json';
 const disabledCommandsPath = './disabledCommands.json';
 const { checkCommandDisabled } = require('./commands/Server Configuration/togglecommand');
-let afkData = {};
+const prefixesPath = './prefixes.json';
 
+let prefixes = {};
+let afkData = {};
 let triggers = {};
 let reactions = {};
 
@@ -27,6 +29,16 @@ try {
   }
 } catch (error) {
   console.error('Error loading triggers/reactions:', error);
+}
+
+try {
+  if (fs.existsSync(prefixesPath)) {
+    prefixes = JSON.parse(fs.readFileSync(prefixesPath, 'utf8'));
+  } else {
+    fs.writeFileSync(prefixesPath, JSON.stringify({}, null, 2));
+  }
+} catch (error) {
+  console.error('Error loading prefixes:', error);
 }
 
 // Create new client
@@ -71,7 +83,9 @@ for (const file of commandFiles) {
   }
 }
 
-const PREFIX = '.';
+function getPrefix(guildId) {
+  return prefixes[guildId] || '.';
+}
 
 // Load stored AFK data from file if it exists
 if (fs.existsSync(afkDataFile)) {
@@ -121,7 +135,9 @@ client.on('messageCreate', async (message) => {
  // Skip if message is from a bot or not in a guild
   if (message.author.bot || !message.guild) return;
 
-  
+ // Get the prefix for this server at the start
+ const prefix = getPrefix(message.guild?.id);
+ 
 // When afk user comes back from afk status
 
 if (afkData[message.author.id]) {
@@ -133,7 +149,7 @@ if (afkData[message.author.id]) {
     .setDescription(`👋 **${message.author}**: Welcome back, you were AFK for **${msToTime(timeSinceAfk)}**.`);
   message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 
- // Save the updated AFK data without the deleted entry
+// Save the updated AFK data without the deleted entry
   saveAfkData();
 }
 
@@ -154,7 +170,7 @@ if (mentionedUser && afkData[mentionedUser.id]) {
   const content = message.content.toLowerCase();
   const words = content.split(' ');
 
-  // Auto reactor mechanism
+// Auto reactor mechanism
   const serverReactions = reactions[guildId] || {};
   for (const word of words) {
     if (serverReactions[word]) {
@@ -169,8 +185,8 @@ if (mentionedUser && afkData[mentionedUser.id]) {
   }
 
 // Trigger response mechanism 
- if (!message.content.startsWith(PREFIX)) {
-    const serverTriggers = triggers[guildId] || {};
+ if (!message.content.startsWith(prefix)) {
+    const serverTriggers = triggers[message.guild.id] || {};
     const content = message.content.toLowerCase().trim();
     
     // Check for exact match first
@@ -210,12 +226,12 @@ if (mentionedUser && afkData[mentionedUser.id]) {
     }
   }
 
-  // Command handler
-  if (!message.content.startsWith(PREFIX)) return;
-  const args = message.content.slice(PREFIX.length).trim().split(/ +/);
-  const commandName = args.shift().toLowerCase();
+// Command handler
+if (!message.content.startsWith(prefix)) return;
+const args = message.content.slice(prefix.length).trim().split(/ +/);
+const commandName = args.shift().toLowerCase();
 
-  // Retrieve the command or an alias
+// Retrieve the command or an alias
   const command = client.commands.get(commandName) 
   || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
