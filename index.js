@@ -355,3 +355,17 @@ function reloadTriggers() {
 function saveAfkData() {
   fs.writeFileSync(afkDataFile, JSON.stringify(afkData, null, 2), 'utf8');
 }
+
+// Get prefix function
+function getPrefix(guildId) {
+  // Reload prefixes from file each time
+  try {
+    if (fs.existsSync(prefixesPath)) {
+      prefixes = JSON.parse(fs.readFileSync(prefixesPath, 'utf8'));
+    }
+  } catch (error) {
+    console.error('Error reloading prefixes:', error);
+  }
+  
+  return prefixes[guildId] || '.';
+}
