@@ -57,7 +57,7 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setColor('77b255')
         .setDescription(`${emojis.tick} Server prefix has been updated to: \`${newPrefix}\``);
-      message.reply({ embeds: [embed] });
+      message.reply({ embeds: [embed] , allowedMentions: { repliedUser: false }});
     } catch (error) {
       console.error('Error saving prefixes:', error);
       message.reply('There was an error saving the new prefix.');
