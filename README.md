@@ -16,5 +16,5 @@
 3. Default prefix is `.` which can be changed using `.setprefix <new prefix>`
    for example `.setprefix ?`
 6. Open the terminal and cd into the bot directory.
-7. Upload emojis from `/assets` in developer portal and change emoji ids in `constants.js`. 
+7. Upload emojis from `/assets` in developer portal and change emoji ids in `utils/constants.js`. 
 8. Run the following commands in order `npm install` `npm start`
