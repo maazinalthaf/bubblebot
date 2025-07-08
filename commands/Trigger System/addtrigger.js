@@ -1,8 +1,9 @@
 const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const {embed_color, emojis, prefix } = require('../../constants');
+const { embed_color, emojis } = require('../../utils/constants');
 const triggersPath = path.join(__dirname, '../../triggers.json');
+const { getPrefix } = require('../../utils/prefix');
 
 module.exports = {
     name: 'addtrigger',
@@ -11,6 +12,7 @@ module.exports = {
     usage: '.addtrigger "<word or phrase>" <response> OR .at "<word or phrase>" <response>',
     permissions: ['ManageMessages'],
     async execute(client, message, args) {
+        const prefix = getPrefix(message.guild?.id);
         if (!message.member.permissions.has('ManageMessages')) {
             return message.reply({
                 embeds: [
@@ -26,7 +28,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#FFcc32')
-                        .setDescription(`${emojis.error} Usage: \`.addtrigger "<word or phrase>" <response>\`\nExample: \`.addtrigger "hello there" "Hi! How can I help?"\``)
+                        .setDescription(`${emojis.error} Usage: \`${prefix}addtrigger "<word or phrase>" <response>\`\nExample: \`${prefix}addtrigger "hello there" "Hi! How can I help?"\``)
                 ]
             });
         }
@@ -96,3 +98,4 @@ module.exports = {
         return message.reply({ embeds: [embed] , allowedMentions: {repliedUser: false}});
     }
 };
+

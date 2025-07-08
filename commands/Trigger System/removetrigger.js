@@ -1,9 +1,9 @@
 const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-
+const { getPrefix } = require('../../utils/prefix');
 const triggersPath = path.join(__dirname, '../../triggers.json');
-const {embed_color, emojis, prefix } = require('../../constants');
+const {embed_color, emojis } = require('../../utils/constants');
 
 module.exports = {
     name: 'removetrigger',
@@ -12,6 +12,7 @@ module.exports = {
     usage: '.removetrigger "<word or phrase>" OR .rt "<word or phrase>"',
     permissions: ['ManageMessages'],
     async execute(client, message, args) {
+        const prefix = getPrefix(message.guild?.id);
         if (!message.member.permissions.has('ManageMessages')) {
             return message.reply({
                 embeds: [
@@ -27,7 +28,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#ffcc32')
-                        .setDescription(`${emojis.error} Usage: \`.removetrigger "<word or phrase>"\`\nExample: \`.removetrigger "hello there"\``)
+                        .setDescription(`${emojis.error} Usage: \`${prefix}removetrigger "<word or phrase>"\`\nExample: \`${prefix}removetrigger "hello there"\``)
                 ]
             });
         }

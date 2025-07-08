@@ -1,12 +1,14 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const { getClaimableRoles, addClaimableRole, removeClaimableRole, saveClaimableRoles } = require('./rolemanager'); 
-const { embed_color, emojis } = require('../../constants');
+const { embed_color, emojis } = require('../../utils/constants');
+const { getPrefix } = require('../../utils/prefix')
 
 module.exports = {
     name: 'claim',
     description: 'Claim self-assignable roles or manage the claimable roles list',
     usage: '[role name] or [add/remove] [role]',
     async execute(client, message, args) {
+        const prefix = getPrefix(message.guild?.id);
         if (!message.guild) {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
@@ -88,12 +90,10 @@ module.exports = {
            const currentTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
            const embed = new EmbedBuilder()
            .setTitle('🌟 Claimable Roles')
-            .setColor(embed_color)
-            .setDescription('Use `.claim <role name>` to get one of these roles:\n\n' + 
-                 claimableRoles.map(roleId => {const role = message.guild.roles.cache.get(roleId);
-            return role ? `${role}` : `Unknown Role (ID: ${roleId})`;}).join('\n'))
-             .setFooter({ text: `${claimableRoles.length} claimable role${claimableRoles.length !== 1 ? 's' : ''} • Today at ${currentTime}` })
-             .setThumbnail(message.guild.iconURL({ dynamic: true }));
+           .setColor(embed_color)
+           .setDescription(`Use \`${prefix}claim <role name>\` to get one of these roles:\n\n` +  claimableRoles.map(roleId => {const role = message.guild.roles.cache.get(roleId);return role ? `${role}` : `Unknown Role (ID: ${roleId})`;}).join('\n'))
+           .setFooter({ text: `${claimableRoles.length} claimable role${claimableRoles.length !== 1 ? 's' : ''} • Today at ${currentTime}` })
+           .setThumbnail(message.guild.iconURL({ dynamic: true }));
 
              return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }

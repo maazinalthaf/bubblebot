@@ -1,5 +1,5 @@
 const { EmbedBuilder, version } = require('discord.js');
-const { embed_color } = require('../../constants');
+const { embed_color, emojis } = require('../../utils/constants');
 const os = require('os');
 
 module.exports = {
@@ -40,8 +40,8 @@ module.exports = {
                     inline: true
                 },
                 {
-                    name: '`📦` Node.js',
-                    value: `v${process.version.slice(1)}`,
+                    name: '`📦` Bot Version',
+                    value: `v1.8.0`,
                     inline: true
                 },
                 {

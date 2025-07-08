@@ -1,6 +1,6 @@
 const { EmbedBuilder, PermissionsBitField, DMChannel } = require('discord.js')
 const { execute } = require('../Reaction System/removereaction')
-const { embed_color, emojis , prefix } = require('../../constants');
+const { embed_color, emojis } = require('../../utils/constants');
 
 module.exports = {
   name: 'dm',

@@ -1,5 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
-const {embed_color, emojis, prefix } = require('../../constants');
+const {embed_color, emojis } = require('../../utils/constants');
 
 // Object to store edited messages for each channel
 const editsnipes = new Map();
@@ -33,7 +33,7 @@ module.exports = {
 
         // Create an embed for the editsniped message
         const embed = new EmbedBuilder()
-            .setColor('#89CFF0')
+            .setColor(embed_color)
             .setAuthor({ 
                 name: editsnipedMessage.author.tag, 
                 iconURL: editsnipedMessage.author.displayAvatarURL({ dynamic: true }) 

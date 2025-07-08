@@ -2,7 +2,8 @@ const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const { aliases } = require('../Moderation/snipe');
-const {embed_color, emojis, prefix } = require('../../constants');
+const { embed_color, emojis } = require('../../utils/constants');
+const { getPrefix } = require('../../utils/prefix');
 
 module.exports = {
     name: 'togglecommand',
@@ -34,6 +35,7 @@ function checkCommandDisabled(guildId, commandName) {
 }
 
 async function execute(client, message, args) {
+  const prefix = getPrefix(message.guild?.id);
   // Check for Manage Guild permission
   if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
     const embed = new EmbedBuilder()
@@ -45,7 +47,7 @@ async function execute(client, message, args) {
   if (!args.length) {
     const embed = new EmbedBuilder()
       .setColor('#FFcc32')
-      .setDescription(`${emojis.error} Please specify a command to toggle (enable/disable).\n\n**Example:** \`.togglecommand ping\``)
+      .setDescription(`${emojis.error} Please specify a command to toggle (enable/disable).\n\n**Example:** \`${prefix}togglecommand ping\``)
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
 

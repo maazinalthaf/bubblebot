@@ -1,10 +1,11 @@
-const {embed_color, emojis, prefix } = require('../../constants');
+const {embed_color, emojis } = require('../../utils/constants');
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
     name: 'addrole',
     aliases: ['arole', 'grole', 'giverole'],
     async execute(client, message, args) {
+        const prefix = getPrefix(message.guild?.id);
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
             const embed = new EmbedBuilder()
                 .setColor('#C83636')

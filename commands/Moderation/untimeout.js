@@ -1,5 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
-const {embed_color, emojis, prefix } = require('../../constants');
+const { embed_color, emojis } = require('../../utils/constants');
 
 module.exports = {
     name: 'untimeout',

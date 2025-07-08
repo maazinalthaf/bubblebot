@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { embed_color, emojis: emoji } = require('../../constants');
+const { embed_color, emojis } = require('../../utils/constants');
 
 module.exports = {
   name: 'ping',
@@ -18,7 +18,7 @@ module.exports = {
 
     // Create the final embed with the calculated latencies
     const pingEmbed = new EmbedBuilder()
-      .setColor('#5865F2')
+      .setColor(embed_color)
       .setTitle('🏓 Pong!')
       .addFields(
         { name: 'Bot Latency', value: `${botLatency}ms`, inline: true },

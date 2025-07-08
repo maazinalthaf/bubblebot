@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { embed_color, emojis, prefix } = require('../../constants');
+const {embed_color, emojis } = require('../../utils/constants');
+const { getPrefix } = require('../../utils/prefix');
 const ms = require('ms');
 
 // Store active reminders
@@ -10,6 +11,7 @@ module.exports = {
     aliases: ['alarm', 'remind'],
     description: 'Set a reminder with a specific time (supports seconds, minutes, hours, days)',
     async execute(client, message, args) {
+        const prefix = getPrefix(message.guild?.id);
         if (!args.length) {
             const helpEmbed = new EmbedBuilder()
                 .setColor(embed_color)

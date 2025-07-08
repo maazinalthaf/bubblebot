@@ -1,14 +1,16 @@
 const { EmbedBuilder } = require('discord.js');
-const { embed_color: EMBED_COLOR, embed_color } = require('../../constants');
+const { embed_color, emojis } = require('../../utils/constants');
 const axios = require('axios');
+const { getPrefix } = require('../../utils/prefix');
 
 module.exports = {
     name: 'weather',
     aliases: ['w'],
     description: 'Check weather for any location',
     async execute(client, message, args) {
+        const prefix = getPrefix(message.guild?.id);
         if (!args.length) {
-            return message.reply('Please provide a location! Example: `.weather London, UK`');
+            return message.reply(`Please provide a location! Example: \`${prefix}weather London, UK\``);
         }
 
         const location = args.join(' ');

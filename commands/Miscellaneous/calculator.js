@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
-const { embed_color } = require('../../constants');
+const { embed_color, emojis } = require('../../utils/constants');
+const { getPrefix } = require('../../utils/prefix');
 
 const ERROR_RESPONSES = {
     divisionByZero: [
@@ -30,10 +31,11 @@ module.exports = {
     aliases: ['calc', 'math'],
     description: 'Calculate mathematical expressions',
     async execute(client, message, args) {
+        const prefix = getPrefix(message.guild?.id);
         if (!args.length) {
             const embed = new EmbedBuilder()
                 .setColor(embed_color)
-                .setDescription('What am I supposed to calculate? Try `.calc 2 + 2`\nI promise I won\'t get it wrong... probably 😅');
+                .setDescription(`What am I supposed to calculate? Try \`${prefix}calc 2 + 2\`\nI promise I won't get it wrong... probably 😅`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 

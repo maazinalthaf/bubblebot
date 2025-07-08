@@ -1,5 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
-const {embed_color, emojis, prefix } = require('../../constants');
+const {embed_color, emojis } = require('../../utils/constants');
 
 // Object to store deleted messages for each channel
 const snipes = new Map();

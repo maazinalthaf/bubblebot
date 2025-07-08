@@ -2,17 +2,20 @@ const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const { checkCommandDisabled } = require('./togglecommand');
-const { embed_color, emojis , prefix } = require('../../constants');
+const { embed_color, emojis  } = require('../../utils/constants');
 const { execute } = require('./togglecommand');
+const { getPrefix } = require('../../utils/prefix');
+
 
 module.exports = {
   name: 'listcommand',
   aliases: ['lc','listcommands'],
   description: 'List all enabled and disabled commands in the server',
   async execute(client, message, args) {
+    const prefix = getPrefix(message.guild?.id);
     // Get all commands and sort alphabetically
     const commands = Array.from(client.commands.values())
-      .filter(cmd => cmd.name !== 'commandslist') // Exclude this command
+      .filter(cmd => cmd.name !== 'commandslist') 
       .sort((a, b) => a.name.localeCompare(b.name));
 
     // Load disabled commands
@@ -52,7 +55,7 @@ module.exports = {
       )
       .setFooter({ 
         text: message.guild ? 
-          'Use .togglecommand [name] to change status' : 
+          `Use ${prefix}togglecommand [name] to change status` : 
           'Status can only be changed in servers' 
       });
 

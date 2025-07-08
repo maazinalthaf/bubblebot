@@ -1,7 +1,7 @@
 const {EmbedBuilder} = require('discord.js');
 const fs = require('fs');
 const afkDataFile = './afkData.json';
-const {embed_color, emojis , prefix } = require('../../constants');
+const { embed_color, emojis } = require('../../utils/constants');
 let afkData = {};
 
 // Dependent Function(s)

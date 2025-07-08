@@ -1,7 +1,8 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const { emojis, embed_color } = require('../../constants.js');
+const { emojis, embed_color } = require('../../utils/constants.js');
+const { getPrefix } = require('../../utils/prefix');
 
 // Path to store the mention permissions data
 const mentionDataPath = path.join(__dirname, '../../mentionData.json');
@@ -28,6 +29,8 @@ module.exports = {
   description: 'Mention a specific role or manage mention permissions',
   usage: '.mention <role name> OR .mention add <role> <user> OR .mention remove <role> <user>',
   async execute(client, message, args) {
+    
+    const prefix = getPrefix(message.guild?.id);
 
     if (args.length === 0) {
       // Show help if no arguments provided
@@ -35,17 +38,15 @@ module.exports = {
         .setColor(embed_color)
         .setTitle('Mention Command Help')
         .setDescription(`Learn how to manage pingable roles with this command.`)
-        .addFields(
-          { 
-            name: 'Usage', 
-            value: `\`\`\`${this.usage}\`\`\``,
-            inline: false
-          },
-          { 
-            name: 'Examples', 
-            value: `\`\`\`.mention @Announcements .mention add @Announcements @User .mention remove @Announcements @User\`\`\``,
-            inline: false
-          },
+        .addFields({ 
+        name: 'Usage', 
+        value: `\`\`\`${prefix}${this.usage}\`\`\``,
+        inline: false},
+        { 
+        name: 'Examples', 
+        value: `\`\`\`${prefix}mention @Announcements\n${prefix}mention add @Announcements @User\n${prefix}mention remove @Announcements @User\`\`\``,
+        inline: false
+        },
           { 
             name: 'Current Pingable Roles', 
             value: Object.keys(mentionData).length > 0 ? Object.keys(mentionData).map(roleId => `• <@&${roleId}>`).join('\n') : '*No pingable roles set up yet*',

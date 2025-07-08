@@ -1,12 +1,14 @@
 const { EmbedBuilder } = require('discord.js');
 const { getClaimableRoles } = require('./rolemanager');
-const { embed_color, emojis } = require('../../constants');
+const { embed_color, emojis } = require('../../utils/constants');
+const { getPrefix } = require('../../utils/prefix')
 
 module.exports = {
     name: 'drop',
     description: 'Remove self-assignable roles from yourself',
     usage: '[role name]',
     async execute(client, message, args) {
+        const prefix = getPrefix(message.guild?.id);
         if (!message.guild) {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
@@ -35,7 +37,7 @@ module.exports = {
            const embed = new EmbedBuilder()
            .setTitle('🌟 Droppable Roles')
            .setColor(embed_color)
-           .setDescription('Use `.drop <role name>` to remove one of these roles:\n\n' +  memberRoles.map(role => `${role}`).join('\n'))
+           .setDescription(`Use \`${prefix}drop <role name>\` to remove one of these roles:\n\n` + memberRoles.map(role => `${role}`).join('\n'))
            .setFooter({ text: `${memberRoles.length} droppable role${memberRoles.length !== 1 ? 's' : ''} • Today at ${currentTime}` })
            .setThumbnail(message.guild.iconURL({ dynamic: true }));
 

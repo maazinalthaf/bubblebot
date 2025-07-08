@@ -3,7 +3,7 @@ const fs = require('fs');
 const { execute } = require('../Reaction System/removereaction');
 const afkDataFile = './afkData.json';
 let afkData = {};
-const { embed_color, emojis } = require('../../constants');
+const {embed_color, emojis } = require('../../utils/constants');
 
 // Load AFK data from file if it exists
 function loadAfkData() {

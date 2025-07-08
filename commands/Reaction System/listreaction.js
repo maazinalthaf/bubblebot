@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionsB
 const fs = require('fs');
 const path = require('path');
 const reactionsPath = path.join(__dirname, '../../reactions.json');
-const {embed_color, emojis, prefix } = require('../../constants');
+const {embed_color, emojis } = require('../../utils/constants');
 
 module.exports = {
     name: 'listreaction',
