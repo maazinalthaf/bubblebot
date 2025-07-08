@@ -10,7 +10,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')
                 .setDescription(`${emojis.error} You don't have permission to unlock channels.`);
-            message.reply({ embeds: [embed] , AllowedMentions :{ repliedUser: false }});
+           return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
         const channel = message.channel;
@@ -25,13 +25,13 @@ module.exports = {
                 .setColor('#77b255')
                 .setDescription(`${emojis.tick} ${channel} has been unlocked.`);
             
-            message.reply({ embeds: [embed] , AllowedMentions :{ repliedUser: false }});
+            return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         } catch (error) {
             const embed = new EmbedBuilder()
                 .setColor('#c83636')
                 .setDescription(`${emojis.cross} Failed to unlock the channel.`);
             
-            message.reply({ embeds: [embed] , AllowedMentions :{ repliedUser: false }});
+            return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
     }
 };
