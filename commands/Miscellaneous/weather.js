@@ -10,7 +10,10 @@ module.exports = {
     async execute(client, message, args) {
         const prefix = getPrefix(message.guild?.id);
         if (!args.length) {
-            return message.reply(`Please provide a location! Example: \`${prefix}weather London, UK\``);
+            const embed = new EmbedBuilder
+            .setColor('#ffcc32')
+            .setDescription(`${emojis.error} Please provide a location! Example: \`${prefix}weather London, UK\``)
+            message.reply({ embeds: [embed] , AllowedMentions :{ repliedUser: false }});
         }
 
         const location = args.join(' ');
