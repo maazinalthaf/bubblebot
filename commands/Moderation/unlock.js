@@ -1,5 +1,5 @@
 const { EmbedBuilder, PermissionsBitField, AllowedMentionsTypes } = require('discord.js');
-const { emojis, embed_color } = require('../../constants.js');
+const { emojis, embed_color } = require('../../utils/constants.js');
 
 module.exports = {
     name: 'unlock',
