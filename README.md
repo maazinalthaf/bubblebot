@@ -13,8 +13,7 @@
 ## Installation: 
 1. Clone this repository.
 2. Rename `example.env` to `.env` and insert your bot token.
-3. Default prefix is `.` which can be changed using `.setprefix <new prefix>`
-   >>> for example `.setprefix ?`
+3. Default prefix is `.` which can be changed using `.setprefix <new prefix>` >  for example `.setprefix ?`
 6. Open the terminal and cd into the bot directory.
 7. Upload emojis from `/assets` in developer portal and change emoji ids in `utils/constants.js`. 
 8. Run the following commands in order `npm install` `npm start`
