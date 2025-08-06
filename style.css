@@ -1921,3 +1921,14 @@ body {
 .nav-brand:hover .brand-logo {
     transform: rotate(-5deg) scale(1.1);
 }
+
+/* Prevent zoom on input focus on mobile */
+@media screen and (max-width: 768px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+  
+  .search-input {
+    font-size: 16px !important;
+  }
+}
