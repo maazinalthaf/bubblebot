@@ -11,12 +11,12 @@ module.exports = {
                 name: '| Command List',
                 iconURL: message.author.displayAvatarURL({ dynamic: true })
             })
-            .setDescription('work in progress')
+            .setDescription('Click on the button below for more info.')
             .setColor(embed_color);
 
         const githubButton = new ButtonBuilder()
             .setLabel('View Commands')
-            .setURL('https://github.com/maazinalthaf/bubblebot')
+            .setURL('https://maazinalthaf.github.io/bubblebot')
             .setStyle(ButtonStyle.Link);
 
         const row = new ActionRowBuilder()
