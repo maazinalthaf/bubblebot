@@ -1083,7 +1083,7 @@ select.form-control {
 }
 
 .step-code {
-  background: var(--color-bg-8);
+  background: var(--color-bg-10);
   border: 1px solid var(--color-card-border-inner);
   border-radius: var(--radius-base);
   padding: var(--space-12) var(--space-16);
@@ -1206,7 +1206,10 @@ select.form-control {
   margin-bottom: var(--space-32);
   border-bottom: 1px solid var(--color-border);
   overflow-x: auto;
+  overflow-y: hidden;
   padding-bottom: var(--space-2);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-surface);
 }
 
 .tab-btn {
@@ -1395,7 +1398,7 @@ select.form-control {
 }
 
 .command-usage {
-  background: var(--color-bg-8);
+  background: var(--color-bg-10);
   border: 1px solid var(--color-card-border-inner);
   border-radius: var(--radius-base);
   padding: var(--space-12);
@@ -1753,32 +1756,6 @@ body {
   background-color: var(--color-primary-hover);
 }
 
-/* Specific styling for command grids */
-.commands-grid {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) var(--color-surface);
-  max-height: calc(100vh - 300px);
-  overflow-y: auto;
-  padding-right: var(--space-8);
-}
-
-.commands-grid::-webkit-scrollbar {
-  width: 6px;
-}
-
-.commands-grid::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.commands-grid::-webkit-scrollbar-thumb {
-  background-color: var(--color-primary);
-  border-radius: var(--radius-full);
-}
-
-.commands-grid::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-primary-hover);
-}
-
 /* Tab content scrolling */
 .tab-content {
   scrollbar-width: thin;
@@ -1850,6 +1827,7 @@ body {
   --color-bg-2: rgba(116, 116, 146, 0.1);
   --color-bg-3: rgba(246, 187, 66, 0.1);
   --color-bg-9: rgba(0, 0, 0, 0.1);
+  --color-bg-10: rgba(0, 0, 0, 0.192);
 }
 
 /* Hover States  */
@@ -1930,5 +1908,34 @@ body {
   
   .search-input {
     font-size: 16px !important;
+  }
+}
+
+/* Commands Header - Mobile Specific Styles */
+@media (max-width: 768px) {
+  .commands-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-12);
+  }
+
+  .commands-header-info {
+    width: 100%;
+    text-align: left;
+    margin-bottom: var(--space-16);
+  }
+
+  .search-container {
+    width: 100%;
+    margin-top: var(--space-8);
+  }
+
+  .commands-header-title {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-4);
+  }
+
+  .commands-header-subtitle {
+    font-size: var(--font-size-md);
   }
 }
