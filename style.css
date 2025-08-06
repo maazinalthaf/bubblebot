@@ -719,7 +719,7 @@ select.form-control {
 
 .brand-text {
   font-size: var(--font-size-xl);
-  color: var(--color-primary);
+  color: #ffffff;
 }
 
 .brand-version {
