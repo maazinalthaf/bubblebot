@@ -1,7 +1,6 @@
 # bubblebot
 
-<img src="https://github.com/maazinalthaf/bubblebot/blob/main/assets/banner.png?raw=true"/>
-
+Documentation: https://maazinalthaf.github.io/bubblebot/
 
 ## Prerequisites: 
 > You must have `nodejs24` and `npm` installed
