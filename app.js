@@ -935,3 +935,4 @@ homeLink.addEventListener('click', (e) => {
     });
     document.querySelector('.nav-menu-item[data-page="home"]').classList.add('active');
 });
+
