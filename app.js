@@ -116,7 +116,7 @@ class BubblebotWebsite {
                             "name": "afk",
                             "aliases": [],
                             "description": "Set yourself as AFK with an optional message",
-                            "usage": ".afk [message]",
+                            "usage": ".afk &lt;message&gt;",
                             "permissions": "None",
                             "example": ".afk Going to sleep"
                         },
@@ -132,7 +132,7 @@ class BubblebotWebsite {
                             "name": "calculator",
                             "aliases": [],
                             "description": "Perform mathematical calculations",
-                            "usage": ".calculator <expression>",
+                            "usage": ".calculator &lt;expression&gt;",
                             "permissions": "None",
                             "example": ".calculator 2 + 2"
                         },
@@ -140,17 +140,17 @@ class BubblebotWebsite {
                             "name": "dm",
                             "aliases": [],
                             "description": "Send a direct message to a user",
-                            "usage": ".dm <user> <message>",
+                            "usage": ".dm @user &lt;message&gt;",
                             "permissions": "Manage Messages",
-                            "example": ".dm @user Hello there!"
+                            "example": ".dm @moozxdz Hello there!"
                         },
                         {
                             "name": "help",
                             "aliases": [],
                             "description": "Display help information for commands",
-                            "usage": ".help [command]",
+                            "usage": ".help",
                             "permissions": "None",
-                            "example": ".help ping"
+                            "example": ".help"
                         },
                         {
                             "name": "kanye",
@@ -172,31 +172,31 @@ class BubblebotWebsite {
                             "name": "remindme",
                             "aliases": [],
                             "description": "Set a reminder for a specific time",
-                            "usage": ".remindme <time> <message>",
+                            "usage": ".remindme &lt;time&gt; &lt;message&gt;",
                             "permissions": "None",
                             "example": ".remindme 1h Take a break"
                         },
                         {
                             "name": "removeafk",
                             "aliases": [],
-                            "description": "Manually remove your AFK status",
-                            "usage": ".removeafk",
+                            "description": "Manually remove a user's AFK status",
+                            "usage": ".removeafk @user",
                             "permissions": "Administrator",
-                            "example": ".removeafk"
+                            "example": ".removeafk @moozxdz"
                         },
                         {
                             "name": "reply",
                             "aliases": [],
                             "description": "Reply to a specific message",
-                            "usage": ".reply <message_id> <response>",
+                            "usage": ".reply &lt;message_id&gt; &lt;response&gt;",
                             "permissions": "None",
-                            "example": ".reply 123456789 Thanks!"
+                            "example": ".reply 1402463205736845363 Thanks!"
                         },
                         {
                             "name": "say",
                             "aliases": [],
                             "description": "Make the bot send a message",
-                            "usage": ".say <message>",
+                            "usage": ".say &lt;message&gt;",
                             "permissions": "Manage Messages",
                             "example": ".say Hello everyone!"
                         },
@@ -204,7 +204,7 @@ class BubblebotWebsite {
                             "name": "weather",
                             "aliases": [],
                             "description": "Get weather information for a location",
-                            "usage": ".weather <location>",
+                            "usage": ".weather &lt;location&gt;"     ,
                             "permissions": "None",
                             "example": ".weather New York"
                         }
@@ -217,7 +217,7 @@ class BubblebotWebsite {
                             "name": "purge",
                             "aliases": ["clear", "c"],
                             "description": "Delete a specified number of messages (1-100) from the channel",
-                            "usage": ".purge <amount>",
+                            "usage": ".purge &lt;amount&gt;",
                             "permissions": "Manage Messages",
                             "example": ".purge 10"
                         },
@@ -248,18 +248,34 @@ class BubblebotWebsite {
                         {
                             "name": "mention",
                             "aliases": [],
-                            "description": "Manage mention permissions and settings",
-                            "usage": ".mention <action>",
+                            "description": "Mention a role without mention role permission",
+                            "usage": ".mention &lt;rolename&gt;",
                             "permissions": "Manage Messages",
-                            "example": ".mention enable"
+                            "example": ".mention Minecraft"
+                        },
+                        {
+                            "name": "mention add",
+                            "aliases": [],
+                            "description": "Add a user to use the command for a specific role",
+                            "usage": ".mention add @Role @User",
+                            "permissions": "Manage Messages",
+                            "example": ".mention add @Minecraft @moozxdz"
+                        },
+                        {
+                            "name": "mention remove",
+                            "aliases": [],
+                            "description": "Remove a user from using the command for a specific role",
+                            "usage": ".mention remove @Role @User",
+                            "permissions": "Manage Messages",
+                            "example": ".mention remove @Minecraft @moozxdz"
                         },
                         {
                             "name": "nick",
                             "aliases": [],
                             "description": "Change a user's nickname",
-                            "usage": ".nick <user> <nickname>",
+                            "usage": ".nick @user &lt;nickname&gt;",
                             "permissions": "Manage Nicknames",
-                            "example": ".nick @user NewName"
+                            "example": ".nick @kiff kiffbombo"
                         },
                         {
                             "name": "snipe",
@@ -267,15 +283,15 @@ class BubblebotWebsite {
                             "description": "View recently deleted messages in the channel",
                             "usage": ".snipe [number]",
                             "permissions": "Manage Messages",
-                            "example": ".snipe 1"
+                            "example": ".snipe 5"
                         },
                         {
                             "name": "timeout",
                             "aliases": [],
                             "description": "Timeout a user for a specified duration",
-                            "usage": ".timeout <user> <duration> [reason]",
+                            "usage": ".timeout @user &lt;duration&gt; &lt;optional message&gt;",
                             "permissions": "Moderate Members",
-                            "example": ".timeout @user 1h Spamming"
+                            "example": ".timeout @moozxdz 1h Spamming"
                         },
                         {
                             "name": "unlock",
@@ -289,9 +305,9 @@ class BubblebotWebsite {
                             "name": "untimeout",
                             "aliases": [],
                             "description": "Remove timeout from a user",
-                            "usage": ".untimeout <user>",
+                            "usage": ".untimeout @user",
                             "permissions": "Moderate Members",
-                            "example": ".untimeout @user"
+                            "example": ".untimeout @moozxdz"
                         }
                     ]
                 },
@@ -302,7 +318,7 @@ class BubblebotWebsite {
                             "name": "addreaction",
                             "aliases": ["ar"],
                             "description": "Add automatic emoji reactions to specific words",
-                            "usage": ".addreaction <word> <emoji1> [emoji2] [emoji3]",
+                            "usage": ".addreaction &lt;word&gt; &lt;emoji1&gt; [emoji2] [emoji3]",
                             "permissions": "Manage Guild Expressions",
                             "example": ".addreaction hello 👋 😊"
                         },
@@ -318,7 +334,7 @@ class BubblebotWebsite {
                             "name": "removereaction",
                             "aliases": ["rr"],
                             "description": "Remove automatic reactions from a specific word",
-                            "usage": ".removereaction <word>",
+                            "usage": ".removereaction &lt;word&gt;",
                             "permissions": "Manage Guild Expressions",
                             "example": ".removereaction hello"
                         }
@@ -331,41 +347,57 @@ class BubblebotWebsite {
                             "name": "addrole",
                             "aliases": ["arole", "grole", "giverole"],
                             "description": "Add a role to a user",
-                            "usage": ".addrole <user> <role>",
+                            "usage": ".addrole @user &lt;rolename&gt;",
                             "permissions": "Manage Guild",
-                            "example": ".addrole @user Member"
+                            "example": ".addrole @user Outsider"
                         },
                         {
                             "name": "claim",
                             "aliases": [],
-                            "description": "Claim self-assignable roles or manage the claimable roles list",
-                            "usage": ".claim [role] OR .claim add/remove <role>",
-                            "permissions": "None (Manage Roles for add/remove)",
-                            "example": ".claim Member"
+                            "description": "Claim self-assignable roles or view claimable roles list",
+                            "usage": ".claim &lt;rolename&gt; for claiming and .claim for list",
+                            "permissions": "None",
+                            "example": ".claim Minecraft"
+                        },
+                        {
+                            "name": "claim add",
+                            "aliases": [],
+                            "description": "Add a claimable role to self-assignable roles",
+                            "usage": ".claim add &lt;rolename&gt;",
+                            "permissions": "Manage Roles",
+                            "example": ".claim add Minecraft"
+                        },
+                        {
+                            "name": "claim remove",
+                            "aliases": [],
+                            "description": "Remove a claimable role from the self-assignable roles list",
+                            "usage": ".claim remove &lt;rolename&gt;",
+                            "permissions": "Manage Roles",
+                            "example": ".claim remove Minecraft"
                         },
                         {
                             "name": "drop",
                             "aliases": [],
                             "description": "Remove self-assignable roles from yourself",
-                            "usage": ".drop [role]",
+                            "usage": ".drop &lt;rolename&gt;",
                             "permissions": "None",
-                            "example": ".drop Member"
+                            "example": ".drop Minecraft"
                         },
                         {
                             "name": "removerole",
                             "aliases": ["rrole"],
                             "description": "Remove a role from a user",
-                            "usage": ".removerole <user> <role>",
+                            "usage": ".removerole @user &lt;rolename&gt;",
                             "permissions": "Manage Guild",
-                            "example": ".removerole @user Member"
+                            "example": ".removerole @user Outsider"
                         },
                         {
                             "name": "roles",
                             "aliases": [],
                             "description": "Display all roles of a user",
-                            "usage": ".roles [user]",
+                            "usage": ".roles @user",
                             "permissions": "Manage Roles",
-                            "example": ".roles @user"
+                            "example": ".roles or .roles @moozxdz"
                         }
                     ]
                 },
@@ -384,16 +416,16 @@ class BubblebotWebsite {
                             "name": "setprefix",
                             "aliases": [],
                             "description": "Set a custom command prefix for the server (max 3 characters)",
-                            "usage": ".setprefix <prefix>",
-                            "permissions": "Manage Guild",
-                            "example": ".setprefix !"
+                            "usage": ".setprefix &lt;prefix&gt;",
+                            "permissions": "Manage Server",
+                            "example": ".setprefix ?"
                         },
                         {
                             "name": "togglecommand",
                             "aliases": ["tc"],
                             "description": "Enable or disable specific commands for the server",
-                            "usage": ".togglecommand <command>",
-                            "permissions": "Manage Guild",
+                            "usage": ".togglecommand &lt;command&gt;",
+                            "permissions": "Manage Server",
                             "example": ".togglecommand ping"
                         }
                     ]
@@ -405,7 +437,7 @@ class BubblebotWebsite {
                             "name": "addtrigger",
                             "aliases": ["at"],
                             "description": "Add an auto-response trigger (supports multiple words in quotes)",
-                            "usage": ".addtrigger \"<trigger>\" <response>",
+                            "usage": ".addtrigger \"&lt;trigger&gt;\" &lt;response&gt;",
                             "permissions": "Manage Messages",
                             "example": ".addtrigger \"hello there\" \"Hi! How can I help?\""
                         },
@@ -421,7 +453,7 @@ class BubblebotWebsite {
                             "name": "removetrigger",
                             "aliases": ["rt"],
                             "description": "Remove an auto-response trigger (supports multi-word triggers in quotes)",
-                            "usage": ".removetrigger \"<trigger>\"",
+                            "usage": ".removetrigger \"&lt;trigger&gt;\"",
                             "permissions": "Manage Messages",
                             "example": ".removetrigger \"hello there\""
                         }
