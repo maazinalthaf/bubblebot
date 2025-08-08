@@ -58,7 +58,6 @@ module.exports = {
 
     // Check for add/remove subcommands
     if (args[0].toLowerCase() === 'add' || args[0].toLowerCase() === 'remove') {
-      // Require ManageRoles permission for add/remove operations
       if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
         const embed = new EmbedBuilder()
           .setColor('#ffcc32')

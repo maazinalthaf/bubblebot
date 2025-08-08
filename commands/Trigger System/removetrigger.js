@@ -93,7 +93,6 @@ module.exports = {
         
         try {
             fs.writeFileSync(triggersPath, JSON.stringify(triggers, null, 2));
-            // Update triggers in memory without restart
             if (client.triggerManager) {
                 client.triggerManager.reloadTriggers(triggers);
             }

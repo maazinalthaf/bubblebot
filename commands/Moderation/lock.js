@@ -5,7 +5,6 @@ module.exports = {
     name: 'lock',
     description: 'Locks the current channel to prevent members from sending messages',
     async execute(client, message, args) {
-        // Check if user has permission to manage channels
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
             const embed = new EmbedBuilder()
                 .setColor('#ffcc32')

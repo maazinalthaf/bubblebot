@@ -14,7 +14,6 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
-        // Delete the command message
         await message.delete().catch(() => {});
 
         // Validate input
@@ -44,8 +43,7 @@ module.exports = {
         try {
             
             const messages = await message.channel.messages.fetch({ limit: amount });
-            
-            // Delete all fetched messages
+        
             const deletedMessages = await message.channel.bulkDelete(messages, true);
             
             // Send confirmation

@@ -47,7 +47,7 @@ module.exports = {
 
         delete reactions[guildId][word];
         saveReactions(reactions);
-        client.triggerManager.reloadReactions(reactions); // Add this line
+        client.triggerManager.reloadReactions(reactions); 
         const embed = new EmbedBuilder()
             .setColor('#77B255')
             .setDescription(`${emojis.tick} Reaction removed for word "${word}" in this server.`);

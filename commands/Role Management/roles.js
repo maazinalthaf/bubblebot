@@ -33,7 +33,7 @@ module.exports = {
             
             const roles = target.roles.cache
                 .filter(role => role.id !== message.guild.id)
-                .sort((a, b) => b.position - a.position) // Sort by position (highest to lowest)
+                .sort((a, b) => b.position - a.position) 
                 .map(role => `<@&${role.id}>`);
 
             

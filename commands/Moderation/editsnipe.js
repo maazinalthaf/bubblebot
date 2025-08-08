@@ -1,13 +1,11 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const {embed_color, emojis } = require('../../utils/constants');
-
-// Object to store edited messages for each channel
 const editsnipes = new Map();
 
 module.exports = {
     name: 'editsnipe',
     aliases: ['es'],
-    editsnipes, // Export the editsnipes map
+    editsnipes, 
     async execute(client, message, args) {
         // Check if the user has permission to use the ?editsnipe command
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {

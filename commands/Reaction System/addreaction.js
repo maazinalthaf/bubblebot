@@ -52,7 +52,7 @@ module.exports = {
         reactions[guildId][word] = reactionsToAdd;
     
         saveReactions(reactions);
-        client.triggerManager.reloadReactions(reactions); // Add this line
+        client.triggerManager.reloadReactions(reactions); 
         const embed = new EmbedBuilder()
             .setColor('#77B255')
             .setDescription(`${emojis.tick} Reaction(s) ${reactionsToAdd.join(', ')} added for word "${word}" in this server.`);

@@ -31,7 +31,6 @@ module.exports = {
         const snipedMessage = snipedMessages[snipeIndex];
         const totalSnipes = snipedMessages.length;
 
-        // Create an embed for the sniped message
         const embed = new EmbedBuilder()
             .setColor(embed_color)
             .setAuthor({ 

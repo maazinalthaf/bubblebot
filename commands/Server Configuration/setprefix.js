@@ -44,7 +44,6 @@ module.exports = {
 
     const newPrefix = args[0];
     
-    // Validate prefix length
     if (newPrefix.length > 3) {
       return message.reply('Prefix must be 3 characters or less.');
     }

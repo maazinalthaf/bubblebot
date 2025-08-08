@@ -66,7 +66,6 @@ module.exports = {
                 await user.send({ embeds: [dmEmbed] });
             } catch (dmError) {
                 console.log(`Could not DM user ${user.tag}`);
-                // Continue with the timeout even if DM fails
             }
 
             // Send confirmation in the channel
@@ -84,7 +83,7 @@ module.exports = {
     },
 };
 
-// Helper function to parse duration string to milliseconds
+// Dependent Function
 function parseDuration(duration) {
     const match = duration.match(/^(\d+)([mhd])$/);
     if (!match) return null;
