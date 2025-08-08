@@ -41,7 +41,7 @@ module.exports = {
                 },
                 {
                     name: '`📦` Bot Version',
-                    value: `v1.8.0`,
+                    value: `v1.8.1`,
                     inline: true
                 },
                 {
