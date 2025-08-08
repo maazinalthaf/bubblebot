@@ -71,7 +71,7 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setColor(embed_color)
-                .setDescription(`\`${cleanExpression}\` = **${result}**`);
+                .setDescription(`\`${cleanExpression}\` = ${result}`);
             
             message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         } catch (error) {
