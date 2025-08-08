@@ -130,7 +130,7 @@ class BubblebotWebsite {
                         },
                         {
                             "name": "calculator",
-                            "aliases": [],
+                            "aliases": ["calc","math"],
                             "description": "Perform mathematical calculations",
                             "usage": ".calculator &lt;expression&gt;",
                             "permissions": "None",
@@ -146,7 +146,7 @@ class BubblebotWebsite {
                         },
                         {
                             "name": "help",
-                            "aliases": [],
+                            "aliases": ["commands"],
                             "description": "Display help information for commands",
                             "usage": ".help",
                             "permissions": "None",
@@ -154,7 +154,7 @@ class BubblebotWebsite {
                         },
                         {
                             "name": "kanye",
-                            "aliases": [],
+                            "aliases": ["ye"],
                             "description": "Get a random Kanye West quote",
                             "usage": ".kanye",
                             "permissions": "None",
@@ -170,7 +170,7 @@ class BubblebotWebsite {
                         },
                         {
                             "name": "remindme",
-                            "aliases": [],
+                            "aliases": ["alarm","remind"],
                             "description": "Set a reminder for a specific time",
                             "usage": ".remindme &lt;time&gt; &lt;message&gt;",
                             "permissions": "None",
@@ -178,7 +178,7 @@ class BubblebotWebsite {
                         },
                         {
                             "name": "removeafk",
-                            "aliases": [],
+                            "aliases": ["rafk"],
                             "description": "Manually remove a user's AFK status",
                             "usage": ".removeafk @user",
                             "permissions": "Administrator",
@@ -202,7 +202,7 @@ class BubblebotWebsite {
                         },
                         {
                             "name": "weather",
-                            "aliases": [],
+                            "aliases": ["w"],
                             "description": "Get weather information for a location",
                             "usage": ".weather &lt;location&gt;"     ,
                             "permissions": "None",

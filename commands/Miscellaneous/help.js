@@ -3,7 +3,7 @@ const { embed_color, emojis } = require('../../utils/constants');
 
 module.exports = {
     name: 'help',
-    aliases: ['h', 'commands'],
+    aliases: ['commands'],
     description: 'Shows bot information and commands.',
     async execute(client, message, args) {
         const embed = new EmbedBuilder()
