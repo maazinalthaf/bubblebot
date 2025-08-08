@@ -8,7 +8,7 @@ module.exports = {
     async execute(client, message, args) {
         const embed = new EmbedBuilder()
             .setAuthor({
-                name: '| Command List',
+                name: 'Command List',
                 iconURL: message.author.displayAvatarURL({ dynamic: true })
             })
             .setDescription('Click on the button below for more info.')
