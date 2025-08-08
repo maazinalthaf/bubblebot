@@ -36,9 +36,7 @@ module.exports = {
         .setColor('#ffcc32') 
         .setDescription(`${emojis.error} **Invalid time format!**\nPlease use a format like \`10s\`, \`10m\`, \`1h\`, \`1d\`.\nMinimum duration is 10 seconds and maximum is 7 days.`);
     
-    return message.reply({ 
-        embeds: [embed], 
-        allowedMentions: { repliedUser: false }
+    return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false }
     });
 }
 

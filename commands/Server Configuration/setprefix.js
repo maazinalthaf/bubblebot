@@ -39,7 +39,7 @@ module.exports = {
         .addFields(
           { name: 'Usage', value: `To change it, use: \`${currentPrefix}setprefix <new prefix>\`` }
         );
-      return message.reply({ embeds: [embed] });
+      return message.reply({ embeds: [embed] , allowedMentions: { repliedUser: false } });
     }
 
     const newPrefix = args[0];

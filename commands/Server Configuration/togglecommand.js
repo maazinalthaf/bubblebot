@@ -93,7 +93,7 @@ async function execute(client, message, args) {
 
   try {
     fs.writeFileSync(disabledCommandsPath, JSON.stringify(disabledCommands, null, 2));
-    await message.reply({ embeds: [embed] });
+    await message.reply({ embeds: [embed], allowedMentions: { repliedUser: false }  });
   } catch (error) {
     console.error('Error saving disabled commands:', error);
     const errorEmbed = new EmbedBuilder()
