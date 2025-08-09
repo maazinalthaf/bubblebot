@@ -1815,7 +1815,7 @@ body {
 }
 
 .nav-brand:hover .brand-logo {
-    transform: rotate(-45deg) scale(1.1);
+    transform: rotate(-5deg) scale(1.1);
 }
 
 /* Prevent zoom on input focus on mobile */
