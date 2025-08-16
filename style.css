@@ -1803,8 +1803,6 @@ body {
     width: 48px;
     object-fit: contain;
     transition: transform 0.3s var(--ease-standard);
-    transform: translateY(-1px);
-    transform: translateX(10px);
 }
 
 /* Animation for click effect */
@@ -1835,7 +1833,7 @@ body {
 }
 
 .nav-brand:hover .brand-logo {
-    transform: scale(1.3) translateX(5px) translateY(-1px);
+    transform: scale(2) rotate(-360deg);
 }
 
 /* Prevent zoom on input focus on mobile */
