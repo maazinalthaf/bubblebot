@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Collection, Partials } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Collection, Partials, PresenceUpdateStatus } = require('discord.js');
 const fs = require('fs');
 const { performance } = require('perf_hooks');
 const { snipes } = require('./commands/Moderation/snipe.js');
@@ -113,6 +113,7 @@ client.triggerManager = {
 // Bot online confirmation message
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}`);
+  client.user.setStatus(PresenceUpdateStatus.DoNotDisturb);
 
   // Log all registered commands
   console.log('Registered Commands:');
