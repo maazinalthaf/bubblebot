@@ -35,7 +35,7 @@ function getServerData(guildId) {
 module.exports = {
   name: 'mention',
   description: 'Mention a specific role or manage mention permissions',
-  usage: 'mention <role name> OR .mention add <role> <user> OR .mention remove <role> <user>',
+  usage: `mention <role name> OR mention add <role> <user> OR mention remove <role> <user>`,
   async execute(client, message, args) {
     if (!message.guild) {
       const embed = new EmbedBuilder()
