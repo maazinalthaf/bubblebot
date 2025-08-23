@@ -152,7 +152,7 @@ if (afkData[message.author.id]) {
   const timeSinceAfk = Date.now() - timestamp;
   delete afkData[message.author.id];
   const embed = new EmbedBuilder()
-    .setColor('#FFCC32')
+    .setColor(yellow)
     .setDescription(`👋 **${message.author}**: Welcome back, you were AFK for **${msToTime(timeSinceAfk)}**.`);
   message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 

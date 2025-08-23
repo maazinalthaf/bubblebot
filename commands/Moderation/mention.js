@@ -39,7 +39,7 @@ module.exports = {
   async execute(client, message, args) {
     if (!message.guild) {
       const embed = new EmbedBuilder()
-        .setColor('#FFcc32')
+        .setColor(yellow)
         .setDescription(`${emojis.error} This command can only be used in a server.`);
       return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
@@ -80,7 +80,7 @@ module.exports = {
       // Require ManageRoles permission for add/remove operations
       if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
         const embed = new EmbedBuilder()
-          .setColor('#ffcc32')
+          .setColor(yellow)
           .setDescription(`${emojis.error} You do not have permission to use this subcommand.`);
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
       }
@@ -97,7 +97,7 @@ module.exports = {
 
       if (!role || !user) {
         const embed = new EmbedBuilder()
-          .setColor('#FFcc32')
+          .setColor(yellow)
           .setDescription(`${emojis.error} Please mention both a role and a user.`);
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
       }
@@ -112,12 +112,12 @@ module.exports = {
           saveMentionData();
 
           const embed = new EmbedBuilder()
-            .setColor('#77b255')
+            .setColor(green)
             .setDescription(`${emojis.tick} Added ${user} to the list of users who can mention ${role}.`);
           return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         } else {
           const embed = new EmbedBuilder()
-            .setColor('#FFcc32')
+            .setColor(yellow)
             .setDescription(`${emojis.error} ${user} already has permission to mention ${role}.`);
           return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
@@ -132,12 +132,12 @@ module.exports = {
           saveMentionData();
 
           const embed = new EmbedBuilder()
-            .setColor('#77b255')
+            .setColor(green)
             .setDescription(`${emojis.tick} Removed ${user} from the list of users who can mention ${role}.`);
           return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         } else {
           const embed = new EmbedBuilder()
-            .setColor('#c83636')
+            .setColor(red)
             .setDescription(`${emojis.cross} ${user} doesn't have permission to mention ${role}.`);
           return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
@@ -149,21 +149,21 @@ module.exports = {
 
       if (!role) {
         const embed = new EmbedBuilder()
-          .setColor('#FFcc32')
+          .setColor(yellow)
           .setDescription(`${emojis.error} Role not found.`);
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
       }
 
       if (!serverData[role.id]) {
         const embed = new EmbedBuilder()
-          .setColor('#FFcc32')
+          .setColor(yellow)
           .setDescription(`${emojis.error} This role is not configured for mentions.`);
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
       }
 
       if (!serverData[role.id].includes(message.author.id)) {
         const embed = new EmbedBuilder()
-          .setColor('#FFcc32')
+          .setColor(yellow)
           .setDescription(`${emojis.error} You don't have permission to mention ${role}.`);
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
       }
@@ -173,7 +173,7 @@ module.exports = {
       } catch (error) {
         console.error('Error mentioning role:', error);
         const embed = new EmbedBuilder()
-          .setColor('#c83636')
+          .setColor(red)
           .setDescription(`${emojis.cross} Failed to mention role. I may not have permission.`);
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
       }

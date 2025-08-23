@@ -11,7 +11,7 @@ module.exports = {
         const prefix = getPrefix(message.guild?.id);
         if (!message.guild) {
             const embed = new EmbedBuilder()
-                .setColor('#ffcc32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} This command only works in servers!`);
              return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
@@ -28,7 +28,7 @@ module.exports = {
 
             if (memberRoles.length === 0) {
                 const embed = new EmbedBuilder()
-                    .setColor('#ffcc32')
+                    .setColor(yellow)
                     .setDescription(`${emojis.error} You don\'t have any self-assignable roles to remove.`);
                  return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
@@ -50,13 +50,13 @@ module.exports = {
         
         if (!role) {
             const embed = new EmbedBuilder()
-                .setColor('#c83636')
+                .setColor(red)
                 .setDescription(`${emojis.cross} You don\'t have that role!`);
              return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
         if (!claimableRoles.includes(role.id)) {
             const embed = new EmbedBuilder()
-                .setColor('#ffcc32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} That role isn\'t self-removable!`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
@@ -64,13 +64,13 @@ module.exports = {
         try {
             await member.roles.remove(role);
             const embed = new EmbedBuilder()
-                .setColor('#77b255')
+                .setColor(green)
                 .setDescription(`${emojis.tick} The ${role} role has been removed!`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } catch (error) {
             console.error(error);
             const embed = new EmbedBuilder()
-                .setColor('#c83636')
+                .setColor(red)
                 .setDescription(`${emojis.cross} Failed to remove the role. The bot might not have permission.`);
              return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }

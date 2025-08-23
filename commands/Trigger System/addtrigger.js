@@ -17,7 +17,7 @@ module.exports = {
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('#FFcc32')
+                        .setColor(yellow)
                         .setDescription(`${emojis.error} You need the **Manage Messages** permission to use this command.`)
                 ]
             });
@@ -27,7 +27,7 @@ module.exports = {
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('#FFcc32')
+                        .setColor(yellow)
                         .setDescription(`${emojis.error} Usage: \`${prefix}addtrigger "<word or phrase>" <response>\`\nExample: \`${prefix}addtrigger "hello there" "Hi! How can I help?"\``)
                 ]
             });
@@ -58,7 +58,7 @@ module.exports = {
                 return message.reply({
                     embeds: [
                         new EmbedBuilder()
-                            .setColor('#c83636')
+                            .setColor(red)
                             .setDescription(`${emojis.cross} Invalid format. Make sure to close your quotes.\nUsage: \`.addtrigger "<word or phrase>" <response> \``)
                     ]
                 });
@@ -84,14 +84,14 @@ module.exports = {
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('#C83636')
+                        .setColor(red)
                         .setDescription(`${emojis.cross} Failed to save the trigger.`)
                 ]
             });
         }
 
         const embed = new EmbedBuilder()
-            .setColor('#77b255')
+            .setColor(green)
             .setDescription(`${emojis.tick} **Trigger Added**\nThe bot will now respond to \`${triggerPhrase}\` with:\n\n${response}`)
             .setTimestamp();
 

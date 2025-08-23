@@ -9,7 +9,7 @@ module.exports = {
     async execute(client, message, args) {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
-                .setColor('#C83636')
+                .setColor(red)
                 .setDescription(`${emojis.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
@@ -19,7 +19,7 @@ module.exports = {
         // Validate input
         if (!args[0]) {
             const embed = new EmbedBuilder()
-                .setColor('#FFCC32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} Please specify the number of messages to delete.\nUsage: \`${this.name} ${this.usage}\``);
             return message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 5000));
         }
@@ -28,14 +28,14 @@ module.exports = {
 
         if (isNaN(amount)) {
             const embed = new EmbedBuilder()
-                .setColor('#FFCC32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} Please provide a valid number.\nUsage: \`${this.name} ${this.usage}\``);
             return message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 5000));
         }
 
         if (amount <= 0 || amount > 100) {
             const embed = new EmbedBuilder()
-                .setColor('#FFCC32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} Please provide a number between 1 and 100.`);
             return message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 5000));
         }
@@ -48,7 +48,7 @@ module.exports = {
             
             // Send confirmation
             const embed = new EmbedBuilder()
-                .setColor('#77B255')
+                .setColor(green)
                 .setDescription(`${emojis.tick} Successfully deleted ${deletedMessages.size} messages.`);
                 
             const reply = await message.channel.send({ embeds: [embed] });
@@ -56,7 +56,7 @@ module.exports = {
         } catch (error) {
             console.error('Error deleting messages:', error);
             const embed = new EmbedBuilder()
-                .setColor('#FFCC32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} An error occurred while deleting messages. ${error.message.includes('Maximum') ? 'Messages must be younger than 14 days.' : 'Please try again.'}`);
             message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 5000));
         }

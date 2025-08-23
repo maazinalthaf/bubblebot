@@ -39,7 +39,7 @@ module.exports = {
         // Check if the user has Administrator permission
         if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
             const embed = new EmbedBuilder()
-                .setColor('#C83636')
+                .setColor(red)
                 .setDescription(`${emojis.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
@@ -48,7 +48,7 @@ module.exports = {
 
         if (!mention) {
             const embed = new EmbedBuilder()
-                .setColor('#FFCC32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} Please mention a user to remove their AFK status.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
@@ -60,12 +60,12 @@ module.exports = {
             saveAfkData(); // Save the updated AFK data
 
             const embed = new EmbedBuilder()
-                .setColor('#77B255')
+                .setColor(green)
                 .setDescription(`${emojis.tick} AFK status removed for ${mention}.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } else {
             const embed = new EmbedBuilder()
-                .setColor('#C83636')
+                .setColor(red)
                 .setDescription(`${emojis.cross} ${mention} is not AFK.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }

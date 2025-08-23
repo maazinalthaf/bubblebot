@@ -7,7 +7,7 @@ module.exports = {
         // Check if the user has permission to use the command
         if (!message.member.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
             const embed = new EmbedBuilder()
-                .setColor('#C83636')
+                .setColor(red)
                 .setDescription(`${emojis.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
@@ -19,7 +19,7 @@ module.exports = {
 
         if (!userInput || !duration) {
             const embed = new EmbedBuilder()
-                .setColor('#ffcc32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} Please provide a user mention/ID and duration (e.g., 1h, 1d, 7d).`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
@@ -34,7 +34,7 @@ module.exports = {
             const durationInMs = parseDuration(duration);
             if (!durationInMs) {
                 const embed = new EmbedBuilder()
-                    .setColor('#ffcc32')
+                    .setColor(yellow)
                     .setDescription(`${emojis.error} Invalid duration format. Use format: 1m, 1h, 1d, etc.`);
                 return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
             }
@@ -42,7 +42,7 @@ module.exports = {
             // Check if duration is within Discord's limits (max 28 days)
             if (durationInMs > 28 * 24 * 60 * 60 * 1000) {
                 const embed = new EmbedBuilder()
-                    .setColor('#ffcc32')
+                    .setColor(yellow)
                     .setDescription(`${emojis.error} Timeout duration cannot exceed 28 days.`);
                 return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
             }
@@ -70,13 +70,13 @@ module.exports = {
 
             // Send confirmation in the channel
             const embed = new EmbedBuilder()
-                .setColor('#77B255')
+                .setColor(green)
                 .setDescription(`${emojis.tick} Successfully timed out ${user} for ${duration}\nReason: **${reason}**`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         } catch (error) {
             console.error(error);
             const embed = new EmbedBuilder()
-                .setColor('#ffcc32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} An error occurred while trying to timeout the user.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }

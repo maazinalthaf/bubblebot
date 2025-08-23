@@ -7,7 +7,7 @@ module.exports = {
 
 if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
     const embed = new EmbedBuilder()
-    .setColor('#C83636')
+    .setColor(red)
     .setDescription(`${emojis.cross} You do not have permission to use this command.`);
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
@@ -18,7 +18,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
   
   if (!text) {
     const embed = new EmbedBuilder()
-    .setColor('#FFCC32')
+    .setColor(yellow)
     .setDescription(`${emojis.error} Please provide a message.`);
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }

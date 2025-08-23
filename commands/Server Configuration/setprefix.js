@@ -25,7 +25,7 @@ module.exports = {
   async execute(client, message, args) {
     if (!message.member.permissions.has('ManageGuild')) {
       const embed = new EmbedBuilder()
-      .setColor('#c83636')
+      .setColor(red)
       .setDescription(`${emojis.cross} You do not have permission to use this command.`);
     return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
   }
@@ -54,7 +54,7 @@ module.exports = {
     try {
       fs.writeFileSync(prefixesPath, JSON.stringify(prefixes, null, 2));
       const embed = new EmbedBuilder()
-        .setColor('77b255')
+        .setColor(green)
         .setDescription(`${emojis.tick} Server prefix has been updated to: \`${newPrefix}\``);
       message.reply({ embeds: [embed] , allowedMentions: { repliedUser: false }});
     } catch (error) {

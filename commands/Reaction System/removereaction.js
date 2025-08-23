@@ -10,7 +10,7 @@ module.exports = {
     async execute(client, message, args) {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuildExpressions)) {
             const embed = new EmbedBuilder()
-                .setColor('#C83636')
+                .setColor(red)
                 .setDescription(`${emojis.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
@@ -20,7 +20,7 @@ module.exports = {
 
         if (!word) {
             const embed = new EmbedBuilder()
-                .setColor('#FFCC32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} Please provide a word to remove the reaction.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
@@ -32,7 +32,7 @@ module.exports = {
         } catch (error) {
             console.error('Error reading reactions.json:', error);
             const embed = new EmbedBuilder()
-                .setColor('#C83636')
+                .setColor(red)
                 .setDescription(`${emojis.cross} Failed to load reactions.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
@@ -40,7 +40,7 @@ module.exports = {
         const guildId = message.guild.id;
         if (!reactions[guildId] || !reactions[guildId][word]) {
             const embed = new EmbedBuilder()
-                .setColor('#FFCC32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} There is no reaction associated with the word **"${word}"** in this server.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
@@ -49,7 +49,7 @@ module.exports = {
         saveReactions(reactions);
         client.triggerManager.reloadReactions(reactions); 
         const embed = new EmbedBuilder()
-            .setColor('#77B255')
+            .setColor(green)
             .setDescription(`${emojis.tick} Reaction removed for word "${word}" in this server.`);
         message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     }

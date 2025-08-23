@@ -16,7 +16,7 @@ module.exports = {
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('#FFCC32')
+                        .setColor(yellow)
                         .setDescription(`${emojis.error} You do not have permission to use this command.`)
                 ],
                 allowedMentions: { repliedUser: false }
@@ -31,7 +31,7 @@ module.exports = {
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('#C83636')
+                        .setColor(red)
                         .setDescription(`${emojis.cross} Failed to load triggers.`)
                 ],
                 allowedMentions: { repliedUser: false }
@@ -45,7 +45,7 @@ module.exports = {
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('#C83636')
+                        .setColor(red)
                         .setDescription(`${emojis.cross} No triggers have been set up for this server yet.`)
                 ],
                 allowedMentions: { repliedUser: false }

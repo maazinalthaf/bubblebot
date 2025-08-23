@@ -7,7 +7,7 @@ module.exports = {
     async execute(client, message, args) {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
             const embed = new EmbedBuilder()
-                .setColor('#ffcc32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} You don't have permission to lock channels.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
@@ -21,14 +21,14 @@ module.exports = {
             });
 
             const embed = new EmbedBuilder()
-                .setColor('#77b255')
+                .setColor(green)
                 .setDescription(`${emojis.tick} ${channel} has been locked.`);
             
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         } catch (error) {
             console.error('Error locking channel:', error);
             const embed = new EmbedBuilder()
-                .setColor('#c83636')
+                .setColor(red)
                 .setDescription(`${emojis.cross} Failed to lock the channel.`);
             
            return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });

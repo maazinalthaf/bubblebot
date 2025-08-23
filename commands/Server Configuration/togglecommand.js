@@ -39,14 +39,14 @@ async function execute(client, message, args) {
   // Check for Manage Guild permission
   if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
     const embed = new EmbedBuilder()
-      .setColor('#c83636')
+      .setColor(red)
       .setDescription(`${emojis.cross} You do not have permission to use this command.`);
     return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
   }
 
   if (!args.length) {
     const embed = new EmbedBuilder()
-      .setColor('#FFcc32')
+      .setColor(yellow)
       .setDescription(`${emojis.error} Please specify a command to toggle (enable/disable).\n\n**Example:** \`${prefix}togglecommand ping\``)
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
@@ -57,14 +57,14 @@ async function execute(client, message, args) {
 
   if (!command) {
     const embed = new EmbedBuilder()
-      .setColor('#FFcc32')
+      .setColor(yellow)
       .setDescription(`${emojis.error} Command "${commandName}" not found.`);
     return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
   }
 
   if (command.name === 'togglecommand') {
     const embed = new EmbedBuilder()
-      .setColor('#FFcc32')
+      .setColor(yellow)
       .setDescription(`${emojis.error} You cannot disable the togglecommand itself!`);
     return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
   }
@@ -82,12 +82,12 @@ async function execute(client, message, args) {
   if (isDisabled) {
     disabledCommands[guildId] = disabledCommands[guildId].filter(cmd => cmd !== command.name);
     embed
-      .setColor('#77b255')
+      .setColor(green)
       .setDescription(`${emojis.tick} Command **${command.name}** has been **enabled** for this server.`);
   } else {
     disabledCommands[guildId].push(command.name);
     embed
-      .setColor('#77b255')
+      .setColor(green)
       .setDescription(`${emojis.tick} Command **${command.name}** has been **disabled** for this server.`);
   }
 
@@ -97,7 +97,7 @@ async function execute(client, message, args) {
   } catch (error) {
     console.error('Error saving disabled commands:', error);
     const errorEmbed = new EmbedBuilder()
-      .setColor('#c83636')
+      .setColor(red)
       .setDescription(`${emojis.cross} There was an error saving the command toggle state.`);
     return message.reply({ embeds: [errorEmbed], allowedMentions: { repliedUser: false } });
   }

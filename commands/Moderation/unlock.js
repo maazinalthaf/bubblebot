@@ -8,7 +8,7 @@ module.exports = {
         // Check if user has permission to manage channels
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
             const embed = new EmbedBuilder()
-                .setColor('#ffcc32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} You don't have permission to unlock channels.`);
            return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
@@ -22,13 +22,13 @@ module.exports = {
             });
 
             const embed = new EmbedBuilder()
-                .setColor('#77b255')
+                .setColor(green)
                 .setDescription(`${emojis.tick} ${channel} has been unlocked.`);
             
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         } catch (error) {
             const embed = new EmbedBuilder()
-                .setColor('#c83636')
+                .setColor(red)
                 .setDescription(`${emojis.cross} Failed to unlock the channel.`);
             
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });

@@ -7,7 +7,7 @@ module.exports = {
     async execute(client, message, args) {    
       if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
         const embed = new EmbedBuilder()
-        .setColor('#C83636')
+        .setColor(red)
         .setDescription(`${emojis.cross} You do not have permission to use this command.`);
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
@@ -18,7 +18,7 @@ module.exports = {
     
       if (!targetUserId || !roleName) {
         const embed = new EmbedBuilder()
-        .setColor('#FFCC32')
+        .setColor(yellow)
         .setDescription(`${emojis.error} Please provide a user mention or ID and a role name.`);
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
@@ -28,7 +28,7 @@ module.exports = {
     
       if (!targetMember || !role) {
         const embed = new EmbedBuilder()
-        .setColor('#FFCC32')
+        .setColor(yellow)
         .setDescription(`${emojis.error} User or role not found.`);
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }
@@ -36,13 +36,13 @@ module.exports = {
       try {
         await targetMember.roles.remove(role);
         const embed = new EmbedBuilder()
-        .setColor('#77B255')
+        .setColor(green)
         .setDescription(`${emojis.tick} ${role} has been removed from ${targetMember.user.tag}.`);
         message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       } catch (error) {
         console.error('Error removing role:', error);
         const embed = new EmbedBuilder()
-        .setColor('#FFCC32')
+        .setColor(yellow)
         .setDescription(`${emojis.error} An error occurred while removing the role.`);
         return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
       }

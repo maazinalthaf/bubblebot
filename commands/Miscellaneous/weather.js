@@ -11,7 +11,7 @@ module.exports = {
         const prefix = getPrefix(message.guild?.id);
         if (!args.length) {
             const embed = new EmbedBuilder
-            .setColor('#ffcc32')
+            .setColor(yellow)
             .setDescription(`${emojis.error} Please provide a location! Example: \`${prefix}weather London, UK\``)
             message.reply({ embeds: [embed] , AllowedMentions :{ repliedUser: false }});
         }

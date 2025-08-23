@@ -11,7 +11,7 @@ module.exports = {
         const prefix = getPrefix(message.guild?.id);
         if (!message.guild) {
             const embed = new EmbedBuilder()
-                .setColor('#ffcc32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} This command only works in servers!`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
@@ -36,20 +36,20 @@ module.exports = {
                 
                 if (!role) {
                     const embed = new EmbedBuilder()
-                        .setColor('#c83636')
+                        .setColor(red)
                         .setDescription(`${emojis.cross} Could not find that role!`);
                      return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
                 }
                 if (claimableRoles.includes(role.id)) {
                     const embed = new EmbedBuilder()
-                        .setColor('#ffcc32')
+                        .setColor(yellow)
                         .setDescription(`${emojis.error} ${role} is already claimable!`);
                      return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
                 }
 
                 addClaimableRole(guildId, role.id);
                 const embed = new EmbedBuilder()
-                    .setColor('#77b255')
+                    .setColor(green)
                     .setDescription(`${emojis.tick} Successfully added ${role} to claimable roles!`);
                  return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
@@ -60,20 +60,20 @@ module.exports = {
                 
                 if (!role) {
                     const embed = new EmbedBuilder()
-                        .setColor('#ffcc32')
+                        .setColor(yellow)
                         .setDescription(`${emojis.error} Could not find that role!`);
                      return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
                 }
                 if (!claimableRoles.includes(role.id)) {
                     const embed = new EmbedBuilder()
-                        .setColor('#ffcc32')
+                        .setColor(yellow)
                         .setDescription(`${emojis.error} ${role} isn't currently claimable!`);
                      return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
                 }
 
                 removeClaimableRole(guildId, role.id);
                 const embed = new EmbedBuilder()
-                    .setColor('#77b255')
+                    .setColor(green)
                     .setDescription(`${emojis.tick} Successfully removed ${role} from claimable roles!`);
                  return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
@@ -82,7 +82,7 @@ module.exports = {
         if (args.length === 0) {
             if (claimableRoles.length === 0) {
                 const embed = new EmbedBuilder()
-                    .setColor('#ffcc32')
+                    .setColor(yellow)
                     .setDescription(`${emojis.error} There are no self-assignable roles in this server.`);
                  return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
@@ -103,13 +103,13 @@ module.exports = {
         
         if (!role) {
             const embed = new EmbedBuilder()
-                .setColor('#c83636')
+                .setColor(red)
                 .setDescription(`${emojis.cross} Could not find that role!`);
              return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
         if (!claimableRoles.includes(role.id)) {
             const embed = new EmbedBuilder()
-                .setColor('#ffcc32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} ${role} isn't self-assignable!`);
              return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
@@ -117,20 +117,20 @@ module.exports = {
         try {
             if (member.roles.cache.has(role.id)) {
                 const embed = new EmbedBuilder()
-                    .setColor('#ffcc32')
+                    .setColor(yellow)
                     .setDescription(`${emojis.error} You already have the ${role} role!`);
                  return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
             await member.roles.add(role);
             const embed = new EmbedBuilder()
-                .setColor('#77b255')
+                .setColor(green)
                 .setDescription(`${emojis.tick} You've been given the ${role} role!`);
              return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         } catch (error) {
             console.error(error);
             const embed = new EmbedBuilder()
-                .setColor('#c83636')
+                .setColor(red)
                 .setDescription(`${emojis.cross} Failed to assign the role. The bot might not have permission.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }

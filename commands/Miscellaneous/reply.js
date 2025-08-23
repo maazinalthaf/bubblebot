@@ -7,7 +7,7 @@ module.exports = {
 
 if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
   const embed = new EmbedBuilder()
-  .setColor('#C83636')
+  .setColor(red)
   .setDescription(`${emojis.cross} You do not have permission to use this command.`);
   return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 }
@@ -18,7 +18,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
   // Check if a message ID is provided
   if (!messageId) {
     const embed = new EmbedBuilder()
-      .setColor('#FFCC32')
+      .setColor(yellow)
       .setDescription(`${emojis.error} Please provide a message ID to reply to.`);
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
@@ -29,7 +29,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
   // Check if no message is provided to reply with
   if (!text) {
     const embed = new EmbedBuilder()
-      .setColor('#FFCC32')
+      .setColor(yellow)
       .setDescription(`${emojis.error} Please provide a message to reply to.`);
     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
   }
@@ -45,7 +45,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
         .catch(error => {
           console.error('Error replying to message:', error);
           const embed = new EmbedBuilder()
-            .setColor('#C83636')
+            .setColor(red)
             .setDescription(`${emojis.cross} Failed to reply to the message.`);
           return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         });
@@ -53,7 +53,7 @@ if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
     .catch(error => {
       console.error('Error fetching message:', error);
       const embed = new EmbedBuilder()
-        .setColor('#C83636')
+        .setColor(red)
         .setDescription(`${emojis.cross} Failed to fetch the message with the provided ID.`);
       return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     });

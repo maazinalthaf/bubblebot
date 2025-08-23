@@ -8,8 +8,14 @@ const emojis = {
 };
 
 const embed_color = '3944bc';
+const green = '77b255';
+const yellow = 'ffcc32';
+const red = 'c83636'
 
 module.exports = {
  embed_color,
- emojis
+ emojis,
+ green,
+ yellow,
+ red
 };

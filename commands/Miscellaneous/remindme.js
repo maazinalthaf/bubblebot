@@ -33,7 +33,7 @@ module.exports = {
         // Check for valid time
        if (!reminderDuration || reminderDuration < 10000 || reminderDuration > 604800000) { // 10s to 7d
     const embed = new EmbedBuilder()
-        .setColor('#ffcc32') 
+        .setColor(yellow) 
         .setDescription(`${emojis.error} **Invalid time format!**\nPlease use a format like \`10s\`, \`10m\`, \`1h\`, \`1d\`.\nMinimum duration is 10 seconds and maximum is 7 days.`);
     
     return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false }

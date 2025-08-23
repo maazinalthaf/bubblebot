@@ -12,7 +12,7 @@ module.exports = {
         // Check if the user has permission to use the snipe command
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
-                .setColor('#C83636')
+                .setColor(red)
                 .setDescription(`${emojis.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
@@ -23,7 +23,7 @@ module.exports = {
 
         if (!snipedMessages || !snipedMessages[snipeIndex]) {
             const embed = new EmbedBuilder()
-                .setColor('#ffcc32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} There is no recently deleted message to snipe at that index!`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }

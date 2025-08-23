@@ -10,7 +10,7 @@ module.exports = {
     async execute(client, message, args) {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuildExpressions)) {
             const embed = new EmbedBuilder()
-                .setColor('#C83636')
+                .setColor(red)
                 .setDescription(`${emojis.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
@@ -21,7 +21,7 @@ module.exports = {
     
         if (!word || reactionsToAdd.length === 0) {
             const embed = new EmbedBuilder()
-                .setColor('#FFCC32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} Please provide a word and at least one reaction.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
@@ -43,7 +43,7 @@ module.exports = {
         // Check if a similar word already exists
         if (reactions[guildId][word]) {
             const embed = new EmbedBuilder()
-                .setColor('#FFCC32')
+                .setColor(yellow)
                 .setDescription(`${emojis.error} The word "${word}" already has a reaction associated with it in this server.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
@@ -54,7 +54,7 @@ module.exports = {
         saveReactions(reactions);
         client.triggerManager.reloadReactions(reactions); 
         const embed = new EmbedBuilder()
-            .setColor('#77B255')
+            .setColor(green)
             .setDescription(`${emojis.tick} Reaction(s) ${reactionsToAdd.join(', ')} added for word "${word}" in this server.`);
         message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     }

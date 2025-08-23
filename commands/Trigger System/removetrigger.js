@@ -17,7 +17,7 @@ module.exports = {
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('#ffcc32')
+                        .setColor(yellow)
                         .setDescription(`${emojis.error} You need the **Manage Messages** permission to use this command.`)
                 ]
             });
@@ -27,7 +27,7 @@ module.exports = {
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('#ffcc32')
+                        .setColor(yellow)
                         .setDescription(`${emojis.error} Usage: \`${prefix}removetrigger "<word or phrase>"\`\nExample: \`${prefix}removetrigger "hello there"\``)
                 ]
             });
@@ -41,7 +41,7 @@ module.exports = {
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('#c83636')
+                        .setColor(red)
                         .setDescription(`${emojis.cross} Failed to load triggers.`)
                 ]
             });
@@ -52,7 +52,7 @@ module.exports = {
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('#ffcc32')
+                        .setColor(yellow)
                         .setDescription(`${emojis.error} No triggers found for this server.`)
                 ]
             });
@@ -68,7 +68,7 @@ module.exports = {
                 return message.reply({
                     embeds: [
                         new EmbedBuilder()
-                            .setColor('#ffcc32')
+                            .setColor(yellow)
                             .setDescription(`${emojis.error} Invalid format. Make sure to close your quotes.\nUsage: \`.removetrigger "<word or phrase>"\``)
                     ]
                 });
@@ -83,7 +83,7 @@ module.exports = {
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('#ffcc32')
+                        .setColor(yellow)
                         .setDescription(`${emojis.error} No trigger found for \`${triggerPhrase}\``)
                 ]
             });
@@ -101,14 +101,14 @@ module.exports = {
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('#C83636')
+                        .setColor(red)
                         .setDescription(`${emojis.cross} Failed to remove the trigger.`)
                 ]
             });
         }
 
         const embed = new EmbedBuilder()
-            .setColor('#77b255')
+            .setColor(green)
             .setDescription(`${emojis.tick} **Trigger Removed**\nThe bot will no longer respond to \`${triggerPhrase}\``)
             .setTimestamp();
 
