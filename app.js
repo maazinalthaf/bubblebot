@@ -978,10 +978,10 @@ function createParticles() {
     particle.className = 'particle';
     
     // Random properties
-    const size = Math.random() * 8 + 2;
+    const size = Math.random() * 8 + 4;
     const posX = Math.random() * 100;
-    const delay = Math.random() * 1;
-    const duration = Math.random() * 10 + 15;
+    const delay = Math.random() * 100;
+    const duration = Math.random() * 5+3;
     
     particle.style.width = `${size}px`;
     particle.style.height = `${size}px`;
