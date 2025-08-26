@@ -968,3 +968,30 @@ homeLink.addEventListener('click', (e) => {
     document.querySelector('.nav-menu-item[data-page="home"]').classList.add('active');
 });
 
+function createParticles() {
+  const particlesContainer = document.createElement('div');
+  particlesContainer.className = 'particles';
+  document.querySelector('.hero').appendChild(particlesContainer);
+  
+  for (let i = 0; i < 100; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    
+    // Random properties
+    const size = Math.random() * 8 + 2;
+    const posX = Math.random() * 100;
+    const delay = Math.random() * 1;
+    const duration = Math.random() * 10 + 15;
+    
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.left = `${posX}%`;
+    particle.style.animationDelay = `${delay}ms`;
+    particle.style.animationDuration = `${duration}s`;
+    particle.style.setProperty('--random-x', `${Math.random() * 100 - 50}px`);
+    
+    particlesContainer.appendChild(particle);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', createParticles);
