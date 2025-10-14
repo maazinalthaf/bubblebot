@@ -9,6 +9,8 @@ const afkDataFile = './afkData.json';
 const disabledCommandsPath = './disabledCommands.json';
 const { checkCommandDisabled } = require('./commands/Server Configuration/togglecommand');
 const prefixesPath = './prefixes.json';
+const {embed_color, emojis, red, green, yellow } = require('./utils/constants');
+
 
 let prefixes = {};
 let afkData = {};
@@ -71,23 +73,16 @@ function getAllCommandFiles(dir) {
   return results;
 }
 
-// Load command files from /commands and all subfolders
-const commandFiles = getAllCommandFiles('./commands');
-for (const file of commandFiles) {
+function getPrefix(guildId) {
+  // Reload prefixes from file each time
   try {
-    const command = require(file);
-    if (command.name && typeof command.execute === 'function'){
-      client.commands.set(command.name, command);
-      console.log(`✅ Loaded command: ${command.name}`);
-    } else {
-      console.error(`❌ Command file ${file} is missing a name or execute function.`);
+    if (fs.existsSync(prefixesPath)) {
+      prefixes = JSON.parse(fs.readFileSync(prefixesPath, 'utf8'));
     }
   } catch (error) {
-    console.error(`❌ Failed to load command file ${file}:`, error.message);
+    console.error('Error reloading prefixes:', error);
   }
-}
-
-function getPrefix(guildId) {
+  
   return prefixes[guildId] || '.';
 }
 
@@ -95,10 +90,7 @@ function getPrefix(guildId) {
 if (fs.existsSync(afkDataFile)) {
   const data = fs.readFileSync(afkDataFile, 'utf8');
   afkData = JSON.parse(data);
-
 }
-
-
 
 let startTime;
 
@@ -114,204 +106,279 @@ client.triggerManager = {
   }
 };
 
-// Bot online confirmation message
+// Command Manager for hot-reloading
+client.commandManager = {
+  loadCommand: (filePath) => {
+    try {
+      delete require.cache[require.resolve(filePath)];
+      const command = require(filePath);
+      client.commands.set(command.name, command);
+      return { success: true, message: `Command '${command.name}' loaded successfully.` };
+    } catch (error) {
+      return { success: false, message: `Error loading command: ${error.message}` };
+    }
+  },
+
+  reloadCommand: (commandName) => {
+    const command = client.commands.get(commandName);
+    if (!command) {
+      return { success: false, message: `Command '${commandName}' not found.` };
+    }
+
+    const commandFiles = getAllCommandFiles('./commands');
+    let filePath = null;
+
+    for (const file of commandFiles) {
+      try {
+        delete require.cache[require.resolve(file)];
+        const cmd = require(file);
+        if (cmd.name === commandName) {
+          filePath = file;
+          break;
+        }
+      } catch (error) {
+        continue;
+      }
+    }
+
+    if (!filePath) {
+      return { success: false, message: `Could not locate file for command '${commandName}'.` };
+    }
+
+    return client.commandManager.loadCommand(filePath);
+  },
+
+  reloadAll: () => {
+    try {
+      const commandFiles = getAllCommandFiles('./commands');
+      let loadedCount = 0;
+      const errors = [];
+
+      for (const file of commandFiles) {
+        try {
+          delete require.cache[require.resolve(file)];
+          const command = require(file);
+          if (command.name) {
+            client.commands.set(command.name, command);
+            loadedCount++;
+          }
+        } catch (error) {
+          errors.push(`${file}: ${error.message}`);
+        }
+      }
+
+      return {
+        success: true,
+        loaded: loadedCount,
+        errors: errors.length > 0 ? errors : null,
+        message: `Reloaded ${loadedCount} commands${errors.length > 0 ? ` with ${errors.length} errors` : ''}.`
+      };
+    } catch (error) {
+      return { success: false, message: `Error reloading commands: ${error.message}` };
+    }
+  }
+};
+
+// Load initial commands
+function loadInitialCommands() {
+  const commandFiles = getAllCommandFiles('./commands');
+  let count = 0;
+  for (const file of commandFiles) {
+    try {
+      delete require.cache[require.resolve(file)];
+      const command = require(file);
+      if (command.name) {
+        client.commands.set(command.name, command);
+        count++;
+      }
+    } catch (error) {
+      console.error(`Error loading command from ${file}:`, error);
+    }
+  }
+  return count;
+}
+
+// Bot online confirmation message - FIXED EVENT NAME
 client.on('clientReady', () => {
   console.log(`Logged in as ${client.user.tag}`);
   client.user.setPresence({ 
-  activities: [{ 
-    name: '.help', 
-    type: ActivityType.Playing 
-  }], 
-  status: PresenceUpdateStatus.DoNotDisturb 
-});
+    activities: [{ 
+      name: '.help', 
+      type: ActivityType.Playing 
+    }], 
+    status: PresenceUpdateStatus.DoNotDisturb 
+  });
 
-  startTime = new Date(); // Initialize bot start time
+  startTime = new Date();
+  
+  // Load all commands on bot startup
+  const loadedCount = loadInitialCommands();
+  console.log(`Loaded ${loadedCount} commands`);
 });
 
 // Checks for new messages sent
 client.on('messageCreate', async (message) => {
     // Reload AFK data from file before processing each message
-
     if (fs.existsSync(afkDataFile)) {
       const data = fs.readFileSync(afkDataFile, 'utf8');
       afkData = JSON.parse(data);
-  }  
+    }  
    
- // Skip if message is from a bot or not in a guild
-  if (message.author.bot || !message.guild) return;
+    // Skip if message is from a bot or not in a guild
+    if (message.author.bot || !message.guild) return;
 
- // Get the prefix for this server at the start
- const prefix = getPrefix(message.guild?.id);
+    // Get the prefix for this server at the start
+    const prefix = getPrefix(message.guild?.id);
  
-// When afk user comes back from afk status
-
-if (afkData[message.author.id]) {
-  const { timestamp } = afkData[message.author.id];
-  const timeSinceAfk = Date.now() - timestamp;
-  delete afkData[message.author.id];
-  const embed = new EmbedBuilder()
-    .setColor(yellow)
-    .setDescription(`👋 **${message.author}**: Welcome back, you were AFK for **${msToTime(timeSinceAfk)}**.`);
-  message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
-
-// Save the updated AFK data without the deleted entry
-  saveAfkData();
-}
-
-const mentionedUser = message.mentions.users.first();
-
-// Displays afk user status
-if (mentionedUser && afkData[mentionedUser.id]) {
-  const { afkMessage, timestamp } = afkData[mentionedUser.id];
-  const timeSinceAfk = Date.now() - timestamp;
-  const embed = new EmbedBuilder()
-    .setColor('#4289C1')
-    .setDescription(`💤 ${mentionedUser} is AFK: ${afkMessage || ''} - **${msToTime(timeSinceAfk)} ago**.`);
-  message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
-
-}
-
-  const guildId = message.guild.id;
-  const content = message.content.toLowerCase();
-  const words = content.split(' ');
-
-// Auto reactor mechanism
-  const serverReactions = reactions[guildId] || {};
-  for (const word of words) {
-    if (serverReactions[word]) {
-      try {
-        for (const emoji of serverReactions[word]) {
-          await message.react(emoji).catch(console.error);
-        }
-      } catch (error) {
-        console.error('Error adding reaction:', error);
-      }
-    }
-  }
-
-// Trigger response mechanism 
- if (!message.content.startsWith(prefix)) {
-    const serverTriggers = triggers[message.guild.id] || {};
-    const content = message.content.toLowerCase().trim();
-    
-    // Check for exact match first
-    if (serverTriggers[content]) {
-      try {
-        await message.reply(serverTriggers[content]);
-        return;
-      } catch (error) {
-        console.error('Failed to reply:', error);
-      }
+    // When afk user comes back from afk status
+    if (afkData[message.author.id]) {
+      const { timestamp } = afkData[message.author.id];
+      const timeSinceAfk = Date.now() - timestamp;
+      delete afkData[message.author.id];
+      const embed = new EmbedBuilder()
+        .setColor('ffcc32')
+        .setDescription(`👋 **${message.author}**: Welcome back, you were AFK for **${msToTime(timeSinceAfk)}**.`);
+      message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
+      saveAfkData();
     }
 
-    // Check for multi-word triggers
-    const multiWordTriggers = Object.keys(serverTriggers).filter(t => t.includes(' '));
-    for (const trigger of multiWordTriggers) {
-      if (content.includes(trigger.toLowerCase())) {
-        try {
-          await message.reply(serverTriggers[trigger]);
-          return;
-        } catch (error) {
-          console.error('Failed to reply:', error);
-        }
-      }
+    const mentionedUser = message.mentions.users.first();
+
+    // Displays afk user status
+    if (mentionedUser && afkData[mentionedUser.id]) {
+      const { afkMessage, timestamp } = afkData[mentionedUser.id];
+      const timeSinceAfk = Date.now() - timestamp;
+      const embed = new EmbedBuilder()
+        .setColor('#4289C1')
+        .setDescription(`💤 ${mentionedUser} is AFK: ${afkMessage || ''} - **${msToTime(timeSinceAfk)} ago**.`);
+      message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     }
 
-    // Check for single word triggers
-    const words = content.split(/\s+/);
+    const guildId = message.guild.id;
+    const content = message.content.toLowerCase();
+    const words = content.split(' ');
+
+    // Auto reactor mechanism
+    const serverReactions = reactions[guildId] || {};
     for (const word of words) {
-      if (serverTriggers[word]) {
+      if (serverReactions[word]) {
         try {
-          await message.reply(serverTriggers[word]);
+          for (const emoji of serverReactions[word]) {
+            await message.react(emoji).catch(console.error);
+          }
+        } catch (error) {
+          console.error('Error adding reaction:', error);
+        }
+      }
+    }
+
+    // Trigger response mechanism 
+    if (!message.content.startsWith(prefix)) {
+      const serverTriggers = triggers[message.guild.id] || {};
+      const content = message.content.toLowerCase().trim();
+      
+      // Check for exact match first
+      if (serverTriggers[content]) {
+        try {
+          await message.reply(serverTriggers[content]);
           return;
         } catch (error) {
           console.error('Failed to reply:', error);
         }
       }
-    }
-  }
 
-// Command handler
-if (!message.content.startsWith(prefix)) return;
-const args = message.content.slice(prefix.length).trim().split(/ +/);
-const commandName = args.shift().toLowerCase();
+      // Check for multi-word triggers
+      const multiWordTriggers = Object.keys(serverTriggers).filter(t => t.includes(' '));
+      for (const trigger of multiWordTriggers) {
+        if (content.includes(trigger.toLowerCase())) {
+          try {
+            await message.reply(serverTriggers[trigger]);
+            return;
+          } catch (error) {
+            console.error('Failed to reply:', error);
+          }
+        }
+      }
 
-// Retrieve the command or an alias
-  const command = client.commands.get(commandName) 
-  || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+      // Check for single word triggers
+      const words = content.split(/\s+/);
+      for (const word of words) {
+        if (serverTriggers[word]) {
+          try {
+            await message.reply(serverTriggers[word]);
+            return;
+          } catch (error) {
+            console.error('Failed to reply:', error);
+          }
+        }
+      }
+    }
 
-  if (command) {
-    // Check if command is disabled in this server
-    if (message.guild && checkCommandDisabled(message.guild.id, command.name)) {
-     return;
+    // Command handler
+    if (!message.content.startsWith(prefix)) return;
+    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const commandName = args.shift().toLowerCase();
+
+    // Retrieve the command or an alias
+    const command = client.commands.get(commandName) 
+      || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+
+    if (command) {
+      // Check if command is disabled in this server
+      if (message.guild && checkCommandDisabled(message.guild.id, command.name)) {
+        return;
+      }
+      try {
+        await command.execute(client, message, args);
+      } catch (error) {
+        console.error(`Error executing ${commandName}:`, error);
+      }
+    } else {
+      console.log(`Command '${commandName}' not found.`);
     }
-    try {
-      await command.execute(client, message, args);
-    } catch (error) {
-      console.error(`Error executing ${commandName}:`, error);
-    }
-  } else {
-    console.log(`Command '${commandName}' not found.`);
-  }
 });
-
-
 
 // Message Delete Listner
 client.on('messageDelete', (message) => {
-
   if (!message.partial) {
+    const attachment = message.attachments.first()?.url || null;
+    const channelSnipes = snipes.get(message.channel.id) || [];
+    channelSnipes.unshift({
+      content: message.content,
+      author: message.author,
+      createdAt: message.createdTimestamp,
+      attachment,
+    });
 
-      const attachment = message.attachments.first()?.url || null;
-      // Store the deleted message in the snipes map
-
-      const channelSnipes = snipes.get(message.channel.id) || [];
-      channelSnipes.unshift({
-          content: message.content,
-          author: message.author,
-          createdAt: message.createdTimestamp,
-          attachment,
-      });
-
-      if (channelSnipes.length > 20) channelSnipes.pop();
-      snipes.set(message.channel.id, channelSnipes);
+    if (channelSnipes.length > 20) channelSnipes.pop();
+    snipes.set(message.channel.id, channelSnipes);
   }
-
 });
-
-
 
 // Message Update Listner
 client.on('messageUpdate', (oldMessage, newMessage) => {
-
   if (!oldMessage.partial && !newMessage.partial) {
-      if (oldMessage.content === newMessage.content || oldMessage.author.bot) return;
-      const channelEditsnipes = editsnipes.get(oldMessage.channel.id) || [];
-      channelEditsnipes.unshift({
+    if (oldMessage.content === newMessage.content || oldMessage.author.bot) return;
+    const channelEditsnipes = editsnipes.get(oldMessage.channel.id) || [];
+    channelEditsnipes.unshift({
+      oldContent: oldMessage.content,
+      newContent: newMessage.content,
+      author: oldMessage.author,
+      editedAt: newMessage.editedTimestamp,
+    });
 
-          oldContent: oldMessage.content,
-          newContent: newMessage.content,
-          author: oldMessage.author,
-          editedAt: newMessage.editedTimestamp,
-
-      });
-
-      // Keep only the last 20 editsniped messages per channel
-      if (channelEditsnipes.length > 20) channelEditsnipes.pop();
-      editsnipes.set(oldMessage.channel.id, channelEditsnipes);
-    }
-  });
-  
+    if (channelEditsnipes.length > 20) channelEditsnipes.pop();
+    editsnipes.set(oldMessage.channel.id, channelEditsnipes);
+  }
+});
 
 client.login(process.env.token);
-
-
 
 // Functions //
 
 // ms to time converter
 function msToTime(duration) {
-  if (Math.abs(duration) < 1000) { // Consider durations less than 1 second as 0
+  if (Math.abs(duration) < 1000) {
     return '0 seconds';
   }
 
@@ -344,33 +411,7 @@ function msToTime(duration) {
   return formattedTime;
 }
 
-// Trigger Reload 
-function reloadTriggers() {
-  try {
-    if (fs.existsSync(triggersPath)) {
-      triggers = JSON.parse(fs.readFileSync(triggersPath, 'utf8'));
-      console.log('Triggers reloaded successfully');
-    }
-  } catch (error) {
-    console.error('Error reloading triggers:', error);
-  }
-}
-
 // Save AFK data function
 function saveAfkData() {
   fs.writeFileSync(afkDataFile, JSON.stringify(afkData, null, 2), 'utf8');
-}
-
-// Get prefix function
-function getPrefix(guildId) {
-  // Reload prefixes from file each time
-  try {
-    if (fs.existsSync(prefixesPath)) {
-      prefixes = JSON.parse(fs.readFileSync(prefixesPath, 'utf8'));
-    }
-  } catch (error) {
-    console.error('Error reloading prefixes:', error);
-  }
-  
-  return prefixes[guildId] || '.';
 }
