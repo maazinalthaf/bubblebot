@@ -1,6 +1,6 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const { snipes } = require('./snipe.js'); 
-const {embed_color, emojis } = require('../../utils/constants.js');
+const {embed_color, emojis, red, green, yellow } = require('../../utils/constants.js');
 
 module.exports = {
     name: 'clearsnipe',

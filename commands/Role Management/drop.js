@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { getClaimableRoles } = require('../../utils/rolemanager');
-const { embed_color, emojis } = require('../../utils/constants');
+const { embed_color, emojis, red, green, yellow } = require('../../utils/constants');
 const { getPrefix } = require('../../utils/prefix')
 
 module.exports = {

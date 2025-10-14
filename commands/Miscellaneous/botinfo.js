@@ -1,5 +1,5 @@
 const { EmbedBuilder, version } = require('discord.js');
-const { embed_color, emojis } = require('../../utils/constants');
+const { embed_color, emojis} = require('../../utils/constants');
 const os = require('os');
 
 module.exports = {

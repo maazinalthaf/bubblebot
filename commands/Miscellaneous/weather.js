@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { embed_color, emojis } = require('../../utils/constants');
+const { embed_color, emojis, red, green, yellow } = require('../../utils/constants');
 const axios = require('axios');
 const { getPrefix } = require('../../utils/prefix');
 
@@ -10,7 +10,7 @@ module.exports = {
     async execute(client, message, args) {
         const prefix = getPrefix(message.guild?.id);
         if (!args.length) {
-            const embed = new EmbedBuilder
+            const embed = new EmbedBuilder()
             .setColor(yellow)
             .setDescription(`${emojis.error} Please provide a location! Example: \`${prefix}weather London, UK\``)
             message.reply({ embeds: [embed] , AllowedMentions :{ repliedUser: false }});

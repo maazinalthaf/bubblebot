@@ -74,12 +74,16 @@ function getAllCommandFiles(dir) {
 // Load command files from /commands and all subfolders
 const commandFiles = getAllCommandFiles('./commands');
 for (const file of commandFiles) {
-  const command = require(file);
-  // Ensure each command has a name and execute function
-  if (command.name && typeof command.execute === 'function'){
-    client.commands.set(command.name, command); 
-  } else {
-    console.error(`Command file ${file} is missing a name or execute function.`);
+  try {
+    const command = require(file);
+    if (command.name && typeof command.execute === 'function'){
+      client.commands.set(command.name, command);
+      console.log(`✅ Loaded command: ${command.name}`);
+    } else {
+      console.error(`❌ Command file ${file} is missing a name or execute function.`);
+    }
+  } catch (error) {
+    console.error(`❌ Failed to load command file ${file}:`, error.message);
   }
 }
 
@@ -111,7 +115,7 @@ client.triggerManager = {
 };
 
 // Bot online confirmation message
-client.on('ready', () => {
+client.on('clientReady', () => {
   console.log(`Logged in as ${client.user.tag}`);
   client.user.setPresence({ 
   activities: [{ 
@@ -120,12 +124,6 @@ client.on('ready', () => {
   }], 
   status: PresenceUpdateStatus.DoNotDisturb 
 });
-
-  // Log all registered commands
-  console.log('Registered Commands:');
-  client.commands.forEach(command => {
-    console.log(`- ${command.name}`);
-  });
 
   startTime = new Date(); // Initialize bot start time
 });
@@ -167,7 +165,7 @@ if (mentionedUser && afkData[mentionedUser.id]) {
   const { afkMessage, timestamp } = afkData[mentionedUser.id];
   const timeSinceAfk = Date.now() - timestamp;
   const embed = new EmbedBuilder()
-    .setColor('#4289C1')
+    .setColor()
     .setDescription(`💤 ${mentionedUser} is AFK: ${afkMessage || ''} - **${msToTime(timeSinceAfk)} ago**.`);
   message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 

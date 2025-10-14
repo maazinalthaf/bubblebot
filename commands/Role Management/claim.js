@@ -1,6 +1,6 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const { getClaimableRoles, addClaimableRole, removeClaimableRole, saveClaimableRoles } = require('../../utils/rolemanager'); 
-const { embed_color, emojis } = require('../../utils/constants');
+const { embed_color, emojis, red, green, yellow } = require('../../utils/constants');
 const { getPrefix } = require('../../utils/prefix')
 
 module.exports = {

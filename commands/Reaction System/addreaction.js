@@ -1,4 +1,4 @@
-const {embed_color, emojis } = require('../../utils/constants');
+const {embed_color, emojis, red, green, yellow } = require('../../utils/constants');
 const {EmbedBuilder, PermissionsBitField} = require('discord.js');
 const fs = require('fs');
 const path = require('path');

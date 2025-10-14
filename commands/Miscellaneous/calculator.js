@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { embed_color, emojis } = require('../../utils/constants');
+const { embed_color, emojis, red, green, yellow } = require('../../utils/constants');
 const { getPrefix } = require('../../utils/prefix');
 
 const ERROR_RESPONSES = {
@@ -64,7 +64,7 @@ module.exports = {
             if (typeof result !== 'number' || !isFinite(result)) {
                 const response = ERROR_RESPONSES.tooComplex[Math.floor(Math.random() * ERROR_RESPONSES.tooComplex.length)];
                 const embed = new EmbedBuilder()
-                    .setColor('#FF6B6B')
+                    .setColor(red)
                     .setDescription(response);
                 return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
             }

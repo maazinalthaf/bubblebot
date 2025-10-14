@@ -1,7 +1,7 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const { emojis, embed_color } = require('../../utils/constants.js');
+const { emojis, embed_color, red, green, yellow } = require('../../utils/constants.js');
 const { getPrefix } = require('../../utils/prefix');
 
 // Path to store the mention permissions data
