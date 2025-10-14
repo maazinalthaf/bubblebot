@@ -165,7 +165,7 @@ if (mentionedUser && afkData[mentionedUser.id]) {
   const { afkMessage, timestamp } = afkData[mentionedUser.id];
   const timeSinceAfk = Date.now() - timestamp;
   const embed = new EmbedBuilder()
-    .setColor()
+    .setColor('#4289C1')
     .setDescription(`💤 ${mentionedUser} is AFK: ${afkMessage || ''} - **${msToTime(timeSinceAfk)} ago**.`);
   message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 

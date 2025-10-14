@@ -2,3 +2,11 @@
 node_modules/
 package-lock.json
 .env
+afkData.json
+mentionPermissions.json
+mentionData.json
+claimableRoles.json
+disabledCommands.json
+triggers.json
+prefixes.json
+reactions.json
