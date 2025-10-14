@@ -7,7 +7,7 @@ module.exports = {
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
             const embed = new EmbedBuilder()
                 .setColor(red)
-                .setDescription(`${emoji.cross} You do not have permission to use this command.`);
+                .setDescription(`${emojis.cross} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
@@ -26,7 +26,7 @@ module.exports = {
             if (!target) {
                 const embed = new EmbedBuilder()
                     .setColor(red)
-                    .setDescription(`${emoji.cross} Could not find a user with ID: ${args[0]}`);
+                    .setDescription(`${emojis.cross} Could not find a user with ID: ${args[0]}`);
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
@@ -57,7 +57,7 @@ module.exports = {
             console.error(error);
             const embed = new EmbedBuilder()
                 .setColor(red)
-                .setDescription(`${emoji.cross} An error occurred while fetching the user information.`);
+                .setDescription(`${emojis.cross} An error occurred while fetching the user information.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     }

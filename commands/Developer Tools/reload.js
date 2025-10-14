@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { EmbedBuilder } = require('discord.js');
 const { PermissionsBitField } = require('discord.js');
-const {embed_color, emojis} = require('../../utils/constants');
+const {embed_color, emojis, red} = require('../../utils/constants');
 
 module.exports = {
   name: 'reload',
@@ -11,12 +11,15 @@ module.exports = {
   aliases: ['rl'],
   async execute(client, message, args) {
     if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-      return message.reply('❌ You do not have permission to use this command.');
+     const embed = new EmbedBuilder()
+        .setColor(red)
+        .setDescription(`${emojis.cross} You do not have permission to use this command.`);
+      return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 
     if (!args.length) {
       const embed = new EmbedBuilder()
-        .setColor('#FF6B6B')
+        .setColor(yellow)
         .setTitle('Reload Command')
         .setDescription('Please provide a command name to reload.\n**Usage:** `.reload <command>`\n**Example:** `.reload ping`');
       return message.reply({ embeds: [embed] });
@@ -89,8 +92,8 @@ module.exports = {
       }
 
       const successEmbed = new EmbedBuilder()
-        .setColor('#51D98C')
-        .setTitle('✅ Command Reloaded')
+        .setColor(green)
+        .setTitle(`${emojis.tick} Command Reloaded`)
         .setDescription(`**Command:** \`${newCommand.name}\`\n**File:** \`${path.relative(process.cwd(), commandPath)}\``)
         .setTimestamp();
 
@@ -100,8 +103,8 @@ module.exports = {
       console.error(`Reload error for ${commandName}:`, error);
       
       const errorEmbed = new EmbedBuilder()
-        .setColor('#FF6B6B')
-        .setTitle('❌ Reload Failed')
+        .setColor(red)
+        .setTitle(`${emojis.cross} Reload Failed`)
         .setDescription(`**Command:** \`${commandName}\`\n**Error:** \`${error.message}\``);
       
       message.reply({ embeds: [errorEmbed] });
