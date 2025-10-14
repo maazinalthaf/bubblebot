@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { EmbedBuilder } = require('discord.js');
 const { PermissionsBitField } = require('discord.js');
-const {embed_color, emojis, red} = require('../../utils/constants');
+const {embed_color, emojis, red, green, yellow} = require('../../utils/constants');
 
 module.exports = {
   name: 'reload',
