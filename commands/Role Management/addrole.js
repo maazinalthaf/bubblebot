@@ -5,8 +5,11 @@ module.exports = {
     name: 'addrole',
     aliases: ['arole', 'grole', 'giverole'],
     async execute(client, message, args) {
-        const prefix = getPrefix(message.guild?.id);
-        if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
+        // Bot owner override check
+        const isBotOwner = message.author.id === client.application?.owner?.id || 
+                          (await client.application?.fetch())?.owner?.id === message.author.id;
+        
+        if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild) && !isBotOwner) {
             const embed = new EmbedBuilder()
                 .setColor(red)
                 .setDescription(`${emojis.cross} You do not have permission to use this command.`);
