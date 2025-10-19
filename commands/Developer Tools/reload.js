@@ -1,20 +1,24 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const {embed_color, emojis, red, green, yellow } = require('../../utils/constants');
-
 
 module.exports = {
   name: 'reload',
   description: 'Reload one or all commands without restarting the bot',
   aliases: ['rl'],
   execute: async (client, message, args) => {
-    if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+    // Get the application info to find the owner
+    const application = await client.application.fetch();
+    const ownerId = application.owner?.id || (application.owner?.ownerId || application.owner?.user?.id);
+    
+    // Check if user is bot owner
+    if (message.author.id !== ownerId) {
       const embed = new EmbedBuilder()
         .setColor(red)
         .setDescription(`${emojis.cross} You don't have permission to use this command.`);
       return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 
-    // If no args, reload all commands
+    // Rest of the code remains the same...
     if (args.length === 0) {
       const result = client.commandManager.reloadAll();
       const embed = new EmbedBuilder()
@@ -32,7 +36,6 @@ module.exports = {
       return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 
-    // Reload specific command
     const commandName = args[0].toLowerCase();
     const result = client.commandManager.reloadCommand(commandName);
     

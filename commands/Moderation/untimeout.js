@@ -17,10 +17,53 @@ module.exports = {
         if (!userInput) {
             const embed = new EmbedBuilder()
                 .setColor(yellow)
-                .setDescription(`${emojis.error} Please provide a user mention or ID to untimeout.`);
+                .setDescription(`${emojis.error} Please provide a user mention or ID to untimeout, or use \`all\` to untimeout everyone.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
+        // Handle "all" argument
+        if (userInput.toLowerCase() === 'all') {
+            try {
+                // Fetch all members with timeout in the guild
+                const members = await message.guild.members.fetch();
+                const timedOutMembers = members.filter(member => member.isCommunicationDisabled());
+                
+                if (timedOutMembers.size === 0) {
+                    const embed = new EmbedBuilder()
+                        .setColor(yellow)
+                        .setDescription(`${emojis.error} There are no timed out members in this server.`);
+                    return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
+                }
+
+                // Remove timeout from all timed out members
+                let successCount = 0;
+                let errorCount = 0;
+                
+                for (const [, member] of timedOutMembers) {
+                    try {
+                        await member.timeout(null);
+                        successCount++;
+                    } catch (error) {
+                        console.error(`Failed to untimeout ${member.user.tag}:`, error);
+                        errorCount++;
+                    }
+                }
+
+                const embed = new EmbedBuilder()
+                    .setColor(green)
+                    .setDescription(`${emojis.tick} Successfully removed timeout from **${successCount}** members.${errorCount > 0 ? `\n${emojis.cross} Failed to remove timeout from **${errorCount}** members.` : ''}`);
+                return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
+
+            } catch (error) {
+                console.error(error);
+                const embed = new EmbedBuilder()
+                    .setColor(red)
+                    .setDescription(`${emojis.error} An error occurred while trying to untimeout all members.`);
+                return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
+            }
+        }
+
+        // Handle single user untimeout (original functionality)
         try {
             // Extract user ID from mention if necessary
             const userId = userInput.replace(/[<@!>]/g, '');
@@ -46,7 +89,7 @@ module.exports = {
             console.error(error);
             const embed = new EmbedBuilder()
                 .setColor(yellow)
-                .setDescription(`${emojis.error} An error occurred while trying to untimeout the user.`);
+                .setDescription(`${emojis.error} An error occurred while trying to untimeout the user. Please make sure the user ID is valid.`);
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
     },

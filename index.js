@@ -6,9 +6,8 @@ const { snipes } = require('./commands/Moderation/snipe.js');
 const { editsnipes } = require('./commands/Moderation/editsnipe.js');
 const triggersPath = './triggers.json';
 const afkDataFile = './afkData.json';
-const disabledCommandsPath = './disabledCommands.json';
-const { checkCommandDisabled } = require('./commands/Server Configuration/togglecommand');
 const prefixesPath = './prefixes.json';
+const disabledCommandsManager = require('./utils/disabledCommandsManager');
 const {embed_color, emojis, red, green, yellow } = require('./utils/constants');
 
 
@@ -325,9 +324,9 @@ client.on('messageCreate', async (message) => {
 
     if (command) {
       // Check if command is disabled in this server
-      if (message.guild && checkCommandDisabled(message.guild.id, command.name)) {
-        return;
-      }
+      if (message.guild && disabledCommandsManager.checkCommandDisabled(message.guild.id, command.name)) {
+    return;
+  }
       try {
         await command.execute(client, message, args);
       } catch (error) {

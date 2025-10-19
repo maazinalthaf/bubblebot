@@ -1,41 +1,19 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
-const { aliases } = require('../Moderation/snipe');
 const { embed_color, emojis, red, green, yellow } = require('../../utils/constants');
 const { getPrefix } = require('../../utils/prefix');
+const disabledCommandsManager = require('../../utils/disabledCommandsManager');
 
 module.exports = {
     name: 'togglecommand',
     description: 'Enable or disable a command for this server',
     aliases: ['tc'],
     permissions: PermissionsBitField.Flags.ManageGuild, 
-    execute,
-    checkCommandDisabled
-  };
-
-
-const disabledCommandsPath = './disabledCommands.json';
-
-// Load or initialize disabled commands
-let disabledCommands = {};
-try {
-  if (fs.existsSync(disabledCommandsPath)) {
-    disabledCommands = JSON.parse(fs.readFileSync(disabledCommandsPath, 'utf8'));
-  } else {
-    fs.writeFileSync(disabledCommandsPath, JSON.stringify({}, null, 2));
-  }
-} catch (error) {
-  console.error('Error loading disabled commands:', error);
-}
-
-function checkCommandDisabled(guildId, commandName) {
-  if (!disabledCommands[guildId]) return false;
-  return disabledCommands[guildId].includes(commandName);
-}
+    execute
+};
 
 async function execute(client, message, args) {
   const prefix = getPrefix(message.guild?.id);
+  
   // Check for Manage Guild permission
   if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
     const embed = new EmbedBuilder()
@@ -70,6 +48,7 @@ async function execute(client, message, args) {
   }
 
   const guildId = message.guild.id;
+  const { disabledCommands } = disabledCommandsManager;
   
   if (!disabledCommands[guildId]) {
     disabledCommands[guildId] = [];
@@ -80,26 +59,26 @@ async function execute(client, message, args) {
   const embed = new EmbedBuilder();
   
   if (isDisabled) {
+    // Enable the command
     disabledCommands[guildId] = disabledCommands[guildId].filter(cmd => cmd !== command.name);
     embed
       .setColor(green)
       .setDescription(`${emojis.tick} Command **${command.name}** has been **enabled** for this server.`);
   } else {
+    // Disable the command
     disabledCommands[guildId].push(command.name);
     embed
       .setColor(green)
       .setDescription(`${emojis.tick} Command **${command.name}** has been **disabled** for this server.`);
   }
 
-  try {
-    fs.writeFileSync(disabledCommandsPath, JSON.stringify(disabledCommands, null, 2));
-    await message.reply({ embeds: [embed], allowedMentions: { repliedUser: false }  });
-  } catch (error) {
-    console.error('Error saving disabled commands:', error);
+  // Save to file
+  if (disabledCommandsManager.saveDisabledCommands()) {
+    await message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
+  } else {
     const errorEmbed = new EmbedBuilder()
       .setColor(red)
       .setDescription(`${emojis.cross} There was an error saving the command toggle state.`);
     return message.reply({ embeds: [errorEmbed], allowedMentions: { repliedUser: false } });
   }
 }
-
