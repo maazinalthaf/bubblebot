@@ -18,7 +18,6 @@ module.exports = {
       return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 
-    // Rest of the code remains the same...
     if (args.length === 0) {
       const result = client.commandManager.reloadAll();
       const embed = new EmbedBuilder()
