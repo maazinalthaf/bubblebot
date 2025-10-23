@@ -55,11 +55,6 @@ module.exports = {
       const mutedMembers = members.filter(member => member.voice.serverMute);
       const unmutedMembers = members.filter(member => !member.voice.serverMute);
 
-      console.log(`[DEBUG] Channel: ${targetChannel.name}`);
-      console.log(`[DEBUG] Total members: ${targetChannel.members.size}`);
-      console.log(`[DEBUG] Non-bot members: ${members.size}`);
-      console.log(`[DEBUG] Muted: ${mutedMembers.size}, Unmuted: ${unmutedMembers.size}`);
-
       // If more people are unmuted, mute everyone. Otherwise, unmute everyone.
       const shouldMute = unmutedMembers.size >= mutedMembers.size;
       const targetMembers = shouldMute ? unmutedMembers : mutedMembers;
@@ -76,10 +71,8 @@ module.exports = {
 
       for (const [id, member] of targetMembers) {
         try {
-          console.log(`[DEBUG] Attempting to ${shouldMute ? 'mute' : 'unmute'} ${member.user.tag}`);
           await member.voice.setMute(shouldMute);
           affectedCount++;
-          console.log(`[DEBUG] Successfully ${shouldMute ? 'muted' : 'unmuted'} ${member.user.tag}`);
         } catch (error) {
           console.error(`[DEBUG] Failed to ${shouldMute ? 'mute' : 'unmute'} ${member.user.tag}:`, error);
           failedCount++;
