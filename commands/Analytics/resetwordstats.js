@@ -9,14 +9,14 @@ module.exports = {
     aliases: ['clearwordstats', 'resetwords'],
     usage: '.resetwordstats',
     examples: ['.resetwordstats'],
-    permissions: ['ManageMessages'],
+    permissions: ['ManageGuild'],
     
     async execute(client, message, args) {
         // Check permissions
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
             const embed = new EmbedBuilder()
                 .setColor(yellow)
-                .setDescription(`${emojis.error} You do not have permission to use this command.`);
+                .setDescription(`${emojis.error} You do not have permission to use this command`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
@@ -31,12 +31,12 @@ module.exports = {
         }
 
         const guildId = message.guild.id;
-        const hadData = wordStats[guildId] && Object.keys(wordStats[guildId]).length > 0;
+        const hadData = wordStats[guildId] && wordStats[guildId].wordCounts && Object.keys(wordStats[guildId].wordCounts).length > 0;
 
         if (hadData) {
             // Store backup of old data for confirmation message
-            const oldWordCount = Object.values(wordStats[guildId]).reduce((sum, count) => sum + count, 0);
-            const oldUniqueWords = Object.keys(wordStats[guildId]).length;
+            const oldWordCount = Object.values(wordStats[guildId].wordCounts).reduce((sum, count) => sum + count, 0);
+            const oldUniqueWords = Object.keys(wordStats[guildId].wordCounts).length;
             
             delete wordStats[guildId];
             

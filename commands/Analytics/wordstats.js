@@ -6,7 +6,7 @@ const wordStatsPath = '../../wordStats.json';
 module.exports = {
     name: 'wordstats',
     description: 'Shows the most commonly used words in this server',
-    aliases: ['ws', 'topwords'],
+    aliases: ['topwords', 'wordleaderboard'],
     usage: '.wordstats [number]',
     examples: ['.wordstats', '.wordstats 15', '.topwords 20'],
     
@@ -33,7 +33,7 @@ module.exports = {
 
         const guildId = message.guild.id;
         
-        if (!wordStats[guildId] || Object.keys(wordStats[guildId]).length === 0) {
+        if (!wordStats[guildId] || !wordStats[guildId].wordCounts || Object.keys(wordStats[guildId].wordCounts).length === 0) {
             const embed = new EmbedBuilder()
                 .setColor(yellow)
                 .setDescription(`${emojis.error} No word statistics available for this server yet. Start chatting to build up data!`);
@@ -41,7 +41,7 @@ module.exports = {
         }
 
         // Get top words
-        const topWords = Object.entries(wordStats[guildId])
+        const topWords = Object.entries(wordStats[guildId].wordCounts)
             .sort(([,a], [,b]) => b - a)
             .slice(0, limit)
             .map(([word, count], index) => ({ rank: index + 1, word, count }));
@@ -50,8 +50,8 @@ module.exports = {
             `**${rank}.** \`${word}\` - **${count}** time${count !== 1 ? 's' : ''}`
         ).join('\n');
         
-        const totalWords = Object.values(wordStats[guildId]).reduce((sum, count) => sum + count, 0);
-        const uniqueWords = Object.keys(wordStats[guildId]).length;
+        const totalWords = Object.values(wordStats[guildId].wordCounts).reduce((sum, count) => sum + count, 0);
+        const uniqueWords = Object.keys(wordStats[guildId].wordCounts).length;
 
         const embed = new EmbedBuilder()
             .setColor(embed_color || '#4289C1')
@@ -62,10 +62,8 @@ module.exports = {
                 { name: '🔤 Unique Words', value: `**${uniqueWords}** words`, inline: true },
                 { name: '📈 Displaying', value: `Top **${topWords.length}** words`, inline: true }
             )
-            .setFooter({ text: `Use **.resetwordstats** to clear data` })
             .setTimestamp();
 
         await message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     },
 };
-

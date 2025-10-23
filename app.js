@@ -12,7 +12,7 @@ class BubblebotWebsite {
                 "home": {
                     "hero": {
                         "title": "Bubblebot",
-                        "version": "v1.9.0",
+                        "version": "v1.10.0",
                         "subtitle": "Just a simple Discord bot",
                         "description": "A lightweight Discord bot designed for small servers with essential moderation, utility, and fun features."
                     },

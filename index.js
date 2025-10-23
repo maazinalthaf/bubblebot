@@ -277,24 +277,83 @@ function trackWords(message) {
   
   // Initialize guild word stats if not exists
   if (!wordStats[guildId]) {
-    wordStats[guildId] = {};
+    wordStats[guildId] = {
+      wordCounts: {},
+      userWordCounts: {}
+    };
   }
+  
+  // Ensure userWordCounts structure exists
+  if (!wordStats[guildId].userWordCounts) {
+    wordStats[guildId].userWordCounts = {};
+  }
+  
+  const userId = message.author.id;
   
   // Update word counts
   words.forEach(word => {
-    if (!wordStats[guildId][word]) {
-      wordStats[guildId][word] = 0;
+    // Update overall word counts
+    if (!wordStats[guildId].wordCounts[word]) {
+      wordStats[guildId].wordCounts[word] = 0;
     }
-    wordStats[guildId][word]++;
+    wordStats[guildId].wordCounts[word]++;
+    
+    // Update user-specific word counts
+    if (!wordStats[guildId].userWordCounts[word]) {
+      wordStats[guildId].userWordCounts[word] = {};
+    }
+    
+    if (!wordStats[guildId].userWordCounts[word][userId]) {
+      wordStats[guildId].userWordCounts[word][userId] = 0;
+    }
+    wordStats[guildId].userWordCounts[word][userId]++;
   });
   
   // Save to file
   saveWordStats();
 }
-// Save word statistics function
-function saveWordStats() {
-  fs.writeFileSync(wordStatsPath, JSON.stringify(wordStats, null, 2), 'utf8');
+
+// Function to get top words for a guild
+function getTopWords(guildId, limit = 10) {
+  if (!wordStats[guildId] || !wordStats[guildId].wordCounts) {
+    return [];
+  }
+  
+  const words = Object.entries(wordStats[guildId].wordCounts)
+    .sort(([,a], [,b]) => b - a)
+    .slice(0, limit)
+    .map(([word, count], index) => ({ rank: index + 1, word, count }));
+  
+  return words;
 }
+
+// Function to get top users for a specific word
+function getTopUsersForWord(guildId, word, limit = 10) {
+  if (!wordStats[guildId] || 
+      !wordStats[guildId].userWordCounts || 
+      !wordStats[guildId].userWordCounts[word]) {
+    return [];
+  }
+  
+  const userCounts = wordStats[guildId].userWordCounts[word];
+  const topUsers = Object.entries(userCounts)
+    .sort(([,a], [,b]) => b - a)
+    .slice(0, limit)
+    .map(([userId, count], index) => ({ rank: index + 1, userId, count }));
+  
+  return topUsers;
+}
+
+// Function to reset word stats for a guild
+function resetWordStats(guildId) {
+  if (wordStats[guildId]) {
+    delete wordStats[guildId];
+    saveWordStats();
+    return true;
+  }
+  return false;
+}
+
 
 // Checks for new messages sent
 client.on('messageCreate', async (message) => {
@@ -457,7 +516,7 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 
 client.login(process.env.token);
 
-// Functions //
+// Other Functions //
 
 // ms to time converter
 function msToTime(duration) {
@@ -497,4 +556,9 @@ function msToTime(duration) {
 // Save AFK data function
 function saveAfkData() {
   fs.writeFileSync(afkDataFile, JSON.stringify(afkData, null, 2), 'utf8');
+}
+
+// Save word statistics function
+function saveWordStats() {
+  fs.writeFileSync(wordStatsPath, JSON.stringify(wordStats, null, 2), 'utf8');
 }
