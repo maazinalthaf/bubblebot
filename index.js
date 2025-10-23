@@ -233,10 +233,28 @@ function trackWords(message) {
   if (!message.guild || message.author.bot) return;
   
   const guildId = message.guild.id;
-  const content = message.content.toLowerCase().trim();
+  let content = message.content.toLowerCase().trim();
   
   // Skip commands and very short messages
   if (content.startsWith(getPrefix(guildId))) return;
+  if (content.length < 3) return;
+  
+  // Remove user mentions (@username, @123456789)
+  content = content.replace(/<@!?\d+>/g, '');
+  
+  // Remove role mentions (@role)
+  content = content.replace(/<@&\d+>/g, '');
+  
+  // Remove channel mentions (#channel)
+  content = content.replace(/<#\d+>/g, '');
+  
+  // Remove everyone and here mentions
+  content = content.replace(/@everyone/g, '');
+  content = content.replace(/@here/g, '');
+  
+  // Trim again after removing mentions
+  content = content.trim();
+  
   if (content.length < 3) return;
   
   // Common words to exclude
@@ -273,7 +291,6 @@ function trackWords(message) {
   // Save to file
   saveWordStats();
 }
-
 // Save word statistics function
 function saveWordStats() {
   fs.writeFileSync(wordStatsPath, JSON.stringify(wordStats, null, 2), 'utf8');

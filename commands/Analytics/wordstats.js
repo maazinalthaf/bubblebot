@@ -6,7 +6,7 @@ const wordStatsPath = '../../wordStats.json';
 module.exports = {
     name: 'wordstats',
     description: 'Shows the most commonly used words in this server',
-    aliases: ['topwords', 'wordleaderboard'],
+    aliases: ['ws', 'topwords'],
     usage: '.wordstats [number]',
     examples: ['.wordstats', '.wordstats 15', '.topwords 20'],
     

@@ -13,10 +13,10 @@ module.exports = {
     
     async execute(client, message, args) {
         // Check permissions
-        if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
+        if (!message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
             const embed = new EmbedBuilder()
                 .setColor(yellow)
-                .setDescription(`${emojis.error} You need the **Manage Messages** permission to reset word statistics.`);
+                .setDescription(`${emojis.error} You do not have permission to use this command.`);
             return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
 
