@@ -1,6 +1,6 @@
 {
   "name": "bubblebot",
-  "version": "1.9",
+  "version": "1.10",
   "description": "bubble bot",
   "main": "index.js",
   "scripts": {

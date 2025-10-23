@@ -7,6 +7,7 @@ const { editsnipes } = require('./commands/Moderation/editsnipe.js');
 const triggersPath = './triggers.json';
 const afkDataFile = './afkData.json';
 const prefixesPath = './prefixes.json';
+const wordStatsPath = './wordStats.json';
 const disabledCommandsManager = require('./utils/disabledCommandsManager');
 const {embed_color, emojis, red, green, yellow } = require('./utils/constants');
 
@@ -15,6 +16,7 @@ let prefixes = {};
 let afkData = {};
 let triggers = {};
 let reactions = {};
+let wordStats = {};
 
 try {
   if (fs.existsSync(triggersPath)) {
@@ -40,6 +42,17 @@ try {
   }
 } catch (error) {
   console.error('Error loading prefixes:', error);
+}
+
+// Load word statistics
+try {
+  if (fs.existsSync(wordStatsPath)) {
+    wordStats = JSON.parse(fs.readFileSync(wordStatsPath, 'utf8'));
+  } else {
+    fs.writeFileSync(wordStatsPath, JSON.stringify({}, null, 2));
+  }
+} catch (error) {
+  console.error('Error loading word stats:', error);
 }
 
 // Create new client
@@ -215,6 +228,57 @@ client.on('clientReady', () => {
   console.log(`Loaded ${loadedCount} commands`);
 });
 
+// Word tracking function
+function trackWords(message) {
+  if (!message.guild || message.author.bot) return;
+  
+  const guildId = message.guild.id;
+  const content = message.content.toLowerCase().trim();
+  
+  // Skip commands and very short messages
+  if (content.startsWith(getPrefix(guildId))) return;
+  if (content.length < 3) return;
+  
+  // Common words to exclude
+  const excludedWords = new Set([
+    'the', 'and', 'you', 'for', 'are', 'but', 'not', 'your', 'all', 'can', 
+    'her', 'was', 'one', 'our', 'out', 'who', 'get', 'has', 'him', 'how', 
+    'its', 'let', 'put', 'say', 'she', 'too', 'use', 'that', 'with', 'this',
+    'have', 'will', 'would', 'could', 'should', 'what', 'when', 'where', 'why',
+    'which', 'there', 'their', 'they', 'them', 'then', 'than', 'from', 'were',
+    'been', 'being', 'some', 'such', 'than', 'just', 'like', 'more', 'most',
+    'also', 'only', 'very', 'well', 'even', 'back', 'much', 'any', 'now', 'way'
+  ]);
+  
+  // Extract words (alphanumeric characters only, minimum 3 characters)
+  const words = content.split(/\s+/)
+    .map(word => word.replace(/[^a-z0-9]/g, ''))
+    .filter(word => word.length >= 3 && !excludedWords.has(word));
+  
+  if (words.length === 0) return;
+  
+  // Initialize guild word stats if not exists
+  if (!wordStats[guildId]) {
+    wordStats[guildId] = {};
+  }
+  
+  // Update word counts
+  words.forEach(word => {
+    if (!wordStats[guildId][word]) {
+      wordStats[guildId][word] = 0;
+    }
+    wordStats[guildId][word]++;
+  });
+  
+  // Save to file
+  saveWordStats();
+}
+
+// Save word statistics function
+function saveWordStats() {
+  fs.writeFileSync(wordStatsPath, JSON.stringify(wordStats, null, 2), 'utf8');
+}
+
 // Checks for new messages sent
 client.on('messageCreate', async (message) => {
     // Reload AFK data from file before processing each message
@@ -225,6 +289,9 @@ client.on('messageCreate', async (message) => {
    
     // Skip if message is from a bot or not in a guild
     if (message.author.bot || !message.guild) return;
+
+    // Track words for statistics
+    trackWords(message);
 
     // Get the prefix for this server at the start
     const prefix = getPrefix(message.guild?.id);
@@ -325,8 +392,8 @@ client.on('messageCreate', async (message) => {
     if (command) {
       // Check if command is disabled in this server
       if (message.guild && disabledCommandsManager.checkCommandDisabled(message.guild.id, command.name)) {
-    return;
-  }
+        return;
+      }
       try {
         await command.execute(client, message, args);
       } catch (error) {
