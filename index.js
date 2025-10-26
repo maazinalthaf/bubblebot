@@ -2,8 +2,6 @@ require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Collection, Partials, PresenceUpdateStatus, ActivityType } = require('discord.js');
 const fs = require('fs');
 const { performance } = require('perf_hooks');
-const { snipes } = require('./commands/Moderation/snipe.js');
-const { editsnipes } = require('./commands/Moderation/editsnipe.js');
 const triggersPath = './triggers.json';
 const afkDataFile = './afkData.json';
 const prefixesPath = './prefixes.json';
@@ -17,6 +15,10 @@ let afkData = {};
 let triggers = {};
 let reactions = {};
 let wordStats = {};
+
+
+const snipes = new Map();
+const editsnipes = new Map();
 
 try {
   if (fs.existsSync(triggersPath)) {
@@ -67,8 +69,9 @@ const client = new Client({
   ]
 });
 
-// Initialize commands collection
 client.commands = new Collection(); 
+client.snipes = snipes;
+client.editsnipes = editsnipes;
 
 // Helper function to recursively get all .js files in a directory
 function getAllCommandFiles(dir) {

@@ -1,13 +1,14 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const {embed_color, emojis, red, green, yellow } = require('../../utils/constants');
-const editsnipes = new Map();
 
 module.exports = {
     name: 'editsnipe',
     aliases: ['es'],
-    editsnipes, 
     async execute(client, message, args) {
-        // Check if the user has permission to use the ?editsnipe command
+        // Get editsnipes from client
+        const editsnipes = client.editsnipes;
+
+        // Check if the user has permission to use the editsnipe command
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
                 .setColor(red)
@@ -42,7 +43,7 @@ module.exports = {
             )
             .setTimestamp(editsnipedMessage.editedAt)
             .setFooter({ 
-                text: ` Editsnipe ${editsnipeIndex + 1}/${totalEditsnipes}`, 
+                text: `Editsnipe ${editsnipeIndex + 1}/${totalEditsnipes}`, 
             });
 
         message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });

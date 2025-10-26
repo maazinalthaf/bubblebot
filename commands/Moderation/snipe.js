@@ -1,14 +1,13 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const {embed_color, emojis, red, green, yellow } = require('../../utils/constants');
 
-// Object to store deleted messages for each channel
-const snipes = new Map();
-
 module.exports = {
     name: 'snipe',
     aliases: ['s'],
-    snipes, // Export the snipes map
     async execute(client, message, args) {
+        // Get snipes from client
+        const snipes = client.snipes;
+
         // Check if the user has permission to use the snipe command
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
@@ -42,11 +41,6 @@ module.exports = {
             .setFooter({ 
                 text: `Snipe ${snipeIndex + 1}/${totalSnipes}`,  
             });
-
-        // Add attachment if available
-        if (snipedMessage.attachment) {
-            embed.setImage(snipedMessage.attachment);
-        }
         
         if (snipedMessage.attachment) {
             // Check if the attachment URL ends with a valid image or GIF extension

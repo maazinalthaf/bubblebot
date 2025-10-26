@@ -1,11 +1,13 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
-const { snipes } = require('./snipe.js'); 
 const {embed_color, emojis, red, green, yellow } = require('../../utils/constants.js');
 
 module.exports = {
     name: 'clearsnipe',
     aliases: ['cs', 'clearsnipes'],
     async execute(client, message, args) {
+        // Get snipes from client
+        const snipes = client.snipes;
+
         // Check if the user has permission to use the command
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
@@ -28,7 +30,7 @@ module.exports = {
         // Send success message
         const embed = new EmbedBuilder()
             .setColor(green)
-            .setDescription(`${emojis.tick} Successfully cleared all sniped messages in this channel.`)
+            .setDescription(`${emojis.tick} Successfully cleared all sniped messages in this channel.`);
 
         message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     }
