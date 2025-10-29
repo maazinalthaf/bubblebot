@@ -42,6 +42,11 @@ module.exports = {
                 text: `Snipe ${snipeIndex + 1}/${totalSnipes}`,  
             });
         
+        // Add attachment if available
+        if (snipedMessage.attachment) {
+            embed.setImage(snipedMessage.attachment);
+        }
+        
         if (snipedMessage.attachment) {
             // Check if the attachment URL ends with a valid image or GIF extension
             if (/\.(gif|jpe?g|png|webp)$/i.test(snipedMessage.attachment)) {
