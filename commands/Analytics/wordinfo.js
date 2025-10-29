@@ -79,8 +79,8 @@ module.exports = {
         const uniqueUsers = wordStats[guildId].userWordCounts?.[word] ? Object.keys(wordStats[guildId].userWordCounts[word]).length : 0;
 
         const embed = new EmbedBuilder()
-            .setColor(embed_color || '#4289C1')
-            .setTitle(`📊 Word Info: "${word}"`)
+            .setColor(embed_color)
+            .setTitle(`📊 Word Info: ${word}`)
             .setDescription(`Detailed usage statistics for the word \`${word}\``)
             .addFields(
                 { name: '🔄 Total Uses', value: `**${wordCount}** time${wordCount !== 1 ? 's' : ''}`, inline: true },
@@ -88,7 +88,6 @@ module.exports = {
                 { name: '📈 Usage Rate', value: `**${percentage}%** of all words`, inline: true },
                 { name: '👥 Unique Users', value: `**${uniqueUsers}** user${uniqueUsers !== 1 ? 's' : ''}`, inline: true },
                 { name: '👑 Top User', value: topUser ? `${topUser} (**${topUserCount}** times)` : 'No data', inline: true },
-                { name: '📝 First Tracked', value: 'Since bot startup', inline: true }
             )
             .setTimestamp();
 

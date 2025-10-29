@@ -51,7 +51,7 @@ module.exports = {
 
                 const embed = new EmbedBuilder()
                     .setColor(green)
-                    .setDescription(`${emojis.tick} Successfully removed timeout from **${successCount}** members.${errorCount > 0 ? `\n${emojis.cross} Failed to remove timeout from **${errorCount}** members.` : ''}`);
+                    .setDescription(`${emojis.tick} Successfully removed timeout from **${successCount}** member(s).${errorCount > 0 ? `\n${emojis.cross} Failed to remove timeout from **${errorCount}** members.` : ''}`);
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 
             } catch (error) {

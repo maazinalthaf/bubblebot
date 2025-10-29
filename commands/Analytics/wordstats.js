@@ -54,7 +54,7 @@ module.exports = {
         const uniqueWords = Object.keys(wordStats[guildId].wordCounts).length;
 
         const embed = new EmbedBuilder()
-            .setColor(embed_color || '#4289C1')
+            .setColor(embed_color)
             .setTitle(`📊 Most Common Words in ${message.guild.name}`)
             .setDescription(description)
             .addFields(

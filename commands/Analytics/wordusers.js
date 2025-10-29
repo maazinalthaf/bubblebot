@@ -89,8 +89,8 @@ module.exports = {
         const totalWordUses = wordStats[guildId].wordCounts?.[word] || totalUses;
 
         const embed = new EmbedBuilder()
-            .setColor(embed_color || '#4289C1')
-            .setTitle(`👥 Top Users for "${word}"`)
+            .setColor(embed_color)
+            .setTitle(`👥 Top Users for ${word}`)
             .setDescription(description)
             .addFields(
                 { name: '📊 Total Uses', value: `**${totalWordUses}** time${totalWordUses !== 1 ? 's' : ''}`, inline: true },
