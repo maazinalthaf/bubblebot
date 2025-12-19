@@ -1,7 +1,5 @@
 # bubblebot
 
-Documentation: https://maazinalthaf.github.io/bubblebot/
-
 ## Prerequisites: 
 > You must have `nodejs24` and `npm` installed
 
