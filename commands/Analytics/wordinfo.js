@@ -6,7 +6,7 @@ const wordStatsPath = '../../wordStats.json';
 module.exports = {
     name: 'wordinfo',
     description: 'Get detailed information about a specific word usage in this server',
-    aliases: ['wi', 'wordusage'],
+    aliases: ['wi'],
     usage: '.wordinfo <word>',
     examples: ['.wordinfo hello', '.wordinfo discord', '.wordstat bot'],
     
