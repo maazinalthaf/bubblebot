@@ -16,7 +16,7 @@ module.exports = {
 
         const githubButton = new ButtonBuilder()
             .setLabel('View Commands')
-            .setURL('https://maazinalthaf.github.io/bubblebot')
+            .setURL('https://bubblebot-mauve.vercel.app/')
             .setStyle(ButtonStyle.Link);
 
         const row = new ActionRowBuilder()
