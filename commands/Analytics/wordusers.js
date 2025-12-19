@@ -6,7 +6,7 @@ const wordStatsPath = '../../wordStats.json';
 module.exports = {
     name: 'wordusers',
     description: 'Shows who used a specific word the most',
-    aliases: ['wordtop', 'wordleaders', 'whoused'],
+    aliases: ['wu'],
     usage: '.wordusers <word> [number]',
     examples: ['.wordusers hello', '.wordusers discord 5', '.wordtop bot'],
     
