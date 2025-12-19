@@ -8,7 +8,7 @@ module.exports = {
     description: 'Get detailed information about a specific word usage in this server',
     aliases: ['wi'],
     usage: '.wordinfo <word>',
-    examples: ['.wordinfo hello', '.wordinfo discord', '.wordstat bot'],
+    examples: ['.wordinfo hello', '.wordinfo discord', '.wordinfo bot'],
     
     async execute(client, message, args) {
         if (!args[0]) {
