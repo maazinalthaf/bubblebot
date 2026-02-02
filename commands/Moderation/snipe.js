@@ -13,9 +13,13 @@ module.exports = {
         const channelSnipes = snipes.get(message.channel.id);
         if (channelSnipes) {
             const now = Date.now();
-            const validSnipes = channelSnipes.filter(snipe => 
-                now - snipe.createdAt.getTime() < this.snipeExpiration
-            );
+            const validSnipes = channelSnipes.filter(snipe => {
+                const created = snipe.createdAt;
+                const snipeTimestamp = (created && typeof created.getTime === 'function')
+                    ? created.getTime()
+                    : (typeof created === 'number' ? created : Number(created) || 0);
+                return (now - snipeTimestamp) < this.snipeExpiration;
+            });
             if (validSnipes.length < channelSnipes.length) {
                 snipes.set(message.channel.id, validSnipes);
             }

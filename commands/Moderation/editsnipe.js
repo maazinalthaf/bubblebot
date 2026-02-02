@@ -13,9 +13,13 @@ module.exports = {
         const channelEditsnipes = editsnipes.get(message.channel.id);
         if (channelEditsnipes) {
             const now = Date.now();
-            const validEditsnipes = channelEditsnipes.filter(editsnipe => 
-                now - editsnipe.editedAt.getTime() < this.editsnipeExpiration
-            );
+            const validEditsnipes = channelEditsnipes.filter(editsnipe => {
+                const edited = editsnipe.editedAt;
+                const editedTimestamp = (edited && typeof edited.getTime === 'function')
+                    ? edited.getTime()
+                    : (typeof edited === 'number' ? edited : Number(edited) || 0);
+                return (now - editedTimestamp) < this.editsnipeExpiration;
+            });
             if (validEditsnipes.length < channelEditsnipes.length) {
                 editsnipes.set(message.channel.id, validEditsnipes);
             }
