@@ -4,9 +4,22 @@ const {embed_color, emojis, red, green, yellow } = require('../../utils/constant
 module.exports = {
     name: 'snipe',
     aliases: ['s'],
+    snipeExpiration: 86400000, // 1 day in milliseconds
     async execute(client, message, args) {
         // Get snipes from client
         const snipes = client.snipes;
+
+        // Clean expired snipes (older than 1 day)
+        const channelSnipes = snipes.get(message.channel.id);
+        if (channelSnipes) {
+            const now = Date.now();
+            const validSnipes = channelSnipes.filter(snipe => 
+                now - snipe.createdAt.getTime() < this.snipeExpiration
+            );
+            if (validSnipes.length < channelSnipes.length) {
+                snipes.set(message.channel.id, validSnipes);
+            }
+        }
 
         // Check if the user has permission to use the snipe command
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
