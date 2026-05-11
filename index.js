@@ -369,6 +369,16 @@ client.on('messageCreate', async (message) => {
     // Skip if message is from a bot or not in a guild
     if (message.author.bot || !message.guild) return;
 
+    // Check link filter first
+    try {
+      const linkFilter = client.commands.get('linkfilter');
+      if (linkFilter && linkFilter.checkMessage) {
+        await linkFilter.checkMessage(message);
+      }
+    } catch (error) {
+      console.error('Error checking link filter:', error);
+    }
+
     // Track words for statistics
     trackWords(message);
 
