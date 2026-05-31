@@ -13,16 +13,16 @@ function getAqiInfo(aqi) {
     return              { label: 'Hazardous',                  color: 0x7E0023, emoji: '🟤' };
 }
 
-async function fetchWaqiAqi(latitude, longitude) {
-    const token = process.env.waqi_token;
-    if (!token) return null; 
+async function fetchIqairAqi(latitude, longitude) {
+    const token = process.env.iqair_token;
+    if (!token) return null;
 
     try {
         const res = await axios.get(
-            `https://api.waqi.info/feed/geo:${latitude};${longitude}/?token=${token}`
+            `https://api.airvisual.com/v2/nearest_city?lat=${latitude}&lon=${longitude}&key=${token}`
         );
-        if (res.data?.status === 'ok') {
-            return res.data.data.aqi ?? null;
+        if (res.data?.status === 'success') {
+            return res.data.data?.current?.pollution?.aqius ?? null;
         }
     } catch {}
 
@@ -79,7 +79,7 @@ module.exports = {
                 axios.get(
                     `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,pressure_msl,visibility&timezone=${encodeURIComponent(tzName)}`
                 ),
-                fetchWaqiAqi(latitude, longitude),
+                fetchIqairAqi(latitude, longitude),
             ]);
 
             const current = weatherResponse.data.current;
@@ -126,7 +126,7 @@ module.exports = {
             // Only add AQI field if token was set and data came back
             if (aqiInfo && usAqi !== null) {
                 fields.push({
-                    name: '🌬️ US Air Quality (AQI)',
+                    name: '🌬️ US AQI',
                     value: `${aqiInfo.emoji} **${usAqi}** — ${aqiInfo.label}`,
                     inline: true,
                 });
