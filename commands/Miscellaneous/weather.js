@@ -14,7 +14,7 @@ function getAqiInfo(aqi) {
 }
 
 async function fetchWaqiAqi(latitude, longitude) {
-    const token = process.env.WAQI_TOKEN;
+    const token = process.env.waqi_token;
     if (!token) return null; 
 
     try {
