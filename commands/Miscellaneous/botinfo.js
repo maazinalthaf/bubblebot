@@ -6,13 +6,11 @@ module.exports = {
     name: 'botinfo',
     aliases: ['info', 'about'],
     async execute(client, message) {
-        // Calculate uptime
         const days = Math.floor(client.uptime / 86400000);
         const hours = Math.floor(client.uptime / 3600000) % 24;
         const minutes = Math.floor(client.uptime / 60000) % 60;
         const uptime = `${days > 0 ? `${days} day${days !== 1 ? 's' : ''} ` : ''}${hours > 0 ? `${hours} hour${hours !== 1 ? 's' : ''} ` : ''}${minutes} minute${minutes !== 1 ? 's' : ''}`;
 
-        // Get total users across all guilds
         const totalUsers = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
 
         const embed = new EmbedBuilder()
@@ -41,7 +39,7 @@ module.exports = {
                 },
                 {
                     name: '`📦` Bot Version',
-                    value: `1.11`,
+                    value: `1.11.1`,
                     inline: true
                 },
                 {

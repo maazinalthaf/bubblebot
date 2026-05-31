@@ -12,11 +12,9 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        // Check if channel mention/ID is provided
         let targetChannel = message.channel;
         let messageIdIndex = 0;
         
-        // Check if first argument is a channel mention/ID
         if (args[0] && (args[0].startsWith('<#') && args[0].endsWith('>') || /^\d+$/.test(args[0]))) {
             const channelId = args[0].replace(/[<#>]/g, '');
             try {
@@ -27,7 +25,7 @@ module.exports = {
                         .setDescription(`${emojis.cross} Invalid channel provided.`);
                     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
                 }
-                messageIdIndex = 1; // Move to next argument for message ID
+                messageIdIndex = 1; 
             } catch (error) {
                 const embed = new EmbedBuilder()
                     .setColor(red)
@@ -38,7 +36,6 @@ module.exports = {
 
         const messageId = args[messageIdIndex];
 
-        // Check if a message ID is provided
         if (!messageId) {
             const embed = new EmbedBuilder()
                 .setColor(yellow)
@@ -48,7 +45,6 @@ module.exports = {
 
         const text = args.slice(messageIdIndex + 1).join(' ');
 
-        // Check if no message is provided to reply with
         if (!text) {
             const embed = new EmbedBuilder()
                 .setColor(yellow)
@@ -56,13 +52,11 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        // Fetch the message using the provided message ID from the target channel
         targetChannel.messages.fetch(messageId)
             .then(replyMessage => {
-                // Reply to the fetched message with the specified text
                 replyMessage.reply(text)
                     .then(() => {
-                        message.delete(); // Delete the command message
+                        message.delete();
                     })
                     .catch(error => {
                         console.error('Error replying to message:', error);

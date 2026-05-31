@@ -10,13 +10,13 @@ function loadAfkData() {
     try {
         if (fs.existsSync(afkDataFile)) {
             const data = fs.readFileSync(afkDataFile, 'utf8');
-            afkData = JSON.parse(data); // Load the data from the file
+            afkData = JSON.parse(data); 
         } else {
-            afkData = {}; // Initialize empty if no data file exists
+            afkData = {}; 
         }
     } catch (error) {
         console.error("Error loading AFK data:", error);
-        afkData = {}; // In case of an error, reset to an empty object
+        afkData = {};
     }
 }
 
@@ -33,10 +33,8 @@ module.exports = {
     name: 'removeafk',
     aliases: ['rafk'],
     async execute(client, message, args) {
-        // Load AFK data before executing the command
         loadAfkData();
 
-        // Check if the user has Administrator permission
         if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
             const embed = new EmbedBuilder()
                 .setColor(red)
@@ -56,8 +54,8 @@ module.exports = {
         const userId = mention.id;
 
         if (afkData[userId]) {
-            delete afkData[userId]; // Remove the user's AFK status
-            saveAfkData(); // Save the updated AFK data
+            delete afkData[userId]; 
+            saveAfkData();
 
             const embed = new EmbedBuilder()
                 .setColor(green)

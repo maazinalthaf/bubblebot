@@ -9,14 +9,10 @@ module.exports = {
       .setColor('#89cff0')
       .setDescription('🏓 Pinging...');
 
-    // Send the initial embed and wait for it to be sent
     const sentMessage = await message.channel.send({ embeds: [initialEmbed] });
-
-    // Calculate latencies
     const botLatency = sentMessage.createdTimestamp - message.createdTimestamp;
     const apiLatency = Math.round(client.ws.ping);
 
-    // Create the final embed with the calculated latencies
     const pingEmbed = new EmbedBuilder()
       .setColor(embed_color)
       .setTitle('🏓 Pong!')
@@ -27,7 +23,6 @@ module.exports = {
       .setFooter({ text: 'Ping Command', iconURL: client.user.displayAvatarURL() })
       .setTimestamp();
 
-    // Edit the original message to display the latencies
     await sentMessage.edit({ embeds: [pingEmbed] });
   },
 };

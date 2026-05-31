@@ -6,7 +6,6 @@ module.exports = {
     aliases: ['es'],
     editsnipeExpiration: 86400000, // 1 day in milliseconds
     async execute(client, message, args) {
-        // Get editsnipes from client
         const editsnipes = client.editsnipes;
 
         // Clean expired editsnipes (older than 1 day)
@@ -25,7 +24,6 @@ module.exports = {
             }
         }
 
-        // Check if the user has permission to use the editsnipe command
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
                 .setColor(red)
@@ -47,7 +45,6 @@ module.exports = {
         const editsnipedMessage = editsnipedMessages[editsnipeIndex];
         const totalEditsnipes = editsnipedMessages.length;
 
-        // Create an embed for the editsniped message
         const embed = new EmbedBuilder()
             .setColor(embed_color)
             .setAuthor({ 

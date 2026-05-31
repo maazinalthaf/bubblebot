@@ -15,7 +15,6 @@ module.exports = {
         const channel = message.channel;
 
         try {
-            // Lock the channel for @everyone
             await channel.permissionOverwrites.edit(message.guild.roles.everyone, {
                 SendMessages: false
             });

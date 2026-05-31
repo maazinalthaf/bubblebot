@@ -1,10 +1,8 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const { emojis, embed_color, red, green, yellow } = require('../../utils/constants.js');
-
-// Store filtered channels - in production, use a database
 const filteredChannels = new Set();
 
-// Function to check if message contains only valid links
+
 function isValidMessage(content) {
     // Detect any URL in the message
     const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/gi;
@@ -77,12 +75,10 @@ module.exports = {
         }
     },
 
-    // Message filter handler - called from index.js
+
     checkMessage: async (message) => {
         if (message.author.bot) return;
         if (!filteredChannels.has(message.channel.id)) return;
-
-        // Skip if user has manage messages permission
         if (message.member?.permissions.has(PermissionsBitField.Flags.ManageMessages)) return;
 
         if (!isValidMessage(message.content)) {

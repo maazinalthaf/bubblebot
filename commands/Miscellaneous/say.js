@@ -12,11 +12,9 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        // Check if channel mention/ID is provided
         let targetChannel = message.channel;
         let textIndex = 0;
-        
-        // Check if first argument is a channel mention/ID
+
         if (args[0] && (args[0].startsWith('<#') && args[0].endsWith('>') || /^\d+$/.test(args[0]))) {
             const channelId = args[0].replace(/[<#>]/g, '');
             try {
@@ -27,7 +25,7 @@ module.exports = {
                         .setDescription(`${emojis.cross} Invalid channel provided.`);
                     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
                 }
-                textIndex = 1; // Move to next argument for text
+                textIndex = 1;
             } catch (error) {
                 const embed = new EmbedBuilder()
                     .setColor(red)
@@ -47,7 +45,6 @@ module.exports = {
 
         message.delete().catch(console.error);
 
-        // Send message to the target channel
         targetChannel.send(text);
     }
 }

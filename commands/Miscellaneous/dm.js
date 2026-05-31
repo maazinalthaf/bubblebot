@@ -12,7 +12,6 @@ module.exports = {
       return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 
-    // Get the user mentioned in the command
     const mentionedUser = message.mentions.users.first();
 
     // Check if no user is mentioned
@@ -33,12 +32,12 @@ module.exports = {
         .setDescription(`${emojis.error} Please provide a message to reply with.`);
       return message.channel.send({ embeds: [embed] , allowedMentions: {repliedUser: false} });
     }
-    // Send the reply as a DM to the mentioned user
+   
+
     mentionedUser.send(text)
       .then(() => {
-        // Create and send an embed indicating success
         const successEmbed = new EmbedBuilder()
-          .setColor(green)  // Green color for success
+          .setColor(green)  
           .setDescription(`${emojis.tick} Successfully sent the reply to ${mentionedUser}.`);
 
         message.channel.send({ embeds: [successEmbed] , allowedMentions: {repliedUser: false} });

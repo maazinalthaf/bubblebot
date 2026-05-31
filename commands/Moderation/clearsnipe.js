@@ -5,10 +5,8 @@ module.exports = {
     name: 'clearsnipe',
     aliases: ['cs', 'clearsnipes'],
     async execute(client, message, args) {
-        // Get snipes from client
         const snipes = client.snipes;
 
-        // Check if the user has permission to use the command
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
                 .setColor(red)
@@ -16,7 +14,6 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        // Check if there are any snipes to clear
         if (!snipes.has(message.channel.id) || snipes.get(message.channel.id).length === 0) {
             const embed = new EmbedBuilder()
                 .setColor(yellow)
@@ -24,10 +21,8 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        // Clear snipes for the current channel
         snipes.delete(message.channel.id);
 
-        // Send success message
         const embed = new EmbedBuilder()
             .setColor(green)
             .setDescription(`${emojis.tick} Successfully cleared all sniped messages in this channel.`);

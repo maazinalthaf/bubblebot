@@ -33,7 +33,6 @@ function saveAfkData() {
 module.exports = {
     name: 'afk',
     async execute(client, message, args) {
-        // Load the existing AFK data before setting new status
         loadAfkData();
 
         const afkMessage = args.join(' ');
@@ -62,7 +61,6 @@ module.exports = {
             message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        // Save the updated AFK data
         saveAfkData();
     }
 };

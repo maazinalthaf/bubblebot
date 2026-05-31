@@ -5,7 +5,6 @@ module.exports = {
     name: 'unlock',
     description: 'Unlocks the current channel to allow members to send messages',
     async execute(client, message, args) {
-        // Check if user has permission to manage channels
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
             const embed = new EmbedBuilder()
                 .setColor(yellow)
@@ -16,9 +15,8 @@ module.exports = {
         const channel = message.channel;
 
         try {
-            // Unlock the channel for @everyone
             await channel.permissionOverwrites.edit(message.guild.roles.everyone, {
-                SendMessages: null // Reset to default
+                SendMessages: null 
             });
 
             const embed = new EmbedBuilder()

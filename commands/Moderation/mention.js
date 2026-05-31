@@ -7,7 +7,7 @@ const { getPrefix } = require('../../utils/prefix');
 // Path to store the mention permissions data
 const mentionDataPath = path.join(__dirname, '../../mentionData.json');
 
-// Initialize mention data with server-specific structure
+
 let mentionData = {};
 try {
   if (fs.existsSync(mentionDataPath)) {
@@ -48,7 +48,6 @@ module.exports = {
     const serverData = getServerData(message.guild.id);
 
     if (args.length === 0) {
-      // Show help if no arguments provided
       const embed = new EmbedBuilder()
         .setColor(embed_color)
         .setTitle('Mention Command Help')
@@ -77,7 +76,6 @@ module.exports = {
 
     // Check for add/remove subcommands
     if (args[0].toLowerCase() === 'add' || args[0].toLowerCase() === 'remove') {
-      // Require ManageRoles permission for add/remove operations
       if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
         const embed = new EmbedBuilder()
           .setColor(yellow)
@@ -121,7 +119,7 @@ module.exports = {
             .setDescription(`${emojis.error} ${user} already has permission to mention ${role}.`);
           return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
         }
-      } else { // remove
+      } else {
         if (serverData[role.id] && serverData[role.id].includes(user.id)) {
           serverData[role.id] = serverData[role.id].filter(id => id !== user.id);
 
@@ -143,7 +141,6 @@ module.exports = {
         }
       }
     } else {
-      // Regular mention functionality
       const role = message.mentions.roles.first() ||
         message.guild.roles.cache.find(r => r.name.toLowerCase() === args.join(' ').toLowerCase());
 

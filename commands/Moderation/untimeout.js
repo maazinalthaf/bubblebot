@@ -4,7 +4,6 @@ const { embed_color, emojis, red, green, yellow } = require('../../utils/constan
 module.exports = {
     name: 'untimeout',
     async execute(client, message, args) {
-        // Check if the user has permission to use the command
         if (!message.member.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
             const embed = new EmbedBuilder()
                 .setColor(red)
@@ -12,7 +11,6 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        // Check if the correct arguments are provided
         const userInput = args[0];
         if (!userInput) {
             const embed = new EmbedBuilder()
@@ -21,10 +19,8 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        // Handle "all" argument
         if (userInput.toLowerCase() === 'all') {
             try {
-                // Fetch all members with timeout in the guild
                 const members = await message.guild.members.fetch();
                 const timedOutMembers = members.filter(member => member.isCommunicationDisabled());
                 
@@ -35,7 +31,6 @@ module.exports = {
                     return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
                 }
 
-                // Remove timeout from all timed out members
                 let successCount = 0;
                 let errorCount = 0;
                 
@@ -65,12 +60,11 @@ module.exports = {
 
         // Handle single user untimeout (original functionality)
         try {
-            // Extract user ID from mention if necessary
             const userId = userInput.replace(/[<@!>]/g, '');
             const user = await client.users.fetch(userId);
             const member = await message.guild.members.fetch(user.id);
 
-            // Check if the user is timed out
+            
             if (!member.isCommunicationDisabled()) {
                 const embed = new EmbedBuilder()
                     .setColor(red)
@@ -78,7 +72,6 @@ module.exports = {
                 return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
             }
 
-            // Remove the timeout
             await member.timeout(null);
 
             const embed = new EmbedBuilder()
