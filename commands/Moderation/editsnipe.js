@@ -4,7 +4,7 @@ const {embed_color, emojis, red, green, yellow } = require('../../utils/constant
 module.exports = {
     name: 'editsnipe',
     aliases: ['es'],
-    editsnipeExpiration: 15 * 60 * 1000,
+    editsnipeExpiration: 120 * 60 * 1000,
     async execute(client, message, args) {
         if (!message.guild) {
             return message.reply('This command can only be used in a server.');
