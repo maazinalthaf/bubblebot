@@ -1,8 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
 const { getPrefix } = require('../../utils/prefix');
-const triggersPath = path.join(__dirname, '../../triggers.json');
+const database = require('../../utils/database');
 const {embed_color, emojis, red, green, yellow } = require('../../utils/constants');
 
 module.exports = {
@@ -33,21 +31,8 @@ module.exports = {
             });
         }
 
-        let triggers = {};
-        try {
-            triggers = JSON.parse(fs.readFileSync(triggersPath, 'utf8'));
-        } catch (error) {
-            console.error('Error reading triggers.json:', error);
-            return message.reply({
-                embeds: [
-                    new EmbedBuilder()
-                        .setColor(red)
-                        .setDescription(`${emojis.cross} Failed to load triggers.`)
-                ]
-            });
-        }
-
         const guildId = message.guild.id;
+        const triggers = database.getTriggers();
         if (!triggers[guildId]) {
             return message.reply({
                 embeds: [
@@ -92,12 +77,12 @@ module.exports = {
         delete triggers[guildId][triggerPhrase];
         
         try {
-            fs.writeFileSync(triggersPath, JSON.stringify(triggers, null, 2));
+            database.deleteTrigger(guildId, triggerPhrase);
             if (client.triggerManager) {
-                client.triggerManager.reloadTriggers(triggers);
+                client.triggerManager.reloadTriggers(database.getTriggers());
             }
         } catch (error) {
-            console.error('Error writing to triggers.json:', error);
+            console.error('Error removing trigger from database:', error);
             return message.reply({
                 embeds: [
                     new EmbedBuilder()

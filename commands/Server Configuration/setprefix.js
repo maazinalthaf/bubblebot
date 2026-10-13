@@ -1,21 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
 const {embed_color, emojis, red, green, yellow } = require('../../utils/constants');
-
-const prefixesPath = path.join(__dirname, '../../prefixes.json');
-
-// Load or create prefixes file
-let prefixes = {};
-try {
-  if (fs.existsSync(prefixesPath)) {
-    prefixes = JSON.parse(fs.readFileSync(prefixesPath, 'utf8'));
-  } else {
-    fs.writeFileSync(prefixesPath, JSON.stringify({}, null, 2));
-  }
-} catch (error) {
-  console.error('Error loading prefixes:', error);
-}
+const database = require('../../utils/database');
 
 module.exports = {
   name: 'setprefix',
@@ -31,7 +16,7 @@ module.exports = {
   }
 
     if (!args[0]) {
-      const currentPrefix = prefixes[message.guild.id] || '.';
+      const currentPrefix = database.getPrefix(message.guild.id);
       const embed = new EmbedBuilder()
         .setColor(embed_color)
         .setTitle('Current Prefix')
@@ -49,10 +34,8 @@ module.exports = {
     }
 
     // Update prefix for this server
-    prefixes[message.guild.id] = newPrefix;
-
     try {
-      fs.writeFileSync(prefixesPath, JSON.stringify(prefixes, null, 2));
+      database.setPrefix(message.guild.id, newPrefix);
       const embed = new EmbedBuilder()
         .setColor(green)
         .setDescription(`${emojis.tick} Server prefix has been updated to: \`${newPrefix}\``);

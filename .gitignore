@@ -2,6 +2,7 @@
 node_modules/
 package-lock.json
 .env
+data/
 afkData.json
 mentionPermissions.json
 mentionData.json

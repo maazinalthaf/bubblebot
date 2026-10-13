@@ -1,7 +1,5 @@
 const {EmbedBuilder, PermissionsBitField} = require('discord.js');
-const fs = require('fs');
-const path = require('path');
-const reactionsPath = path.join(__dirname, '../../reactions.json');
+const database = require('../../utils/database');
 const {embed_color, emojis, red, green, yellow } = require('../../utils/constants');
 
 module.exports = {
@@ -25,19 +23,8 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        // Load reactions
-        let reactions = {};
-        try {
-            reactions = JSON.parse(fs.readFileSync(reactionsPath, 'utf8'));
-        } catch (error) {
-            console.error('Error reading reactions.json:', error);
-            const embed = new EmbedBuilder()
-                .setColor(red)
-                .setDescription(`${emojis.cross} Failed to load reactions.`);
-            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
-        }
-
         const guildId = message.guild.id;
+        const reactions = database.getReactions();
         if (!reactions[guildId] || !reactions[guildId][word]) {
             const embed = new EmbedBuilder()
                 .setColor(yellow)
@@ -45,17 +32,11 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        delete reactions[guildId][word];
-        saveReactions(reactions);
-        client.triggerManager.reloadReactions(reactions); 
+        database.deleteReaction(guildId, word);
+        client.triggerManager.reloadReactions(database.getReactions()); 
         const embed = new EmbedBuilder()
             .setColor(green)
             .setDescription(`${emojis.tick} Reaction removed for word "${word}" in this server.`);
         message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
     }
-}
-
-// Dependent Function(s)
-function saveReactions(reactions) {
-    fs.writeFileSync('./reactions.json', JSON.stringify(reactions, null, 2), 'utf8');
 }

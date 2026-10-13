@@ -2,6 +2,7 @@ const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const { embed_color, emojis, red, green, yellow } = require('../../utils/constants');
 const { getPrefix } = require('../../utils/prefix');
 const disabledCommandsManager = require('../../utils/disabledCommandsManager');
+const database = require('../../utils/database');
 
 module.exports = {
     name: 'togglecommand',
@@ -48,37 +49,25 @@ async function execute(client, message, args) {
   }
 
   const guildId = message.guild.id;
-  const { disabledCommands } = disabledCommandsManager;
-  
-  if (!disabledCommands[guildId]) {
-    disabledCommands[guildId] = [];
-  }
-
-  const isDisabled = disabledCommands[guildId].includes(command.name);
+  const disabledCommands = disabledCommandsManager.disabledCommands;
+  const guildCommands = disabledCommands[guildId] || [];
+  const isDisabled = guildCommands.includes(command.name);
   
   const embed = new EmbedBuilder();
   
   if (isDisabled) {
     // Enable the command
-    disabledCommands[guildId] = disabledCommands[guildId].filter(cmd => cmd !== command.name);
+    database.setDisabledCommands(guildId, guildCommands.filter(cmd => cmd !== command.name));
     embed
       .setColor(green)
       .setDescription(`${emojis.tick} Command **${command.name}** has been **enabled** for this server.`);
   } else {
     // Disable the command
-    disabledCommands[guildId].push(command.name);
+    database.setDisabledCommands(guildId, [...guildCommands, command.name]);
     embed
       .setColor(green)
       .setDescription(`${emojis.tick} Command **${command.name}** has been **disabled** for this server.`);
   }
 
-  // Save to file
-  if (disabledCommandsManager.saveDisabledCommands()) {
-    await message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
-  } else {
-    const errorEmbed = new EmbedBuilder()
-      .setColor(red)
-      .setDescription(`${emojis.cross} There was an error saving the command toggle state.`);
-    return message.reply({ embeds: [errorEmbed], allowedMentions: { repliedUser: false } });
-  }
+  await message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
 }

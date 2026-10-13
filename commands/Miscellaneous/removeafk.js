@@ -1,40 +1,11 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
-const fs = require('fs');
-const { execute } = require('../Reaction System/removereaction');
-const afkDataFile = './afkData.json';
-let afkData = {};
+const database = require('../../utils/database');
 const {embed_color, emojis, red, green, yellow } = require('../../utils/constants');
-
-// Load AFK data from file if it exists
-function loadAfkData() {
-    try {
-        if (fs.existsSync(afkDataFile)) {
-            const data = fs.readFileSync(afkDataFile, 'utf8');
-            afkData = JSON.parse(data); 
-        } else {
-            afkData = {}; 
-        }
-    } catch (error) {
-        console.error("Error loading AFK data:", error);
-        afkData = {};
-    }
-}
-
-// Save AFK data to the file
-function saveAfkData() {
-    try {
-        fs.writeFileSync(afkDataFile, JSON.stringify(afkData, null, 4), 'utf8');
-    } catch (error) {
-        console.error("Error saving AFK data:", error);
-    }
-}
 
 module.exports = {
     name: 'removeafk',
     aliases: ['rafk'],
     async execute(client, message, args) {
-        loadAfkData();
-
         if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
             const embed = new EmbedBuilder()
                 .setColor(red)
@@ -53,9 +24,8 @@ module.exports = {
 
         const userId = mention.id;
 
-        if (afkData[userId]) {
-            delete afkData[userId]; 
-            saveAfkData();
+        if (database.getAfk(userId)) {
+            database.deleteAfk(userId);
 
             const embed = new EmbedBuilder()
                 .setColor(green)

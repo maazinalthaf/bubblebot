@@ -1,6 +1,4 @@
 const { EmbedBuilder } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
 const { checkCommandDisabled } = require('./togglecommand');
 const { embed_color, emojis  } = require('../../utils/constants');
 const { execute } = require('./togglecommand');
@@ -18,18 +16,7 @@ module.exports = {
       .filter(cmd => cmd.name !== 'commandslist') 
       .sort((a, b) => a.name.localeCompare(b.name));
 
-    // Load disabled commands
-    let disabledCommands = {};
-    const disabledCommandsPath = path.join(__dirname, '../../disabledCommands.json');
-    
-    try {
-      if (fs.existsSync(disabledCommandsPath)) {
-        disabledCommands = JSON.parse(fs.readFileSync(disabledCommandsPath, 'utf8'));
-      }
-    } catch (error) {
-      console.error('Error reading disabled commands:', error);
-      return message.reply('Could not load command status data.');
-    }
+    const disabledCommands = require('../../utils/database').getDisabledCommands();
 
     // Create lists
     const enabled = [];

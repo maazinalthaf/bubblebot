@@ -1,7 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionsBitField } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
-const reactionsPath = path.join(__dirname, '../../reactions.json');
+const database = require('../../utils/database');
 const {embed_color, emojis, red, green, yellow } = require('../../utils/constants');
 
 module.exports = {
@@ -16,20 +14,8 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        // Load reactions
-        let reactions = {};
-        try {
-            reactions = JSON.parse(fs.readFileSync(reactionsPath, 'utf8'));
-        } catch (error) {
-            console.error('Error reading reactions.json:', error);
-            const embed = new EmbedBuilder()
-                .setColor(red)
-                .setDescription(`${emojis.cross} Failed to load reactions.`);
-            return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
-        }
-
         const guildId = message.guild.id;
-        const serverReactions = reactions[guildId] || {};
+        const serverReactions = database.getReactions()[guildId] || {};
 
         // Function to create the embed for a specific page
         const createEmbed = (page, perPage, reactions) => {

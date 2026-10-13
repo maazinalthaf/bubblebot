@@ -1,8 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
 const { embed_color, emojis, red, green, yellow } = require('../../utils/constants');
-const triggersPath = path.join(__dirname, '../../triggers.json');
+const database = require('../../utils/database');
 const { getPrefix } = require('../../utils/prefix');
 
 module.exports = {
@@ -33,18 +31,7 @@ module.exports = {
             });
         }
 
-        let triggers = {};
-        try {
-            triggers = JSON.parse(fs.readFileSync(triggersPath, 'utf8'));
-        } catch (error) {
-            console.error('Error reading triggers.json:', error);
-        }
-
-        // Initialize server-specific triggers if they don't exist
         const guildId = message.guild.id;
-        if (!triggers[guildId]) {
-            triggers[guildId] = {};
-        }
 
         // Check if the first argument is quoted (for multi-word triggers)
         let triggerPhrase;
@@ -71,16 +58,14 @@ module.exports = {
             response = args.slice(1).join(' ');
         }
 
-        triggers[guildId][triggerPhrase] = response;
-        
         try {
-            fs.writeFileSync(triggersPath, JSON.stringify(triggers, null, 2));
+            database.setTrigger(guildId, triggerPhrase, response);
             // Update triggers in memory without restart
             if (client.triggerManager) {
-                client.triggerManager.reloadTriggers(triggers);
+                client.triggerManager.reloadTriggers(database.getTriggers());
             }
         } catch (error) {
-            console.error('Error writing to triggers.json:', error);
+            console.error('Error writing trigger to database:', error);
             return message.reply({
                 embeds: [
                     new EmbedBuilder()
@@ -98,4 +83,3 @@ module.exports = {
         return message.reply({ embeds: [embed] , allowedMentions: {repliedUser: false}});
     }
 };
-

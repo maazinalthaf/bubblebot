@@ -2,64 +2,25 @@ require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Collection, Partials, PresenceUpdateStatus, ActivityType } = require('discord.js');
 const fs = require('fs');
 const { performance } = require('perf_hooks');
-const triggersPath = './triggers.json';
-const afkDataFile = './afkData.json';
-const prefixesPath = './prefixes.json';
-const wordStatsPath = './wordStats.json';
+const database = require('./utils/database');
 const disabledCommandsManager = require('./utils/disabledCommandsManager');
 const {embed_color, emojis, red, green, yellow } = require('./utils/constants');
 
 
-let prefixes = {};
-let afkData = {};
-let triggers = {};
-let reactions = {};
-let wordStats = {};
-
+let triggers = database.getTriggers();
+let reactions = database.getReactions();
 
 const snipes = new Map();
 const editsnipes = new Map();
-
-try {
-  if (fs.existsSync(triggersPath)) {
-    triggers = JSON.parse(fs.readFileSync(triggersPath, 'utf8'));
-  } else {
-    fs.writeFileSync(triggersPath, JSON.stringify({}, null, 2));
-  }
-  
-  if (fs.existsSync('./reactions.json')) {
-    reactions = JSON.parse(fs.readFileSync('./reactions.json', 'utf8'));
-  } else {
-    fs.writeFileSync('./reactions.json', JSON.stringify({}, null, 2));
-  }
-} catch (error) {
-  console.error('Error loading triggers/reactions:', error);
-}
-
-try {
-  if (fs.existsSync(prefixesPath)) {
-    prefixes = JSON.parse(fs.readFileSync(prefixesPath, 'utf8'));
-  } else {
-    fs.writeFileSync(prefixesPath, JSON.stringify({}, null, 2));
-  }
-} catch (error) {
-  console.error('Error loading prefixes:', error);
-}
-
-// Load word statistics
-try {
-  if (fs.existsSync(wordStatsPath)) {
-    wordStats = JSON.parse(fs.readFileSync(wordStatsPath, 'utf8'));
-  } else {
-    fs.writeFileSync(wordStatsPath, JSON.stringify({}, null, 2));
-  }
-} catch (error) {
-  console.error('Error loading word stats:', error);
-}
+const SNIPE_RETENTION_MS = 15 * 60 * 1000;
+const MAX_SNIPE_ENTRIES_PER_CHANNEL = 20;
 
 // Create new client
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages,GatewayIntentBits.GuildVoiceStates],
+    intents: [
+      GatewayIntentBits.Guilds,
+      GatewayIntentBits.GuildMessages
+    ],
     partials: [
       Partials.Channel,
       Partials.Message,
@@ -72,6 +33,35 @@ const client = new Client({
 client.commands = new Collection(); 
 client.snipes = snipes;
 client.editsnipes = editsnipes;
+client.snipeRetentionMs = SNIPE_RETENTION_MS;
+
+function clearSnipeEntries(predicate) {
+  for (const [channelId, entries] of snipes) {
+    const remaining = entries.filter(entry => !predicate(entry));
+    if (remaining.length === 0) snipes.delete(channelId);
+    else snipes.set(channelId, remaining);
+  }
+  for (const [channelId, entries] of editsnipes) {
+    const remaining = entries.filter(entry => !predicate(entry));
+    if (remaining.length === 0) editsnipes.delete(channelId);
+    else editsnipes.set(channelId, remaining);
+  }
+}
+
+function clearExpiredSnipes() {
+  const cutoff = Date.now() - SNIPE_RETENTION_MS;
+  clearSnipeEntries(entry => entry.createdAt < cutoff || entry.editedAt < cutoff);
+}
+
+client.clearUserSnipeData = (userId) => {
+  clearSnipeEntries(entry => entry.authorId === userId);
+};
+
+client.clearGuildSnipeData = (guildId) => {
+  clearSnipeEntries(entry => entry.guildId === guildId);
+};
+
+setInterval(clearExpiredSnipes, 60 * 1000).unref();
 
 // Helper function to recursively get all .js files in a directory
 function getAllCommandFiles(dir) {
@@ -89,22 +79,7 @@ function getAllCommandFiles(dir) {
 }
 
 function getPrefix(guildId) {
-  // Reload prefixes from file each time
-  try {
-    if (fs.existsSync(prefixesPath)) {
-      prefixes = JSON.parse(fs.readFileSync(prefixesPath, 'utf8'));
-    }
-  } catch (error) {
-    console.error('Error reloading prefixes:', error);
-  }
-  
-  return prefixes[guildId] || '.';
-}
-
-// Load stored AFK data from file if it exists
-if (fs.existsSync(afkDataFile)) {
-  const data = fs.readFileSync(afkDataFile, 'utf8');
-  afkData = JSON.parse(data);
+  return database.getPrefix(guildId);
 }
 
 let startTime;
@@ -231,141 +206,19 @@ client.on('clientReady', () => {
   console.log(`Loaded ${loadedCount} commands`);
 });
 
-// Word tracking function
-function trackWords(message) {
-  if (!message.guild || message.author.bot) return;
-  
-  const guildId = message.guild.id;
-  let content = message.content.toLowerCase().trim();
-  
-  // Skip commands and very short messages
-  if (content.startsWith(getPrefix(guildId))) return;
-  if (content.length < 3) return;
-  
-  // Remove user mentions (@username, @123456789)
-  content = content.replace(/<@!?\d+>/g, '');
-  
-  // Remove role mentions (@role)
-  content = content.replace(/<@&\d+>/g, '');
-  
-  // Remove channel mentions (#channel)
-  content = content.replace(/<#\d+>/g, '');
-  
-  // Remove everyone and here mentions
-  content = content.replace(/@everyone/g, '');
-  content = content.replace(/@here/g, '');
-  
-  // Trim again after removing mentions
-  content = content.trim();
-  
-  if (content.length < 3) return;
-  
-  // Common words to exclude
-  const excludedWords = new Set([
-    'the', 'and', 'you', 'for', 'are', 'but', 'not', 'your', 'all', 'can', 
-    'her', 'was', 'one', 'our', 'out', 'who', 'get', 'has', 'him', 'how', 
-    'its', 'let', 'put', 'say', 'she', 'too', 'use', 'that', 'with', 'this',
-    'have', 'will', 'would', 'could', 'should', 'what', 'when', 'where', 'why',
-    'which', 'there', 'their', 'they', 'them', 'then', 'than', 'from', 'were',
-    'been', 'being', 'some', 'such', 'than', 'just', 'like', 'more', 'most',
-    'also', 'only', 'very', 'well', 'even', 'back', 'much', 'any', 'now', 'way'
-  ]);
-  
-  // Extract words (alphanumeric characters only, minimum 3 characters)
-  const words = content.split(/\s+/)
-    .map(word => word.replace(/[^a-z0-9]/g, ''))
-    .filter(word => word.length >= 3 && !excludedWords.has(word));
-  
-  if (words.length === 0) return;
-  
-  // Initialize guild word stats if not exists
-  if (!wordStats[guildId]) {
-    wordStats[guildId] = {
-      wordCounts: {},
-      userWordCounts: {}
-    };
+client.on('guildDelete', (guild) => {
+  try {
+    database.deleteGuildData(guild.id);
+    client.clearGuildSnipeData(guild.id);
+    console.log(`Deleted stored data for guild ${guild.id}`);
+  } catch (error) {
+    console.error(`Failed to delete stored data for guild ${guild.id}:`, error);
   }
-  
-  // Ensure userWordCounts structure exists
-  if (!wordStats[guildId].userWordCounts) {
-    wordStats[guildId].userWordCounts = {};
-  }
-  
-  const userId = message.author.id;
-  
-  // Update word counts
-  words.forEach(word => {
-    // Update overall word counts
-    if (!wordStats[guildId].wordCounts[word]) {
-      wordStats[guildId].wordCounts[word] = 0;
-    }
-    wordStats[guildId].wordCounts[word]++;
-    
-    // Update user-specific word counts
-    if (!wordStats[guildId].userWordCounts[word]) {
-      wordStats[guildId].userWordCounts[word] = {};
-    }
-    
-    if (!wordStats[guildId].userWordCounts[word][userId]) {
-      wordStats[guildId].userWordCounts[word][userId] = 0;
-    }
-    wordStats[guildId].userWordCounts[word][userId]++;
-  });
-  
-  // Save to file
-  saveWordStats();
-}
-
-// Function to get top words for a guild
-function getTopWords(guildId, limit = 10) {
-  if (!wordStats[guildId] || !wordStats[guildId].wordCounts) {
-    return [];
-  }
-  
-  const words = Object.entries(wordStats[guildId].wordCounts)
-    .sort(([,a], [,b]) => b - a)
-    .slice(0, limit)
-    .map(([word, count], index) => ({ rank: index + 1, word, count }));
-  
-  return words;
-}
-
-// Function to get top users for a specific word
-function getTopUsersForWord(guildId, word, limit = 10) {
-  if (!wordStats[guildId] || 
-      !wordStats[guildId].userWordCounts || 
-      !wordStats[guildId].userWordCounts[word]) {
-    return [];
-  }
-  
-  const userCounts = wordStats[guildId].userWordCounts[word];
-  const topUsers = Object.entries(userCounts)
-    .sort(([,a], [,b]) => b - a)
-    .slice(0, limit)
-    .map(([userId, count], index) => ({ rank: index + 1, userId, count }));
-  
-  return topUsers;
-}
-
-// Function to reset word stats for a guild
-function resetWordStats(guildId) {
-  if (wordStats[guildId]) {
-    delete wordStats[guildId];
-    saveWordStats();
-    return true;
-  }
-  return false;
-}
+});
 
 
 // Checks for new messages sent
 client.on('messageCreate', async (message) => {
-    // Reload AFK data from file before processing each message
-    if (fs.existsSync(afkDataFile)) {
-      const data = fs.readFileSync(afkDataFile, 'utf8');
-      afkData = JSON.parse(data);
-    }  
-   
     // Skip if message is from a bot or not in a guild
     if (message.author.bot || !message.guild) return;
 
@@ -379,29 +232,28 @@ client.on('messageCreate', async (message) => {
       console.error('Error checking link filter:', error);
     }
 
-    // Track words for statistics
-    trackWords(message);
 
     // Get the prefix for this server at the start
     const prefix = getPrefix(message.guild?.id);
  
     // When afk user comes back from afk status
-    if (afkData[message.author.id]) {
-      const { timestamp } = afkData[message.author.id];
+    const authorAfk = database.getAfk(message.author.id);
+    if (authorAfk) {
+      const { timestamp } = authorAfk;
       const timeSinceAfk = Date.now() - timestamp;
-      delete afkData[message.author.id];
+      database.deleteAfk(message.author.id);
       const embed = new EmbedBuilder()
         .setColor('ffcc32')
         .setDescription(`👋 **${message.author}**: Welcome back, you were AFK for **${msToTime(timeSinceAfk)}**.`);
       message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
-      saveAfkData();
     }
 
     const mentionedUser = message.mentions.users.first();
 
     // Displays afk user status
-    if (mentionedUser && afkData[mentionedUser.id]) {
-      const { afkMessage, timestamp } = afkData[mentionedUser.id];
+    const mentionedUserAfk = mentionedUser && database.getAfk(mentionedUser.id);
+    if (mentionedUserAfk) {
+      const { afkMessage, timestamp } = mentionedUserAfk;
       const timeSinceAfk = Date.now() - timestamp;
       const embed = new EmbedBuilder()
         .setColor('#4289C1')
@@ -493,39 +345,49 @@ client.on('messageCreate', async (message) => {
     }
 });
 
+
 // Message Delete Listner
 client.on('messageDelete', (message) => {
-  if (!message.partial) {
+  if (!message.partial && message.guild && !message.author?.bot) {
+    clearExpiredSnipes();
     const attachment = message.attachments.first()?.url || null;
     const channelSnipes = snipes.get(message.channel.id) || [];
     channelSnipes.unshift({
+      guildId: message.guild.id,
+      channelId: message.channel.id,
+      messageId: message.id,
+      authorId: message.author.id,
       content: message.content,
-      author: message.author,
       createdAt: message.createdTimestamp,
       attachment,
     });
 
-    if (channelSnipes.length > 20) channelSnipes.pop();
+    if (channelSnipes.length > MAX_SNIPE_ENTRIES_PER_CHANNEL) channelSnipes.pop();
     snipes.set(message.channel.id, channelSnipes);
   }
 });
 
 // Message Update Listner
 client.on('messageUpdate', (oldMessage, newMessage) => {
-  if (!oldMessage.partial && !newMessage.partial) {
-    if (oldMessage.content === newMessage.content || oldMessage.author.bot) return;
+  if (!oldMessage.partial && !newMessage.partial && oldMessage.guild && !oldMessage.author?.bot) {
+    if (oldMessage.content === newMessage.content) return;
+    clearExpiredSnipes();
     const channelEditsnipes = editsnipes.get(oldMessage.channel.id) || [];
     channelEditsnipes.unshift({
+      guildId: oldMessage.guild.id,
+      channelId: oldMessage.channel.id,
+      messageId: oldMessage.id,
+      authorId: oldMessage.author.id,
       oldContent: oldMessage.content,
       newContent: newMessage.content,
-      author: oldMessage.author,
       editedAt: newMessage.editedTimestamp,
     });
 
-    if (channelEditsnipes.length > 20) channelEditsnipes.pop();
+    if (channelEditsnipes.length > MAX_SNIPE_ENTRIES_PER_CHANNEL) channelEditsnipes.pop();
     editsnipes.set(oldMessage.channel.id, channelEditsnipes);
   }
 });
+
 
 client.login(process.env.token);
 
@@ -564,14 +426,4 @@ function msToTime(duration) {
   }
 
   return formattedTime;
-}
-
-// Save AFK data function
-function saveAfkData() {
-  fs.writeFileSync(afkDataFile, JSON.stringify(afkData, null, 2), 'utf8');
-}
-
-// Save word statistics function
-function saveWordStats() {
-  fs.writeFileSync(wordStatsPath, JSON.stringify(wordStats, null, 2), 'utf8');
 }

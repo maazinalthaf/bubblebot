@@ -1,8 +1,6 @@
 const {embed_color, emojis, red, green, yellow } = require('../../utils/constants');
 const {EmbedBuilder, PermissionsBitField} = require('discord.js');
-const fs = require('fs');
-const path = require('path');
-const reactionsPath = path.join(__dirname, '../../reactions.json');
+const database = require('../../utils/database');
 
 module.exports = {
     name: 'addreaction',
@@ -26,22 +24,12 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        // Load reactions
-        let reactions = {};
-        try {
-            reactions = JSON.parse(fs.readFileSync(reactionsPath, 'utf8'));
-        } catch (error) {
-            console.error('Error reading reactions.json:', error);
-        }
-
-        // Initialize server-specific reactions if they don't exist
         const guildId = message.guild.id;
-        if (!reactions[guildId]) {
-            reactions[guildId] = {};
-        }
+        const reactions = database.getReactions();
+        const serverReactions = reactions[guildId] || {};
     
         // Check if a similar word already exists
-        if (reactions[guildId][word]) {
+        if (serverReactions[word]) {
             const embed = new EmbedBuilder()
                 .setColor(yellow)
                 .setDescription(`${emojis.error} The word "${word}" already has a reaction associated with it in this server.`);
@@ -49,10 +37,8 @@ module.exports = {
         }
     
         // Add the new reaction
-        reactions[guildId][word] = reactionsToAdd;
-    
-        saveReactions(reactions);
-        client.triggerManager.reloadReactions(reactions); 
+        database.setReaction(guildId, word, reactionsToAdd);
+        client.triggerManager.reloadReactions(database.getReactions()); 
         const embed = new EmbedBuilder()
             .setColor(green)
             .setDescription(`${emojis.tick} Reaction(s) ${reactionsToAdd.join(', ')} added for word "${word}" in this server.`);
@@ -60,7 +46,3 @@ module.exports = {
     }
 };
      
-// Dependent Function(s)
-function saveReactions(reactions) {
-    fs.writeFileSync('./reactions.json', JSON.stringify(reactions, null, 2), 'utf8');
-}

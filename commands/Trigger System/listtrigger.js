@@ -1,8 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
 const {embed_color, emojis, red, green, yellow } = require('../../utils/constants');
-const triggersPath = path.join(__dirname, '../../triggers.json');
+const database = require('../../utils/database');
 const TRIGGERS_PER_PAGE = 5;
 
 module.exports = {
@@ -23,23 +21,8 @@ module.exports = {
             });
         }
 
-        let triggers = {};
-        try {
-            triggers = JSON.parse(fs.readFileSync(triggersPath, 'utf8'));
-        } catch (error) {
-            console.error('Error reading triggers.json:', error);
-            return message.reply({
-                embeds: [
-                    new EmbedBuilder()
-                        .setColor(red)
-                        .setDescription(`${emojis.cross} Failed to load triggers.`)
-                ],
-                allowedMentions: { repliedUser: false }
-            });
-        }
-
         const guildId = message.guild.id;
-        const serverTriggers = triggers[guildId] || {};
+        const serverTriggers = database.getTriggers()[guildId] || {};
 
         if (Object.keys(serverTriggers).length === 0) {
             return message.reply({

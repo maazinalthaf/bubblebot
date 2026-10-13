@@ -1,45 +1,25 @@
-const fs = require('fs');
-const path = require('path');
-
-const CLAIMABLE_ROLES_FILE = path.join(__dirname, '../../claimableRoles.json');
-
-// Initialize file if it doesn't exist
-if (!fs.existsSync(CLAIMABLE_ROLES_FILE)) {
-    fs.writeFileSync(CLAIMABLE_ROLES_FILE, JSON.stringify({}, null, 2));
-}
+const database = require('./database');
 
 function getClaimableRoles(guildId) {
-    const data = fs.readFileSync(CLAIMABLE_ROLES_FILE, 'utf8');
-    const allRoles = JSON.parse(data);
-    return allRoles[guildId] || [];
+    return database.getClaimableRoles(guildId);
 }
 
 function saveClaimableRoles(guildId, roles) {
-    const data = fs.readFileSync(CLAIMABLE_ROLES_FILE, 'utf8');
-    const allRoles = JSON.parse(data);
-    allRoles[guildId] = roles;
-    fs.writeFileSync(CLAIMABLE_ROLES_FILE, JSON.stringify(allRoles, null, 2));
+    database.setClaimableRoles(guildId, roles);
 }
 
 function addClaimableRole(guildId, roleId) {
     const roles = getClaimableRoles(guildId);
-    if (!roles.includes(roleId)) {
-        roles.push(roleId);
-        saveClaimableRoles(guildId, roles);
-        return true;
-    }
-    return false;
+    if (roles.includes(roleId)) return false;
+    saveClaimableRoles(guildId, [...roles, roleId]);
+    return true;
 }
 
 function removeClaimableRole(guildId, roleId) {
     const roles = getClaimableRoles(guildId);
-    const index = roles.indexOf(roleId);
-    if (index !== -1) {
-        roles.splice(index, 1);
-        saveClaimableRoles(guildId, roles);
-        return true;
-    }
-    return false;
+    if (!roles.includes(roleId)) return false;
+    saveClaimableRoles(guildId, roles.filter(id => id !== roleId));
+    return true;
 }
 
 module.exports = {

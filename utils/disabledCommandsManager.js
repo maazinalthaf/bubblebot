@@ -1,52 +1,25 @@
-const fs = require('fs');
-const path = require('path');
+const database = require('./database');
 
-const disabledCommandsPath = path.join(__dirname, '../disabledCommands.json');
+const manager = {
+  checkCommandDisabled(guildId, commandName) {
+    return database.getDisabledCommands()[guildId]?.includes(commandName) || false;
+  },
 
-// Load or initialize disabled commands
-let disabledCommands = {};
-try {
-  if (fs.existsSync(disabledCommandsPath)) {
-    const data = fs.readFileSync(disabledCommandsPath, 'utf8');
-    disabledCommands = JSON.parse(data);
-  } else {
-    fs.writeFileSync(disabledCommandsPath, JSON.stringify({}, null, 2));
-  }
-} catch (error) {
-  console.error('Error loading disabled commands:', error);
-}
-
-function checkCommandDisabled(guildId, commandName) {
-  if (!disabledCommands[guildId]) return false;
-  return disabledCommands[guildId].includes(commandName);
-}
-
-function reloadDisabledCommands() {
-  try {
-    if (fs.existsSync(disabledCommandsPath)) {
-      const data = fs.readFileSync(disabledCommandsPath, 'utf8');
-      disabledCommands = JSON.parse(data);
-      return true;
-    }
-  } catch (error) {
-    console.error('Error reloading disabled commands:', error);
-  }
-  return false;
-}
-
-function saveDisabledCommands() {
-  try {
-    fs.writeFileSync(disabledCommandsPath, JSON.stringify(disabledCommands, null, 2));
+  reloadDisabledCommands() {
     return true;
-  } catch (error) {
-    console.error('Error saving disabled commands:', error);
-    return false;
-  }
-}
+  },
 
-module.exports = {
-  checkCommandDisabled,
-  reloadDisabledCommands,
-  saveDisabledCommands,
-  disabledCommands
+  saveDisabledCommands() {
+    for (const [guildId, commands] of Object.entries(manager.disabledCommands)) {
+      database.setDisabledCommands(guildId, commands);
+    }
+    return true;
+  }
 };
+
+Object.defineProperty(manager, 'disabledCommands', {
+  enumerable: true,
+  get: () => database.getDisabledCommands()
+});
+
+module.exports = manager;

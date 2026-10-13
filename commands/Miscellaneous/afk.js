@@ -1,48 +1,13 @@
 const {EmbedBuilder} = require('discord.js');
-const fs = require('fs');
-const afkDataFile = './afkData.json';
+const database = require('../../utils/database');
 const { embed_color, emojis, red, green, yellow } = require('../../utils/constants');
-let afkData = {};
-
-// Dependent Function(s)
-
-// Load AFK data from file if it exists
-function loadAfkData() {
-    try {
-        if (fs.existsSync(afkDataFile)) {
-            const data = fs.readFileSync(afkDataFile, 'utf8');
-            afkData = JSON.parse(data); // Load the data from the file
-        } else {
-            afkData = {}; // Initialize empty if no data file exists
-        }
-    } catch (error) {
-        console.error("Error loading AFK data:", error);
-        afkData = {}; // In case of an error, reset to an empty object
-    }
-}
-
-// Save AFK data to file
-function saveAfkData() {
-    try {
-        fs.writeFileSync(afkDataFile, JSON.stringify(afkData, null, 2), 'utf8');
-    } catch (error) {
-        console.error("Error saving AFK data:", error);
-    }
-}
-
 module.exports = {
     name: 'afk',
     async execute(client, message, args) {
-        loadAfkData();
-
         const afkMessage = args.join(' ');
+        database.setAfk(message.author.id, afkMessage);
 
         if (afkMessage) {
-            afkData[message.author.id] = {
-                afkMessage,
-                timestamp: Date.now(),
-            };
-
             const embed = new EmbedBuilder()
             .setColor(green)
             .setDescription(`${emojis.tick} **${message.author}** You're now AFK with the status: **${afkMessage}**`);
@@ -50,10 +15,6 @@ module.exports = {
             message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
 
         } else {
-            afkData[message.author.id] = {
-                timestamp: Date.now(),
-            };
-
             const embed = new EmbedBuilder()
             .setColor(green)
             .setDescription(`${emojis.tick} **${message.author}** You're now AFK with the status: **AFK**`);
@@ -61,6 +22,5 @@ module.exports = {
             message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        saveAfkData();
     }
 };

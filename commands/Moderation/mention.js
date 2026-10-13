@@ -1,36 +1,7 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
 const { emojis, embed_color, red, green, yellow } = require('../../utils/constants.js');
 const { getPrefix } = require('../../utils/prefix');
-
-// Path to store the mention permissions data
-const mentionDataPath = path.join(__dirname, '../../mentionData.json');
-
-
-let mentionData = {};
-try {
-  if (fs.existsSync(mentionDataPath)) {
-    mentionData = JSON.parse(fs.readFileSync(mentionDataPath, 'utf8'));
-  } else {
-    fs.writeFileSync(mentionDataPath, JSON.stringify({}, null, 2));
-  }
-} catch (error) {
-  console.error('Error loading mention data:', error);
-}
-
-// Save mention data to file
-function saveMentionData() {
-  fs.writeFileSync(mentionDataPath, JSON.stringify(mentionData, null, 2), 'utf8');
-}
-
-// Helper function to get server-specific data
-function getServerData(guildId) {
-  if (!mentionData[guildId]) {
-    mentionData[guildId] = {};
-  }
-  return mentionData[guildId];
-}
+const database = require('../../utils/database');
 
 module.exports = {
   name: 'mention',
@@ -45,7 +16,7 @@ module.exports = {
     }
 
     const prefix = getPrefix(message.guild.id);
-    const serverData = getServerData(message.guild.id);
+    const serverData = database.getMentionPermissions(message.guild.id);
 
     if (args.length === 0) {
       const embed = new EmbedBuilder()
@@ -107,7 +78,7 @@ module.exports = {
 
         if (!serverData[role.id].includes(user.id)) {
           serverData[role.id].push(user.id);
-          saveMentionData();
+          database.setMentionPermissions(message.guild.id, serverData);
 
           const embed = new EmbedBuilder()
             .setColor(green)
@@ -127,7 +98,7 @@ module.exports = {
             delete serverData[role.id];
           }
 
-          saveMentionData();
+          database.setMentionPermissions(message.guild.id, serverData);
 
           const embed = new EmbedBuilder()
             .setColor(green)

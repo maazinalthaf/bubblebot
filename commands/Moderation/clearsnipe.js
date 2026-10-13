@@ -6,6 +6,7 @@ module.exports = {
     aliases: ['cs', 'clearsnipes'],
     async execute(client, message, args) {
         const snipes = client.snipes;
+        const editsnipes = client.editsnipes;
 
         if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const embed = new EmbedBuilder()
@@ -14,7 +15,9 @@ module.exports = {
             return message.reply({ embeds: [embed], allowedMentions: {repliedUser: false} });
         }
 
-        if (!snipes.has(message.channel.id) || snipes.get(message.channel.id).length === 0) {
+        const hasSnipes = snipes.has(message.channel.id) && snipes.get(message.channel.id).length > 0;
+        const hasEditsnipes = editsnipes.has(message.channel.id) && editsnipes.get(message.channel.id).length > 0;
+        if (!hasSnipes && !hasEditsnipes) {
             const embed = new EmbedBuilder()
                 .setColor(yellow)
                 .setDescription(`${emojis.error} There are no sniped messages to clear!`);
@@ -22,6 +25,7 @@ module.exports = {
         }
 
         snipes.delete(message.channel.id);
+        editsnipes.delete(message.channel.id);
 
         const embed = new EmbedBuilder()
             .setColor(green)

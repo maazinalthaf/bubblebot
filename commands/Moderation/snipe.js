@@ -4,21 +4,20 @@ const {embed_color, emojis, red, green, yellow } = require('../../utils/constant
 module.exports = {
     name: 'snipe',
     aliases: ['s'],
-    snipeExpiration: 86400000, // 1 day in milliseconds
+    snipeExpiration: 15 * 60 * 1000,
     async execute(client, message, args) {
+        if (!message.guild) {
+            return message.reply('This command can only be used in a server.');
+        }
         // Get snipes from client
         const snipes = client.snipes;
 
-        // Clean expired snipes (older than 1 day)
+        // Clean expired snipes before displaying any message content.
         const channelSnipes = snipes.get(message.channel.id);
         if (channelSnipes) {
             const now = Date.now();
             const validSnipes = channelSnipes.filter(snipe => {
-                const created = snipe.createdAt;
-                const snipeTimestamp = (created && typeof created.getTime === 'function')
-                    ? created.getTime()
-                    : (typeof created === 'number' ? created : Number(created) || 0);
-                return (now - snipeTimestamp) < this.snipeExpiration;
+                return now - snipe.createdAt < this.snipeExpiration;
             });
             if (validSnipes.length < channelSnipes.length) {
                 snipes.set(message.channel.id, validSnipes);
@@ -49,11 +48,8 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setColor(embed_color)
-            .setAuthor({ 
-                name: snipedMessage.author.tag, 
-                iconURL: snipedMessage.author.displayAvatarURL({ dynamic: true }) 
-            })
-            .setDescription(snipedMessage.content || '*No text content*')
+            .setAuthor({ name: `<@${snipedMessage.authorId}>` })
+            .setDescription((snipedMessage.content || '*No text content*').slice(0, 4096))
             .setTimestamp(snipedMessage.createdAt)
             .setFooter({ 
                 text: `Snipe ${snipeIndex + 1}/${totalSnipes}`,  

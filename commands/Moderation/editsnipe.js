@@ -4,20 +4,19 @@ const {embed_color, emojis, red, green, yellow } = require('../../utils/constant
 module.exports = {
     name: 'editsnipe',
     aliases: ['es'],
-    editsnipeExpiration: 86400000, // 1 day in milliseconds
+    editsnipeExpiration: 15 * 60 * 1000,
     async execute(client, message, args) {
+        if (!message.guild) {
+            return message.reply('This command can only be used in a server.');
+        }
         const editsnipes = client.editsnipes;
 
-        // Clean expired editsnipes (older than 1 day)
+        // Clean expired editsnipes before displaying any message content.
         const channelEditsnipes = editsnipes.get(message.channel.id);
         if (channelEditsnipes) {
             const now = Date.now();
             const validEditsnipes = channelEditsnipes.filter(editsnipe => {
-                const edited = editsnipe.editedAt;
-                const editedTimestamp = (edited && typeof edited.getTime === 'function')
-                    ? edited.getTime()
-                    : (typeof edited === 'number' ? edited : Number(edited) || 0);
-                return (now - editedTimestamp) < this.editsnipeExpiration;
+                return now - editsnipe.editedAt < this.editsnipeExpiration;
             });
             if (validEditsnipes.length < channelEditsnipes.length) {
                 editsnipes.set(message.channel.id, validEditsnipes);
@@ -47,13 +46,10 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setColor(embed_color)
-            .setAuthor({ 
-                name: editsnipedMessage.author.tag, 
-                iconURL: editsnipedMessage.author.displayAvatarURL({ dynamic: true }) 
-            })
+            .setAuthor({ name: `<@${editsnipedMessage.authorId}>` })
             .addFields(
-                { name: 'Original Message', value: editsnipedMessage.oldContent || '*No original content*' },
-                { name: 'Edited Message', value: editsnipedMessage.newContent || '*No new content*' }
+                { name: 'Original Message', value: (editsnipedMessage.oldContent || '*No original content*').slice(0, 1024) },
+                { name: 'Edited Message', value: (editsnipedMessage.newContent || '*No new content*').slice(0, 1024) }
             )
             .setTimestamp(editsnipedMessage.editedAt)
             .setFooter({ 
